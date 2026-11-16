@@ -1,38 +1,44 @@
-# LinGua Node.js app
+# LinGua
 
-LinGua now has a Node.js/Express runtime while keeping the original HTML screens, JavaScript interactions, screenshots, and design notes intact. The repository root is the app folder; the existing screen directories are deliberately preserved because the original pages link to each other using relative paths.
-
-## Requirements
-
-- Node.js 18 or newer
-- npm
+LinGua is a beginner-first language-learning prototype built from HTML screens and a small Express server.
 
 ## Run locally
+
+Requirements: Node.js 18+ and npm.
 
 ```bash
 npm install
 npm start
 ```
 
-Open <http://localhost:3000>. To use a different port, set `PORT` before starting the server:
+Open <http://localhost:3000>. Use `PORT=8080 npm start` to select another port, or `npm run dev` to restart the server when `server.js` changes.
 
-```bash
-PORT=8080 npm start
-```
+## Clean app URLs
 
-Development mode restarts the server when the Node.js entry point changes:
+The Express server provides readable entry URLs for the existing screens:
 
-```bash
-npm run dev
-```
+| URL | Screen |
+| --- | --- |
+| `/` or `/start` | Landing page |
+| `/onboarding/language` | Choose a language |
+| `/onboarding/profile` | Learner profile and daily goal |
+| `/onboarding/ready` | Onboarding complete |
+| `/learn` | Learning map |
+| `/learn/stage-1` | Stage 1 overview |
+| `/lesson/vowels` | Core vowels lesson |
+| `/lesson/complete` | Lesson completion |
+| `/practice` | Practice hub |
+| `/health` | Server health check (JSON) |
 
-The original HTML pages continue to work at their existing paths. For example, the onboarding and lesson screens remain under their original screen directories. `GET /health` returns a small JSON health response.
+These URLs redirect to the original screen files. Keeping the original paths as the destination preserves existing relative navigation and assets.
 
-## Project layout
+## Repository layout
 
-- `server.js` — Express server and static-file routing
-- `package.json` — Node.js metadata and run scripts
-- `lingua_*/code.html` and other original screen directories — preserved original app code and assets
-- `warm_sprout_learning/` — original design-system notes
+The screen directories currently have generated, descriptive names and each contains its HTML screen (and, for most screens, a screenshot). The server now offers short URLs so those internal paths do not need to be used by learners. Other root files:
 
-This migration adds a Node.js server without rewriting the existing front end, so the existing localStorage-based onboarding and learning interactions are retained.
+- `index.html` — static-hosting entry point
+- `server.js` — Express server, URL aliases, and static-file hosting
+- `package.json` — Node.js metadata and scripts
+- `warm_sprout_learning/` — design notes
+
+The original screen files and screenshots are retained to avoid breaking links. A physical move/removal of those directories should be done as a dedicated filesystem refactor that updates every relative link and asset reference together.
