@@ -305,7 +305,9 @@ const state = {
   xp: 0,
   correctCount: 0,
   answered: false,
+  lastCorrect: false,
   userAnswer: null,
+  speechScore: 0,
 };
 
 /* ── 10 ACCELERATED STAGE 1 EXERCISES (Bridging directly to words) ── */
@@ -428,6 +430,18 @@ const EXERCISES = [
   },
 ];
 
+const requestedExercises = new URLSearchParams(window.location.search).get('exercises')
+  || new URLSearchParams(window.location.search).get('exercise');
+const requestedIndices = requestedExercises
+  ? requestedExercises.split(',').map((index) => Number.parseInt(index, 10))
+  : [];
+const validIndices = [...new Set(requestedIndices)]
+  .filter((index) => Number.isInteger(index) && index >= 0 && index < EXERCISES.length);
+const lessonExercises = validIndices.length
+  ? validIndices.map((index) => EXERCISES[index])
+  : EXERCISES;
+state.totalExercises = lessonExercises.length;
+
 /* ── DOM ELEMENTS ── */
 const container = document.getElementById('exerciseContainer');
 const instruction = document.getElementById('instruction');
@@ -442,7 +456,7 @@ const checkBar = document.getElementById('checkBar');
 
 /* ── RENDER CORE DISPATCHER ── */
 function renderExercise() {
-  const ex = EXERCISES[state.currentExercise];
+  const ex = lessonExercises[state.currentExercise];
 
   // Update progress bar
   const pct = ((state.currentExercise + 1) / state.totalExercises) * 100;
@@ -452,7 +466,10 @@ function renderExercise() {
 
   // Reset answer states
   state.answered = false;
+  state.lastCorrect = false;
   state.userAnswer = null;
+  state.speechScore = 0;
+  document.querySelector('#feedbackContinueBtn span').textContent = 'CONTINUE';
 
   // Update copy
   instruction.innerHTML = ex.instruction;
@@ -618,25 +635,85 @@ function renderSpeakAloud(ex, container) {
   const micBtn = container.querySelector('#micBtn');
   const micStatus = container.querySelector('#micStatus');
   const scoreReveal = container.querySelector('#scoreReveal');
+  const scoreText = scoreReveal.querySelector('p');
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recording = false;
+  let recognition = null;
 
   micBtn.addEventListener('click', () => {
     if (state.answered) return;
-    if (!recording) {
-      recording = true;
-      micBtn.classList.add('mic-recording');
-      micStatus.textContent = 'Listening... tap to evaluate';
-      micStatus.classList.add('text-primary');
-      state.userAnswer = 'recording';
+    if (!Recognition) {
+      micStatus.textContent = 'Speech recognition is not supported in this browser. Try Chrome or Edge.';
+      return;
+    }
+
+    if (recording) {
+      recognition.stop();
+      return;
+    }
+
+    recognition = new Recognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 3;
+    recording = true;
+    micBtn.classList.add('mic-recording');
+    micStatus.textContent = 'Listening… speak the word clearly.';
+    micStatus.classList.add('text-primary');
+
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results[0])
+        .map((result) => result.transcript)
+        .join(' ')
+        .trim();
+      const target = ex.phrase.toLowerCase().replace(/[^a-z]/g, '');
+      const spoken = transcript.toLowerCase().replace(/[^a-z]/g, '');
+      let distance = Array.from({ length: spoken.length + 1 }, (_, index) => index);
+
+      for (let i = 1; i <= target.length; i++) {
+        const nextDistance = [i];
+        for (let j = 1; j <= spoken.length; j++) {
+          nextDistance[j] = Math.min(
+            distance[j] + 1,
+            nextDistance[j - 1] + 1,
+            distance[j - 1] + (target[i - 1] === spoken[j - 1] ? 0 : 1)
+          );
+        }
+        distance = nextDistance;
+      }
+
+      state.speechScore = spoken
+        ? Math.max(0, Math.round((1 - distance[spoken.length] / Math.max(target.length, spoken.length)) * 100))
+        : 0;
+      state.userAnswer = transcript;
+      scoreText.textContent = `Pronunciation match: ${state.speechScore}%`;
+      scoreReveal.querySelectorAll('p')[1].textContent = `We heard: “${transcript || 'no speech detected'}”`;
+      scoreReveal.classList.remove('hidden');
+      micStatus.textContent = 'Check your result below, or tap the microphone to try again.';
       enableCheck();
-    } else {
+    };
+
+    recognition.onerror = (event) => {
+      const messages = {
+        'not-allowed': 'Microphone access was denied. Allow microphone access and try again.',
+        'no-speech': 'No speech detected. Tap the microphone and try again.',
+        'audio-capture': 'No microphone was found. Connect a microphone and try again.'
+      };
+      micStatus.textContent = messages[event.error] || 'Speech recognition failed. Please try again.';
+    };
+
+    recognition.onend = () => {
       recording = false;
       micBtn.classList.remove('mic-recording');
-      micStatus.textContent = 'Speech sample captured';
       micStatus.classList.remove('text-primary');
-      scoreReveal.classList.remove('hidden');
-      state.userAnswer = 'recorded';
-      enableCheck();
+    };
+
+    try {
+      recognition.start();
+    } catch {
+      recording = false;
+      micBtn.classList.remove('mic-recording');
+      micStatus.textContent = 'Could not start speech recognition. Please try again.';
     }
   });
 }
@@ -906,19 +983,68 @@ function disableCheck() {
 }
 
 function checkAnswer() {
-  const ex = EXERCISES[state.currentExercise];
+  const ex = lessonExercises[state.currentExercise];
   const isCorrect = evaluateAnswer(ex, state.userAnswer);
   state.answered = true;
+  state.lastCorrect = isCorrect;
 
   if (isCorrect) {
     state.correctCount++;
     state.xp += 10;
     document.getElementById('xpCount').textContent = `${state.xp} XP`;
+    const totalXp = Number.parseInt(localStorage.getItem('lingua_xp') || '0', 10);
+    localStorage.setItem('lingua_xp', totalXp + 10);
+    recordMasteredExercise(ex);
     showFeedback(true, ex.explanation);
   } else {
     state.hearts--;
     updateHearts();
+    const mistakes = loadMistakes();
+    const exerciseIndex = EXERCISES.indexOf(ex);
+    const existingMistake = mistakes.find((mistake) => mistake.exercise === exerciseIndex);
+    if (existingMistake) {
+      existingMistake.count++;
+      existingMistake.updatedAt = new Date().toISOString();
+    } else {
+      mistakes.push({
+        exercise: exerciseIndex,
+        count: 1,
+        updatedAt: new Date().toISOString()
+      });
+    }
+    localStorage.setItem('lingua_mistakes', JSON.stringify(mistakes));
     showFeedback(false, "Not quite yet! Notice the vowel root position. Zero streak penalty — try again!");
+    document.querySelector('#feedbackContinueBtn span').textContent = 'TRY AGAIN';
+  }
+}
+
+function loadMistakes() {
+  const storedMistakes = localStorage.getItem('lingua_mistakes');
+  if (!storedMistakes) return [];
+
+  try {
+    const mistakes = JSON.parse(storedMistakes);
+    return Array.isArray(mistakes) ? mistakes : [];
+  } catch (error) {
+    console.error('Unable to read saved practice mistakes:', error.message);
+    return [];
+  }
+}
+
+function recordMasteredExercise(ex) {
+  const index = EXERCISES.indexOf(ex);
+  let mastered = [];
+
+  try {
+    const stored = JSON.parse(localStorage.getItem('lingua_mastered_exercises') || '[]');
+    if (Array.isArray(stored)) mastered = stored;
+  } catch (error) {
+    console.error('Unable to read saved lesson progress:', error.message);
+  }
+
+  if (!mastered.includes(index)) {
+    mastered.push(index);
+    localStorage.setItem('lingua_mastered_exercises', JSON.stringify(mastered));
   }
 }
 
@@ -926,7 +1052,7 @@ function evaluateAnswer(ex, answer) {
   if (ex.type === 'tapSelect') return answer === ex.correctId;
   if (ex.type === 'fillBlank') return answer === ex.correctAnswers.join('');
   if (ex.type === 'listenType') return answer.toLowerCase().trim() === ex.correctAnswer.toLowerCase();
-  if (ex.type === 'speakAloud') return true;
+  if (ex.type === 'speakAloud') return state.speechScore >= 65;
   if (ex.type === 'matchPairs') return answer === 'all-matched';
   if (ex.type === 'trace') return true;
   if (ex.type === 'dragDrop') return answer === ex.word;
@@ -972,10 +1098,22 @@ function updateHearts() {
 
 function continueLesson() {
   feedbackPanel.classList.remove('is-open');
+  if (!state.lastCorrect) {
+    renderExercise();
+    checkBar.style.display = '';
+    return;
+  }
+
   state.currentExercise++;
 
-  if (state.currentExercise >= EXERCISES.length) {
-    alert(`🎉 Cluster 1 Complete!\n\nEarned: ${state.xp} XP\nCorrect: ${state.correctCount}/${EXERCISES.length}\n\nFast-track unlocked: Cluster 2 Consonants & Early Word Reading!`);
+  if (state.currentExercise >= lessonExercises.length) {
+    const accuracy = Math.round((state.correctCount / lessonExercises.length) * 100);
+    const completedLessons = Number.parseInt(localStorage.getItem('lingua_lessons_completed') || '0', 10);
+    localStorage.setItem('lingua_lessons_completed', completedLessons + 1);
+    localStorage.setItem('lingua_lesson_xp', state.xp);
+    localStorage.setItem('lingua_lesson_accuracy', accuracy);
+    localStorage.setItem('lingua_lesson_stars', accuracy >= 90 ? 3 : accuracy >= 70 ? 2 : 1);
+    localStorage.setItem('lingua_stage_name', 'Stage 1: Core Vowels');
     window.location.href = '../lingua_lesson_complete_core_vowels_mastered/code.html';
     return;
   }
@@ -1004,5 +1142,6 @@ document.getElementById('skipBtn').addEventListener('click', () => {
 /* ── BOOTSTRAP ── */
 renderExercise();
 </script>
+<script src="/js/lingua-app.js" defer></script>
 </body>
 </html>

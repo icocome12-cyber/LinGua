@@ -1,0 +1,196 @@
+.lingua-tutor-toggle {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 70;
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  gap: 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.75rem 1.1rem;
+  background: #6c4df6;
+  color: #fff;
+  box-shadow: 0 4px 0 #5436d6, 0 8px 24px rgba(31, 27, 46, 0.18);
+  font: 800 0.95rem "Nunito Sans", sans-serif;
+  cursor: pointer;
+}
+
+.lingua-tutor-toggle:hover {
+  filter: brightness(1.05);
+}
+
+.lingua-tutor-toggle:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #5436d6;
+}
+
+.lingua-tutor-panel {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 5.5rem;
+  z-index: 70;
+  display: none;
+  width: min(25rem, calc(100vw - 2rem));
+  height: min(34rem, calc(100vh - 8rem));
+  overflow: hidden;
+  flex-direction: column;
+  border: 1px solid #e8e2fa;
+  border-radius: 1.25rem;
+  background: #fff;
+  color: #1f1b2e;
+  box-shadow: 0 18px 56px rgba(31, 27, 46, 0.2);
+  font-family: Inter, sans-serif;
+}
+
+.lingua-tutor-panel[data-open="true"] {
+  display: flex;
+}
+
+body.lesson-feedback-open .lingua-tutor-toggle {
+  bottom: 8.5rem;
+}
+
+body.lesson-page .lingua-tutor-toggle {
+  bottom: 7rem;
+}
+
+body.lesson-feedback-open .lingua-tutor-panel {
+  bottom: 12.5rem;
+}
+
+body.lesson-page .lingua-tutor-panel {
+  bottom: 7rem;
+  height: min(34rem, calc(100vh - 10rem));
+}
+
+.lingua-tutor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.1rem;
+  background: #f4f1ff;
+}
+
+.lingua-tutor-header h2 {
+  margin: 0;
+  color: #532ddd;
+  font: 900 1.05rem "Nunito Sans", sans-serif;
+}
+
+.lingua-tutor-header p {
+  margin: 0.2rem 0 0;
+  color: #6b6680;
+  font-size: 0.75rem;
+}
+
+.lingua-tutor-close {
+  border: 0;
+  border-radius: 0.65rem;
+  padding: 0.4rem 0.65rem;
+  background: #fff;
+  color: #532ddd;
+  font: 700 1rem Inter, sans-serif;
+  cursor: pointer;
+}
+
+.lingua-tutor-messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.lingua-tutor-message {
+  max-width: 90%;
+  border-radius: 1rem;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.lingua-tutor-message[data-role="model"] {
+  align-self: flex-start;
+  background: #f4f1ff;
+}
+
+.lingua-tutor-message[data-role="user"] {
+  align-self: flex-end;
+  background: #6c4df6;
+  color: #fff;
+}
+
+.lingua-tutor-speak {
+  display: block;
+  margin-top: 0.4rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #532ddd;
+  font: 700 0.75rem Inter, sans-serif;
+  cursor: pointer;
+}
+
+.lingua-tutor-status {
+  min-height: 1.25rem;
+  margin: 0;
+  padding: 0 1rem 0.5rem;
+  color: #6b6680;
+  font-size: 0.75rem;
+}
+
+.lingua-tutor-form {
+  display: flex;
+  gap: 0.5rem;
+  border-top: 1px solid #ece8f8;
+  padding: 0.85rem;
+}
+
+.lingua-tutor-input {
+  min-width: 0;
+  flex: 1;
+  border: 2px solid #e2dcff;
+  border-radius: 0.8rem;
+  padding: 0.7rem;
+  color: #1f1b2e;
+  font: 0.9rem Inter, sans-serif;
+}
+
+.lingua-tutor-input:focus {
+  border-color: #6c4df6;
+  outline: 3px solid rgba(108, 77, 246, 0.14);
+}
+
+.lingua-tutor-send {
+  border: 0;
+  border-radius: 0.8rem;
+  padding: 0 0.9rem;
+  background: #6c4df6;
+  color: #fff;
+  font: 800 0.9rem "Nunito Sans", sans-serif;
+  cursor: pointer;
+}
+
+.lingua-tutor-send:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+@media (max-width: 480px) {
+  .lingua-tutor-toggle {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .lingua-tutor-panel {
+    right: 0.75rem;
+    bottom: 5rem;
+    width: calc(100vw - 1.5rem);
+    height: min(34rem, calc(100vh - 6rem));
+  }
+}

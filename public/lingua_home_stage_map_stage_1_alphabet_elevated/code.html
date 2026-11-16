@@ -211,17 +211,17 @@ tailwind.config = {
       <!-- Stats Pill Dock -->
       <div class="flex items-center gap-2 sm:gap-2.5">
         <!-- Streak / Day count -->
-        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-secondary-fixed/70 border border-secondary-container/20 shadow-sm" title="Day 5 of gentle learning">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-secondary-fixed/70 border border-secondary-container/20 shadow-sm" title="Your learning streak">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#fd7958" aria-hidden="true"><path d="M12 2c-2 3-5 3-5 6 0 2 2 3 2 5 0 2-1 3-1 5 0 2 2 4 4 4s4-2 4-4c0-2-1-3-1-5 0-2 2-3 2-5 0-3-3-3-5-6z"/></svg>
-          <span class="font-label text-label-sm text-secondary font-black">Day 5</span>
+          <span class="font-label text-label-sm text-secondary font-black" id="streak-display">0 day streak</span>
         </div>
         <!-- XP Earned -->
-        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFF4D6] border border-[#f4bf3c]/30 shadow-sm" title="240 Experience Points">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFF4D6] border border-[#f4bf3c]/30 shadow-sm" title="Experience Points">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#f4bf3c" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
-          <span class="font-label text-label-sm text-[#a07a00] font-black">240 XP</span>
+          <span class="font-label text-label-sm text-[#a07a00] font-black" id="total-xp-display">0 XP</span>
         </div>
         <!-- Energy / Patience -->
-        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFE0E6] border border-[#ef476f]/20 shadow-sm" title="4 of 5 daily focus hearts">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFE0E6] border border-[#ef476f]/20 shadow-sm" title="Hearts are practice lives">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#ef476f" aria-hidden="true"><path d="M12 21s-8-4-8-10a5 5 0 019-3 5 5 0 019 3c0 6-8 10-8 10z"/></svg>
           <span class="font-label text-label-sm text-rose font-black">4/5</span>
         </div>
@@ -282,11 +282,11 @@ tailwind.config = {
           <div class="relative shrink-0 w-16 h-16">
             <svg class="w-full h-full -rotate-90" viewBox="0 0 64 64">
               <circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,0.22)" stroke-width="6" fill="none"/>
-              <circle cx="32" cy="32" r="28" stroke="#FFC845" stroke-width="6" fill="none"
-                      stroke-dasharray="176" stroke-dashoffset="70" stroke-linecap="round"/>
+              <circle id="daily-goal-ring" cx="32" cy="32" r="28" stroke="#FFC845" stroke-width="6" fill="none"
+                      stroke-dasharray="176" stroke-dashoffset="176" stroke-linecap="round"/>
             </svg>
             <div class="absolute inset-0 grid place-items-center">
-              <span class="font-headline text-[13px] font-black text-on-primary">30/50</span>
+              <span class="font-headline text-[13px] font-black text-on-primary" id="daily-goal-progress">0/50</span>
             </div>
           </div>
           <div class="flex-1">
@@ -294,8 +294,8 @@ tailwind.config = {
               <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
               Daily Goal
             </div>
-            <p class="font-headline text-headline-sm font-extrabold mt-1">Keep it up!</p>
-            <p class="font-body text-xs text-on-primary/90 mt-0.5">20 XP left to complete today's target</p>
+            <p class="font-headline text-headline-sm font-extrabold mt-1" id="daily-goal-title">Daily goal</p>
+            <p class="font-body text-xs text-on-primary/90 mt-0.5" id="daily-goal-message">Earn XP by completing lessons.</p>
           </div>
         </div>
       </div>
@@ -310,15 +310,15 @@ tailwind.config = {
               </div>
               <div>
                 <p class="font-label text-label-sm text-on-surface font-extrabold">Complete 3 lessons</p>
-                <p class="font-body text-[11px] text-on-surface-variant">1 done · +30 XP bonus</p>
+                <p class="font-body text-[11px] text-on-surface-variant" id="lesson-quest-message">0 done</p>
               </div>
             </div>
-            <span class="font-label text-xs font-black text-primary px-2 py-0.5 rounded-full bg-primary-fixed">1/3</span>
+            <span class="font-label text-xs font-black text-primary px-2 py-0.5 rounded-full bg-primary-fixed" id="lesson-quest-count">0/3</span>
           </div>
         </div>
         <div class="mt-3">
           <div class="w-full h-2.5 rounded-full bg-surface-container overflow-hidden">
-            <div class="h-full bg-gradient-to-r from-primary to-primary-container rounded-full transition-all duration-500" style="width:33.3%"></div>
+            <div class="h-full bg-gradient-to-r from-primary to-primary-container rounded-full transition-all duration-500" id="lesson-quest-progress" style="width:0%"></div>
           </div>
         </div>
       </div>
@@ -506,6 +506,29 @@ tailwind.config = {
   document.addEventListener('DOMContentLoaded', () => {
     // ── Read user data from localStorage (from onboarding) ──
     const lang = localStorage.getItem('lingua_lang') || 'english';
+    const today = new Date().toISOString().slice(0, 10);
+    const dailyGoalDate = localStorage.getItem('lingua_daily_goal_date');
+    const dailyXp = dailyGoalDate === today
+      ? Number.parseInt(localStorage.getItem('lingua_daily_xp') || '0', 10)
+      : 0;
+    const xp = Number.parseInt(localStorage.getItem('lingua_xp') || '0', 10);
+    const streak = Number.parseInt(localStorage.getItem('lingua_streak') || '0', 10);
+    const goalTargets = { casual: 20, regular: 50, serious: 100 };
+    const goalTarget = goalTargets[localStorage.getItem('lingua_goal')] || goalTargets.regular;
+    const completedLessons = Number.parseInt(localStorage.getItem('lingua_lessons_completed') || '0', 10);
+    const goalProgress = Math.min(dailyXp / goalTarget, 1);
+    document.getElementById('total-xp-display').textContent = `${xp} XP`;
+    document.getElementById('streak-display').textContent = `${streak} day${streak === 1 ? '' : 's'} streak`;
+    document.getElementById('daily-goal-progress').textContent = `${Math.min(dailyXp, goalTarget)}/${goalTarget}`;
+    document.getElementById('daily-goal-ring').setAttribute('stroke-dashoffset', 176 - 176 * goalProgress);
+    document.getElementById('daily-goal-message').textContent = goalProgress >= 1
+      ? 'Daily target reached. Great work!'
+      : `${goalTarget - dailyXp} XP left to reach today’s target.`;
+    document.getElementById('daily-goal-title').textContent = goalProgress >= 1 ? 'Daily goal reached!' : 'Keep it up!';
+    document.getElementById('lesson-quest-count').textContent = `${Math.min(completedLessons, 3)}/3`;
+    document.getElementById('lesson-quest-message').textContent = `${Math.min(completedLessons, 3)} done`;
+    document.getElementById('lesson-quest-progress').style.width = `${Math.min(completedLessons / 3, 1) * 100}%`;
+
     const langNames = { english: 'English', twi: 'Twi', german: 'German', dutch: 'Dutch', spanish: 'Spanish' };
     const langName = langNames[lang] || 'English';
     document.querySelectorAll('[data-lang-name]').forEach(el => el.textContent = langName);
@@ -534,5 +557,6 @@ tailwind.config = {
     });
   });
 </script>
+<script src="/js/lingua-app.js" defer></script>
 </body>
 </html>

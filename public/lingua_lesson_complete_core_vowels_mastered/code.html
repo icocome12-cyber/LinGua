@@ -287,10 +287,10 @@ tailwind.config = {
         <div class="w-8 h-8 rounded-xl bg-[#FFF4D6] flex items-center justify-center shrink-0">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#a07a00" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
         </div>
-        <span class="font-label text-[11px] text-on-surface-variant uppercase tracking-wider font-extrabold">Total XP</span>
+        <span class="font-label text-[11px] text-on-surface-variant uppercase tracking-wider font-extrabold">Lesson XP</span>
       </div>
       <p class="font-display text-3xl text-[#a07a00] font-black leading-none" id="xpValue">+50</p>
-      <span class="text-[11px] font-body text-on-surface-variant mt-1.5 font-medium">Cluster bonus applied</span>
+      <span class="text-[11px] font-body text-on-surface-variant mt-1.5 font-medium">Earned in this lesson</span>
     </div>
 
     <!-- 2. ACCURACY -->
@@ -318,7 +318,7 @@ tailwind.config = {
       <div class="flex items-center gap-1 my-0.5" id="starsContainer">
         <!-- Rendered by JS -->
       </div>
-      <span class="text-[11px] font-body text-on-surface-variant font-medium">3 of 3 earned</span>
+      <span class="text-[11px] font-body text-on-surface-variant font-medium" id="stars-earned">0 of 3 earned</span>
     </div>
 
     <!-- 4. GENTLE STREAK -->
@@ -348,20 +348,20 @@ tailwind.config = {
       <div>
         <div class="flex items-center gap-2">
           <span class="font-label text-[10px] uppercase font-black tracking-widest text-secondary-container bg-secondary-fixed/50 px-2 py-0.5 rounded-full">
-            Next Milestone Unlocked
+            Your next step
           </span>
-          <span class="font-label text-label-sm text-on-surface-variant font-bold">Fast-Track Stage 1</span>
+          <span class="font-label text-label-sm text-on-surface-variant font-bold">More lessons soon</span>
         </div>
         <h2 class="font-headline text-headline-sm text-on-surface font-black mt-0.5">
-          Cluster 2: High-Frequency Consonants (B, D, M, N, P, T)
+          More lessons are coming soon
         </h2>
         <p class="font-body text-body-sm text-on-surface-variant mt-0.5">
-          Prepares you to blend letters into 40+ early words on Day 2. Zero rote ABC loops.
+          Keep practicing the core vowels while the next learning stage is prepared.
         </p>
       </div>
     </div>
     <div class="flex items-center gap-1.5 shrink-0 bg-surface-container-low px-3 py-2 rounded-xl">
-      <span class="font-label text-label-sm text-primary font-black">Ready now</span>
+      <span class="font-label text-label-sm text-primary font-black">In progress</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#532ddd" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </div>
   </div>
@@ -384,7 +384,7 @@ tailwind.config = {
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2">
           <span class="font-label text-[10px] uppercase tracking-widest font-black opacity-85">Daily Learning Goal</span>
-          <span class="bg-[#FFC845] text-[#1d192c] text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Completed!</span>
+          <span class="bg-[#FFC845] text-[#1d192c] text-[10px] font-black uppercase px-2 py-0.5 rounded-full" id="daily-goal-badge">In progress</span>
         </div>
         <p class="font-headline text-headline-sm font-extrabold mt-0.5 leading-snug" id="goalTitle">
           Fantastic! Daily Goal Complete 🎉
@@ -432,22 +432,49 @@ tailwind.config = {
 ════════════════════════════════════════════════════════════════ -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // ── Read dynamic statistics from localStorage (preserving state architecture) ──
+  const today = new Date().toISOString().slice(0, 10);
+  const pendingLessonXp = localStorage.getItem('lingua_lesson_xp');
+  const hasPendingLesson = pendingLessonXp !== null;
+  const lastStudyDate = localStorage.getItem('lingua_last_study_date');
+  let streak = Number.parseInt(localStorage.getItem('lingua_streak') || '0', 10);
+
+  if (hasPendingLesson) {
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    streak = lastStudyDate === today ? streak : lastStudyDate === yesterday ? streak + 1 : 1;
+    localStorage.setItem('lingua_streak', streak);
+    localStorage.setItem('lingua_last_study_date', today);
+  }
+
+  const dailyXpDate = localStorage.getItem('lingua_daily_goal_date');
+  const currentDailyXp = dailyXpDate === today
+    ? Number.parseInt(localStorage.getItem('lingua_daily_xp') || '0', 10)
+    : 0;
+
   const stats = {
-    xp: parseInt(localStorage.getItem('lingua_lesson_xp') || '50'),
-    accuracy: parseInt(localStorage.getItem('lingua_lesson_accuracy') || '100'),
-    stars: parseInt(localStorage.getItem('lingua_lesson_stars') || '3'),
-    streak: parseInt(localStorage.getItem('lingua_streak') || '5') + 1,
+    xp: Number.parseInt(pendingLessonXp || localStorage.getItem('lingua_last_lesson_xp') || '0', 10),
+    accuracy: Number.parseInt(localStorage.getItem('lingua_lesson_accuracy') || localStorage.getItem('lingua_last_lesson_accuracy') || '0', 10),
+    stars: Number.parseInt(localStorage.getItem('lingua_lesson_stars') || localStorage.getItem('lingua_last_lesson_stars') || '0', 10),
+    streak,
     goal: localStorage.getItem('lingua_goal') || 'regular',
-    dailyXp: parseInt(localStorage.getItem('lingua_daily_xp') || '30'),
+    dailyXp: currentDailyXp,
     userName: localStorage.getItem('lingua_user_name') || 'Amara',
     stageName: localStorage.getItem('lingua_stage_name') || 'Stage 1: Core Vowels',
   };
 
   const goalTargets = { casual: 20, regular: 50, serious: 100 };
   const goalTarget = goalTargets[stats.goal] || 50;
-  const newDailyXp = stats.dailyXp + stats.xp;
+  const newDailyXp = stats.dailyXp + (hasPendingLesson ? stats.xp : 0);
 
+  if (hasPendingLesson) {
+    localStorage.setItem('lingua_last_lesson_xp', stats.xp);
+    localStorage.setItem('lingua_last_lesson_accuracy', stats.accuracy);
+    localStorage.setItem('lingua_last_lesson_stars', stats.stars);
+    localStorage.setItem('lingua_daily_xp', newDailyXp);
+    localStorage.setItem('lingua_daily_goal_date', today);
+    localStorage.removeItem('lingua_lesson_xp');
+    localStorage.removeItem('lingua_lesson_accuracy');
+    localStorage.removeItem('lingua_lesson_stars');
+  }
   // ── Hydrate UI text elements ──
   document.getElementById('xpValue').textContent = `+${stats.xp}`;
   document.getElementById('accuracyValue').textContent = `${stats.accuracy}%`;
@@ -456,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('goalProgress').textContent = `${Math.min(newDailyXp, goalTarget)}/${goalTarget}`;
 
   // ── Render 3 animated stars based on accuracy ──
-  const starCount = stats.accuracy >= 90 ? 3 : stats.accuracy >= 70 ? 2 : 1;
+  const starCount = stats.accuracy >= 90 ? 3 : stats.accuracy >= 70 ? 2 : stats.accuracy >= 50 ? 1 : 0;
   const starsContainer = document.getElementById('starsContainer');
   starsContainer.innerHTML = '';
   for (let i = 0; i < 3; i++) {
@@ -469,6 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </span>
     `;
   }
+  document.getElementById('stars-earned').textContent = `${starCount} of 3 earned`;
 
   // ── Animate Daily Pace Goal Ring ──
   const progressRatio = Math.min(newDailyXp / goalTarget, 1);
@@ -480,19 +508,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (progressRatio >= 1) {
     document.getElementById('goalTitle').textContent = 'Daily Goal Smashed! 🎉';
-    document.getElementById('goalSubtitle').textContent = '+30 XP bonus earned! Take a breather or continue advancing.';
+    document.getElementById('goalSubtitle').textContent = 'Your daily learning target is complete. Great work!';
+    document.getElementById('daily-goal-badge').textContent = 'Completed!';
   } else {
     document.getElementById('goalTitle').textContent = 'Almost to your goal!';
     document.getElementById('goalSubtitle').textContent = `${goalTarget - newDailyXp} XP left to hit your gentle daily pace.`;
+    document.getElementById('daily-goal-badge').textContent = 'In progress';
   }
 
   // ── Sync back to persistent storage ──
-  localStorage.setItem('lingua_daily_xp', newDailyXp);
-  localStorage.setItem('lingua_streak', stats.streak);
-  localStorage.removeItem('lingua_lesson_xp');
-  localStorage.removeItem('lingua_lesson_accuracy');
-  localStorage.removeItem('lingua_lesson_stars');
-
   // ── VIBRANT CELEBRATION CONFETTI ENGINE ──
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!prefersReducedMotion) {
@@ -533,5 +557,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<script src="/js/lingua-app.js" defer></script>
 </body>
 </html>
