@@ -33,6 +33,24 @@ test('serves original screens at friendly routes', async () => {
   assert.match(html, /<title>Learn — LinGua<\/title>/);
 });
 
+test('preserves the previous clean URL aliases', async () => {
+  const routes = [
+    '/start',
+    '/learn/stage-1',
+    '/lesson/vowels'
+  ];
+
+  for (const route of routes) {
+    const response = await fetch(`${baseUrl}${route}`);
+    assert.equal(response.status, 200, `${route} should resolve`);
+    assert.match(response.headers.get('content-type'), /text\/html/);
+  }
+
+  const healthResponse = await fetch(`${baseUrl}/health`);
+  assert.equal(healthResponse.status, 200);
+  assert.deepEqual(await healthResponse.json(), { status: 'ok', app: 'LinGua' });
+});
+
 test('keeps original screen and image paths available', async () => {
   const pageResponse = await fetch(
     `${baseUrl}/lingua_home_stage_map_stage_1_alphabet_elevated/code.html`

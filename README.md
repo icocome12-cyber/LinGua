@@ -47,9 +47,13 @@ system. Microphone audio is not sent to LinGua or Gemini.
 | `/onboarding/ready` | Onboarding complete |
 | `/learn` | Learning map |
 | `/stage-1` | Stage 1 |
+| `/learn/stage-1` | Stage 1 (legacy clean URL) |
 | `/lesson` | Lesson player |
+| `/lesson/vowels` | Lesson player (legacy clean URL) |
 | `/lesson/complete` | Lesson complete |
 | `/practice` | Practice hub |
+| `/start` | Landing page (legacy clean URL) |
+| `/health` | Server health (legacy URL) |
 | `/api/health` | Server health |
 
 Original file paths and their relative links remain available. The HTML

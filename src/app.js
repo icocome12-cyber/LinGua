@@ -14,12 +14,15 @@ const supportedLanguages = {
 
 const pages = {
   '/welcome': 'lingua_start_from_abcd._end_with_confidence._coral_cta/code.html',
+  '/start': 'lingua_start_from_abcd._end_with_confidence._coral_cta/code.html',
   '/onboarding/language': 'choose_your_language_lingua_onboarding/code.html',
   '/onboarding/profile': 'your_profile_lingua_step_2_of_3/code.html',
   '/onboarding/ready': 'you_re_ready_lingua_onboarding_step_3_of_3/code.html',
   '/learn': 'lingua_home_stage_map_stage_1_alphabet_elevated/code.html',
   '/stage-1': 'lingua_stage_1_alphabet_core_phonics_fast_track/code.html',
+  '/learn/stage-1': 'lingua_stage_1_alphabet_core_phonics_fast_track/code.html',
   '/lesson': 'lingua_lesson_player_cluster_1_core_vowels_exercise_engine/code.html',
+  '/lesson/vowels': 'lingua_lesson_player_cluster_1_core_vowels_exercise_engine/code.html',
   '/lesson/complete': 'lingua_lesson_complete_core_vowels_mastered/code.html',
   '/practice': 'lingua_practice_hub_polished_focused/code.html'
 };
@@ -30,6 +33,10 @@ const tutorRateLimit = rateLimit({
   standardHeaders: 'draft-8',
   legacyHeaders: false,
   message: { error: 'You have reached the tutor request limit. Please try again later.' }
+});
+
+app.get('/health', (_request, response) => {
+  response.json({ status: 'ok', app: 'LinGua' });
 });
 
 app.get('/api/health', (_request, response) => {
