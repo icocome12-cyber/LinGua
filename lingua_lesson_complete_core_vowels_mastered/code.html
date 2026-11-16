@@ -169,7 +169,7 @@ tailwind.config = {
      TOP NAVIGATION BAR (Quiet Dismissal & Stage Context)
 ════════════════════════════════════════════════════════════════ -->
 <header class="w-full max-w-[820px] mx-auto px-4 sm:px-6 pt-5 pb-3 flex items-center justify-between shrink-0 relative z-10">
-  <a href="learn.html" class="w-10 h-10 rounded-full bg-surface-container-lowest border border-outline-soft/40 shadow-sm flex items-center justify-center hover:bg-primary-fixed hover:border-primary-container transition-all text-on-surface group" aria-label="Close and return to stage map">
+  <a href="../lingua_home_stage_map_stage_1_alphabet_elevated/code.html" class="w-10 h-10 rounded-full bg-surface-container-lowest border border-outline-soft/40 shadow-sm flex items-center justify-center hover:bg-primary-fixed hover:border-primary-container transition-all text-on-surface group" aria-label="Close and return to stage map">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:rotate-90 transition-transform">
       <path d="M18 6L6 18M6 6l12 12"/>
     </svg>
@@ -412,14 +412,14 @@ tailwind.config = {
         <span>Review Sounds</span>
       </button>
 
-      <a href="learn.html" class="font-label text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-3 py-2 text-center">
+      <a href="../lingua_home_stage_map_stage_1_alphabet_elevated/code.html" class="font-label text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-3 py-2 text-center">
         Stage Map
       </a>
     </div>
 
     <!-- Primary continue button -->
     <button id="continueBtn" class="btn-3d-primary w-full sm:w-auto sm:min-w-[260px] inline-flex items-center justify-center gap-2 rounded-2xl py-4 px-8 font-label text-label-lg font-black order-1 sm:order-2">
-      <span>Continue to Cluster 2</span>
+      <span>Back to Stage 1</span>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M5 12h14M13 5l7 7-7 7"/>
       </svg>
@@ -524,13 +524,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Action Handlers ──
   document.getElementById('continueBtn').addEventListener('click', () => {
     // Navigate directly into Cluster 2 Consonants or back to Fast-Track Stage 1 map
-    alert("Navigating to Stage 1: Cluster 2 — High-Frequency Consonants (B, D, M, N, P, T)!\n\nNext exercise: Blending stops with vowels to form words like BAT, MAN, and TAP.");
-    window.location.href = 'stage-overview.html';
+    window.location.href = '../lingua_stage_1_alphabet_core_phonics_fast_track/code.html';
   });
 
   document.getElementById('practiceMistakesBtn').addEventListener('click', () => {
-    alert("Opening Sound Lab: Replaying phoneme audio for Core Vowels (A, E, I, O, U) with mouth shape guides.");
-    window.location.href = 'practice.html';
+    window.location.href = '../lingua_practice_hub_polished_focused/code.html';
   });
 });
 </script>

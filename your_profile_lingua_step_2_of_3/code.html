@@ -619,8 +619,9 @@ tailwind.config = {
         dailyGoal: dailyGoal.getSelected()
       };
 
-      console.log("Profile complete:", profile);
-      alert(`Perfect! You're ready.\nAge: ${profile.ageGroup}\nGoal: ${profile.dailyGoal}\n\nNext screen: The Welcome Screen.`);
+      localStorage.setItem('lingua_age', profile.ageGroup);
+      localStorage.setItem('lingua_goal', profile.dailyGoal);
+      window.location.href = '../you_re_ready_lingua_onboarding_step_3_of_3/code.html';
     });
   });
 </script>

@@ -976,7 +976,7 @@ function continueLesson() {
 
   if (state.currentExercise >= EXERCISES.length) {
     alert(`🎉 Cluster 1 Complete!\n\nEarned: ${state.xp} XP\nCorrect: ${state.correctCount}/${EXERCISES.length}\n\nFast-track unlocked: Cluster 2 Consonants & Early Word Reading!`);
-    window.location.href = 'learn.html';
+    window.location.href = '../lingua_lesson_complete_core_vowels_mastered/code.html';
     return;
   }
 
@@ -994,7 +994,7 @@ checkBtn.addEventListener('click', () => {
 document.getElementById('feedbackContinueBtn').addEventListener('click', continueLesson);
 document.getElementById('closeBtn').addEventListener('click', () => {
   if (confirm('Leave lesson? Your current session progress will be preserved.')) {
-    window.location.href = 'learn.html';
+    window.location.href = '../lingua_home_stage_map_stage_1_alphabet_elevated/code.html';
   }
 });
 document.getElementById('skipBtn').addEventListener('click', () => {
