@@ -1,0 +1,569 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Nunito+Sans:wght@700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>
+  @layer base {
+    html, body { margin:0; padding:0; }
+    body { overscroll-behavior: none; }
+    main > :first-child { margin-top: 0 !important; }
+    main > :last-child { margin-bottom: 0 !important; }
+  }
+  ::-webkit-scrollbar { display: none; }
+  @keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  .animate-gentle-bounce {
+    animation: gentle-bounce 3.5s ease-in-out infinite;
+  }
+</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"inverse-surface":"#322e42","on-primary-fixed":"#1a0063","on-secondary-fixed-variant":"#862208","on-primary-container":"#f3edff","on-primary":"#ffffff","secondary-container":"#fd7958","on-background":"#1d192c","on-secondary-fixed":"#3c0700","primary-container":"#6c4df6","surface-container-lowest":"#ffffff","secondary":"#a7391e","on-tertiary-fixed":"#261a00","on-secondary":"#ffffff","error":"#ba1a1a","primary-fixed-dim":"#c9bfff","surface":"#fbf9fe","secondary-fixed":"#ffdad2","surface-tint":"#5d3be7","inverse-on-surface":"#f5eeff","surface-variant":"#e7dff9","primary-fixed":"#e5deff","surface-container":"#f2ebff","surface-container-low":"#f7f1ff","surface-container-highest":"#e7dff9","on-error-container":"#93000a","on-tertiary-container":"#ffeed0","on-tertiary":"#ffffff","surface-dim":"#ded6f1","on-primary-fixed-variant":"#4512d0","tertiary-fixed":"#ffdf9e","outline":"#797587","on-error":"#ffffff","on-surface":"#1d192c","secondary-fixed-dim":"#ffb4a2","on-surface-variant":"#5d596c","tertiary":"#6c5000","error-container":"#ffdad6","outline-variant":"#c9c4d8","background":"#fbf9fe","primary":"#532ddd","tertiary-fixed-dim":"#f4bf3c","tertiary-container":"#8b6700","on-secondary-container":"#6e1500","on-tertiary-fixed-variant":"#5b4300","inverse-primary":"#c9bfff","surface-bright":"#fdf7ff","surface-container-high":"#ece4ff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","2xl":"1rem","3xl":"1.5rem","full":"9999px"},"spacing":{"margin-mobile":"1.25rem","space-xl":"2.5rem","space-md":"1rem","gutter":"1.5rem","gutter-mobile":"1rem","space-sm":"0.5rem","space-xs":"0.25rem","space-lg":"1.5rem","margin":"2rem"},"fontFamily":{"label-sm":["Nunito Sans"],"label-lg":["Nunito Sans"],"body-md":["Inter"],"headline-lg-mobile":["Nunito Sans"],"display":["Nunito Sans"],"headline-lg":["Nunito Sans"],"body-lg":["Inter"],"label-md":["Nunito Sans"],"display-mobile":["Nunito Sans"],"body-sm":["Inter"],"headline-md":["Nunito Sans"],"headline-sm":["Nunito Sans"]},"fontSize":{"label-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"700"}],"label-lg":["16px",{"lineHeight":"20px","letterSpacing":"0.02em","fontWeight":"800"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-lg-mobile":["26px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"800"}],"display":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"900"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"800"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"label-md":["14px",{"lineHeight":"18px","letterSpacing":"0.01em","fontWeight":"700"}],"display-mobile":["36px",{"lineHeight":"44px","letterSpacing":"-0.02em","fontWeight":"900"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"30px","fontWeight":"800"}],"headline-sm":["20px",{"lineHeight":"26px","fontWeight":"700"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased selection:bg-primary-fixed selection:text-primary"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest border-r border-[#ece6f6] shadow-[0_2px_12px_rgba(31,27,46,0.03)] z-50 flex flex-col justify-between p-space-md"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-sm pt-space-xs"><div class="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center text-on-primary shadow-[0_4px_0_0_#4512d0]"><span class="material-symbols-outlined text-[24px]">potted_plant</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight font-extrabold">LinGua</span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Twi &amp; English</span></div></div><nav class="flex flex-col gap-1.5" data-active-classes="bg-primary-container text-on-primary-container shadow-[0_4px_0_0_#4512d0] font-label-lg text-label-lg"><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-2xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="learn" href="#"><span class="material-symbols-outlined text-[22px]">local_florist</span>Learn</a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-2xl bg-primary-container text-on-primary-container shadow-[0_4px_0_0_#4512d0] font-label-lg text-label-lg active" data-path="practice" href="#"><span class="material-symbols-outlined text-[22px]">fitness_center</span>Practice</a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-2xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="sounds-and-letters" href="#"><span class="material-symbols-outlined text-[22px]">record_voice_over</span>Sounds &amp; Letters</a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-2xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="profile" href="#"><span class="material-symbols-outlined text-[22px]">account_circle</span>Profile</a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-2xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-label-lg text-label-lg" data-path="settings" href="#"><span class="material-symbols-outlined text-[22px]">settings</span>Settings</a></nav></div><div class="p-space-md bg-surface-container-low rounded-2xl border border-[#efe7fa] flex items-center justify-between shadow-[0_2px_4px_rgba(31,27,46,0.02)]"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-[0_2px_0_0_#4512d0]"><span class="material-symbols-outlined text-on-primary text-[19px]">person</span></div><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-extrabold">Kwame A.</span><span class="font-label-sm text-label-sm text-on-surface-variant">Explorer</span></div></div><span class="material-symbols-outlined text-primary text-[20px]">verified</span></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-md border-b border-[#ece6f6] shadow-[0_1px_6px_rgba(31,27,46,0.03)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-sm"><span class="px-space-md py-1.5 rounded-full bg-primary-fixed/60 text-primary font-label-sm text-label-sm font-extrabold tracking-wide border border-primary-fixed">Level 2: Ashanti Sprout</span></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-lowest shadow-[0_3px_0_0_#ffdad2]"><span class="material-symbols-outlined text-secondary-container text-[18px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span><div class="flex items-baseline gap-1"><span class="font-label-lg text-label-lg text-secondary font-black" id="streak-counter">5</span><span class="font-label-sm text-label-sm text-on-surface-variant">days</span></div></div><div class="flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-lowest shadow-[0_3px_0_0_#ffdf9e]"><span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">bolt</span><div class="flex items-baseline gap-1"><span class="font-label-lg text-label-lg text-tertiary font-black" id="xp-counter">240</span><span class="font-label-sm text-label-sm text-on-surface-variant">XP</span></div></div><div class="flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-lowest shadow-[0_3px_0_0_#ffdad6]"><span class="material-symbols-outlined text-error text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span><div class="flex items-baseline gap-1"><span class="font-label-lg text-label-lg text-error font-black">4</span><span class="font-label-sm text-label-sm text-on-surface-variant">/ 5</span></div></div></div><div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_2px_0_0_#4512d0] ring-2 ring-primary-fixed"><span class="material-symbols-outlined text-[19px]">person</span></div></div></header><main class="w-full pt-20 px-space-lg bg-surface min-h-screen"><div class="flex flex-col w-full pb-16">
+<!-- Top Navigation & Live Metric Bar -->
+<section class="flex flex-wrap items-center justify-between gap-space-md mb-space-lg">
+<div class="flex items-center gap-space-md">
+
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Personalized Repetition</span>
+<h1 class="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Practice Hub</h1>
+</div>
+</div>
+<!-- Active Status Metrics Pill Box -->
+
+</section>
+<!-- Koko Mascot Welcoming Coach Banner -->
+<section class="relative overflow-hidden rounded-3xl bg-surface-container-lowest shadow-[0_6px_20px_-4px_rgba(31,27,46,0.06),0_2px_6px_-2px_rgba(31,27,46,0.04)] p-space-lg mb-space-xl">
+<div class="relative z-10 flex flex-col md:flex-row items-center gap-space-lg">
+<!-- Mascot Avatar Visual -->
+<div class="relative flex-shrink-0">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-surface-container-low flex items-center justify-center shadow-[0_4px_0_0_#ded6f1]">
+<svg class="w-14 h-14" fill="none" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<!-- Soil Pot -->
+<path d="M18 42L22 56H42L46 42H18Z" fill="#8B6700"></path>
+<rect fill="#6C5000" height="6" rx="3" width="32" x="16" y="38"></rect>
+<!-- Sprout Stem -->
+<path d="M32 40V24" stroke="#2EC4B6" stroke-linecap="round" stroke-width="4.5"></path>
+<!-- Left Sprout Leaf -->
+<path d="M32 30C26 23 16 26 15 32C22 34 29 32 32 30Z" fill="#2EC4B6"></path>
+<!-- Right Sprout Leaf -->
+<path d="M32 24C38 17 48 20 49 26C42 28 35 26 32 24Z" fill="#38E1D0"></path>
+<!-- Cheerful Eyes -->
+<ellipse cx="28" cy="46" fill="#FFFFFF" rx="2" ry="2.5"></ellipse>
+<ellipse cx="36" cy="46" fill="#FFFFFF" rx="2" ry="2.5"></ellipse>
+<!-- Rosy cheeks -->
+<circle cx="24" cy="48" fill="#FD7958" opacity="0.8" r="2"></circle>
+<circle cx="40" cy="48" fill="#FD7958" opacity="0.8" r="2"></circle>
+</svg>
+</div>
+<div class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary shadow-sm">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+</div>
+</div>
+<!-- Mascot Speech Bubble -->
+<div class="flex-1 bg-surface-container-low rounded-2xl p-space-md relative">
+<div class="flex items-center gap-space-xs mb-1">
+<span class="font-label-md text-label-md text-primary font-black">Koko the Sprout</span>
+<span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-primary-fixed text-primary">Daily Guide</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-medium leading-relaxed">
+          "Let's sharpen what you know! I've lined up some tailored practice based on your recent activity in Twi orthography and vowel tones."
+        </p>
+</div>
+<!-- Quick Session Badge -->
+<div class="flex-shrink-0 flex items-center gap-space-sm bg-surface-container px-space-md py-3 rounded-2xl">
+<span class="material-symbols-outlined text-primary text-[24px]">timer</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold">Recommended time</span>
+<span class="font-label-md text-label-md text-on-surface font-extrabold">6–8 minutes</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 3 Hero Practice Modes Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-space-xl">
+<!-- 1. Weak Spots Card -->
+<div class="flex flex-col justify-between bg-surface-container-lowest rounded-3xl p-space-lg shadow-[0_6px_20px_-4px_rgba(31,27,46,0.06),0_2px_6px_-2px_rgba(31,27,46,0.04)] relative group transition-transform hover:-translate-y-1">
+<div class="flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="w-12 h-12 rounded-2xl bg-error-container flex items-center justify-center text-error shadow-[0_2px_0_0_#ffdad6]">
+<span class="material-symbols-outlined text-[26px]">healing</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-extrabold">
+            12 Items
+          </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-extrabold mb-1">Weak spots</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg">
+          Auto-generated targets compiled directly from letters, phonemes, and accents you missed.
+        </p>
+</div>
+<button class="w-full h-14 rounded-2xl bg-secondary-container text-on-secondary font-label-lg text-label-lg font-extrabold shadow-[0_4px_0_0_#a7391e] hover:brightness-105 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-space-xs" data-action="weak">
+<span>Practice Weak Spots</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<!-- 2. Daily Review (SRS) Card -->
+<div class="flex flex-col justify-between bg-surface-container-lowest rounded-3xl p-space-lg shadow-[0_6px_20px_-4px_rgba(31,27,46,0.06),0_2px_6px_-2px_rgba(31,27,46,0.04)] relative group transition-transform hover:-translate-y-1">
+<div class="flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="w-12 h-12 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary shadow-[0_2px_0_0_#c9bfff]">
+<span class="material-symbols-outlined text-[26px]">schedule</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-primary-fixed text-primary font-label-sm text-label-sm font-extrabold">
+            8 Cards
+          </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-extrabold mb-1">Daily review (SRS)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg">
+          Spaced repetition algorithm to reinforce long-term recall before memory decays.
+        </p>
+</div>
+<button class="w-full h-14 rounded-2xl bg-primary text-on-primary font-label-lg text-label-lg font-extrabold shadow-[0_4px_0_0_#4512d0] hover:brightness-105 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-space-xs" data-action="srs">
+<span>Start Review (4 min)</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<!-- 3. Free Practice Card -->
+<div class="flex flex-col justify-between bg-surface-container-lowest rounded-3xl p-space-lg shadow-[0_6px_20px_-4px_rgba(31,27,46,0.06),0_2px_6px_-2px_rgba(31,27,46,0.04)] relative group transition-transform hover:-translate-y-1">
+<div class="flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary shadow-[0_2px_0_0_#ded6f1]">
+<span class="material-symbols-outlined text-[26px]">tune</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-extrabold">
+            4 Modes
+          </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-extrabold mb-1">Free practice</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg">
+          Pick any specific language modality you want to master without timer constraints.
+        </p>
+</div>
+<button class="w-full h-14 rounded-2xl bg-surface-container-high text-primary font-label-lg text-label-lg font-extrabold shadow-[0_4px_0_0_#c9bfff] hover:brightness-95 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-space-xs" data-action="free">
+<span>Choose Skill</span>
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+</div>
+</section>
+<!-- Modality Exploration Section: "Choose a skill" -->
+<section class="mb-space-xl" id="modality-section">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-black">Focused Modalities</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-extrabold">Choose a skill to drill</h2>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Switch freely anytime</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Skill: Listen -->
+<div class="skill-card cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_4px_12px_rgba(31,27,46,0.04)] hover:shadow-[0_8px_20px_rgba(31,27,46,0.08)] transition-all flex flex-col justify-between" data-skill="listen">
+<div class="flex flex-col gap-space-xs">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center text-primary shadow-[0_2px_0_0_#c9bfff] mb-2">
+<span class="material-symbols-outlined text-[22px]">headphones</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-extrabold">Listen</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ear training with audio contrasts &amp; high-tone accents.</span>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-bold">18 Drills</span>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shadow-[0_2px_0_0_#ded6f1]">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Skill: Speak -->
+<div class="skill-card cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_4px_12px_rgba(31,27,46,0.04)] hover:shadow-[0_8px_20px_rgba(31,27,46,0.08)] transition-all flex flex-col justify-between" data-skill="speak">
+<div class="flex flex-col gap-space-xs">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center text-secondary shadow-[0_2px_0_0_#ffdad2] mb-2">
+<span class="material-symbols-outlined text-[22px]">mic</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-extrabold">Speak</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Vocal pitch matching and syllable pronunciation.</span>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-bold">12 Drills</span>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary shadow-[0_2px_0_0_#ded6f1]">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Skill: Read -->
+<div class="skill-card cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_4px_12px_rgba(31,27,46,0.04)] hover:shadow-[0_8px_20px_rgba(31,27,46,0.08)] transition-all flex flex-col justify-between" data-skill="read">
+<div class="flex flex-col gap-space-xs">
+<div class="w-10 h-10 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-[0_2px_0_0_#ffdf9e] mb-2">
+<span class="material-symbols-outlined text-[22px]">auto_stories</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-extrabold">Read</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Phoneme identification, digraph recognition, and letters.</span>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-tertiary font-bold">24 Drills</span>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-tertiary shadow-[0_2px_0_0_#ded6f1]">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Skill: Write -->
+<div class="skill-card cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_4px_12px_rgba(31,27,46,0.04)] hover:shadow-[0_8px_20px_rgba(31,27,46,0.08)] transition-all flex flex-col justify-between" data-skill="write">
+<div class="flex flex-col gap-space-xs">
+<div class="w-10 h-10 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary shadow-[0_2px_0_0_#c9bfff] mb-2">
+<span class="material-symbols-outlined text-[22px]">edit</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-extrabold">Write</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Stroke order mechanics and orthographic letter tracing.</span>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-bold">9 Drills</span>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shadow-[0_2px_0_0_#ded6f1]">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Mistakes Ledger with Dual Filters & Actions -->
+<section class="mb-space-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mb-space-md">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-error font-extrabold">Actionable Queue</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-extrabold">Recent mistakes</h2>
+</div>
+<div class="flex items-center gap-space-sm flex-wrap">
+<!-- Filter Pills -->
+<div class="flex items-center gap-1 bg-surface-container p-1 rounded-2xl">
+<button class="filter-btn active px-3 py-1.5 rounded-xl bg-surface-container-lowest text-primary font-label-sm text-label-sm font-bold shadow-sm" data-filter="all">All</button>
+<button class="filter-btn px-3 py-1.5 rounded-xl text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm font-bold" data-filter="phonics">Phonics</button>
+<button class="filter-btn px-3 py-1.5 rounded-xl text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm font-bold" data-filter="tracing">Tracing</button>
+</div>
+<!-- Practice All 5 tactile button -->
+<button class="h-11 px-space-md rounded-2xl bg-primary text-on-primary font-label-md text-label-md font-extrabold shadow-[0_3px_0_0_#4512d0] hover:brightness-105 active:translate-y-1 active:shadow-none transition-all flex items-center gap-space-xs" id="practice-all-btn">
+<span>Practice all (5)</span>
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</button>
+</div>
+</div>
+<!-- Ledger Items Stack -->
+<div class="flex flex-col gap-space-sm" id="mistakes-list">
+<!-- Item 1: Akan Ɔ -->
+<div class="mistake-item rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_2px_8px_rgba(31,27,46,0.03)] flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md" data-category="phonics">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-2xl bg-error-container text-error flex items-center justify-center font-display font-black text-[22px] shadow-[0_2px_0_0_#ffdad6] flex-shrink-0">
+            Ɔ
+          </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Confused standard C with Akan Ɔ</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Alphabet</span>
+</div>
+<div class="flex items-center gap-space-sm mt-0.5">
+<span class="font-body-sm text-body-sm text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">error</span> Missed 3×
+              </span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Vowel pronunciation resembles "o" in "cord"</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-center">
+<button class="audio-play-btn w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center shadow-[0_2px_0_0_#ded6f1] active:translate-y-0.5" data-audio="ɔ">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+</button>
+<button class="review-btn h-10 px-space-md rounded-xl bg-surface-container text-primary font-label-md text-label-md font-bold shadow-[0_2px_0_0_#c9bfff] hover:bg-primary-fixed active:translate-y-0.5 transition-all">
+            Review
+          </button>
+</div>
+</div>
+<!-- Item 2: Misspelled BANA -->
+<div class="mistake-item rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_2px_8px_rgba(31,27,46,0.03)] flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md" data-category="tracing">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-2xl bg-surface-container text-primary flex items-center justify-center font-display font-black text-[18px] shadow-[0_2px_0_0_#ded6f1] flex-shrink-0">
+            BA
+          </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Misspelled "BANA" (Child)</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Words</span>
+</div>
+<div class="flex items-center gap-space-sm mt-0.5">
+<span class="font-body-sm text-body-sm text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">error</span> Missed 2×
+              </span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Inverted nasal character sequence</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-center">
+<button class="audio-play-btn w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center shadow-[0_2px_0_0_#ded6f1] active:translate-y-0.5" data-audio="bana">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+</button>
+<button class="review-btn h-10 px-space-md rounded-xl bg-surface-container text-primary font-label-md text-label-md font-bold shadow-[0_2px_0_0_#c9bfff] hover:bg-primary-fixed active:translate-y-0.5 transition-all">
+            Review
+          </button>
+</div>
+</div>
+<!-- Item 3: "Akwaaba" pitch -->
+<div class="mistake-item rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_2px_8px_rgba(31,27,46,0.03)] flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md" data-category="phonics">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-2xl bg-secondary-fixed text-secondary flex items-center justify-center font-display font-black text-[18px] shadow-[0_2px_0_0_#ffdad2] flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">graphic_eq</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">"Akwaaba" pitch cadence off</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Intro</span>
+</div>
+<div class="flex items-center gap-space-sm mt-0.5">
+<span class="font-body-sm text-body-sm text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">error</span> Missed 2×
+              </span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· High tone required on middle 'waa'</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-center">
+<button class="audio-play-btn w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center shadow-[0_2px_0_0_#ded6f1] active:translate-y-0.5" data-audio="pitch">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+</button>
+<button class="review-btn h-10 px-space-md rounded-xl bg-surface-container text-primary font-label-md text-label-md font-bold shadow-[0_2px_0_0_#c9bfff] hover:bg-primary-fixed active:translate-y-0.5 transition-all">
+            Review
+          </button>
+</div>
+</div>
+<!-- Item 4: Lowercase e -->
+<div class="mistake-item rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_2px_8px_rgba(31,27,46,0.03)] flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md" data-category="tracing">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-2xl bg-surface-container text-primary flex items-center justify-center font-display font-black text-[22px] shadow-[0_2px_0_0_#ded6f1] flex-shrink-0">
+            e
+          </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Skipped lowercase "e" glyph curve</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Alphabet</span>
+</div>
+<div class="flex items-center gap-space-sm mt-0.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">history</span> Missed 1×
+              </span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Stroke 2 requires clockwise upward flourish</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-center">
+<button class="review-btn h-10 px-space-md rounded-xl bg-surface-container text-primary font-label-md text-label-md font-bold shadow-[0_2px_0_0_#c9bfff] hover:bg-primary-fixed active:translate-y-0.5 transition-all">
+            Review
+          </button>
+</div>
+</div>
+<!-- Item 5: "3" vs "tree" -->
+<div class="mistake-item rounded-2xl bg-surface-container-lowest p-space-md shadow-[0_2px_8px_rgba(31,27,46,0.03)] flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md" data-category="phonics">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-2xl bg-tertiary-fixed text-tertiary flex items-center justify-center font-display font-black text-[20px] shadow-[0_2px_0_0_#ffdf9e] flex-shrink-0">
+            3
+          </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">"Mmienu / Abiɛsa" contrast mix</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Numbers</span>
+</div>
+<div class="flex items-center gap-space-sm mt-0.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">history</span> Missed 1×
+              </span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· 2 (Mmienu) vs 3 (Mmiɛnsa) digit confusion</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-center">
+<button class="audio-play-btn w-10 h-10 rounded-xl bg-surface-container-low text-primary flex items-center justify-center shadow-[0_2px_0_0_#ded6f1] active:translate-y-0.5" data-audio="numbers">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+</button>
+<button class="review-btn h-10 px-space-md rounded-xl bg-surface-container text-primary font-label-md text-label-md font-bold shadow-[0_2px_0_0_#c9bfff] hover:bg-primary-fixed active:translate-y-0.5 transition-all">
+            Review
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Suggested Next Milestone Banner -->
+<section class="rounded-3xl bg-surface-container-lowest p-space-lg shadow-[0_6px_20px_-4px_rgba(31,27,46,0.06),0_2px_6px_-2px_rgba(31,27,46,0.04)] flex flex-col md:flex-row items-center justify-between gap-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center text-on-primary shadow-[0_4px_0_0_#4512d0] flex-shrink-0">
+<span class="material-symbols-outlined text-[32px]">lock_open</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs mb-1">
+<span class="font-label-sm text-label-sm uppercase font-extrabold tracking-wider text-primary">Milestone Goal</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-primary font-label-sm text-label-sm font-bold">80% Complete</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-extrabold">Stage 2: Akan Sounds &amp; Digraphs</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          You're 80% through the foundational Alphabet. Complete 5 more letters to unlock dynamic speech audio.
+        </p>
+<!-- Progress track indicator -->
+<div class="w-full max-w-sm h-3 bg-surface-container rounded-full overflow-hidden mt-space-sm">
+<div class="h-full bg-primary rounded-full transition-all duration-700" style="width: 80%;"></div>
+</div>
+</div>
+</div>
+<a class="flex-shrink-0 h-14 px-space-xl rounded-2xl bg-primary text-on-primary font-label-lg text-label-lg font-extrabold shadow-[0_4px_0_0_#4512d0] hover:brightness-105 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-space-xs" href="learn.html">
+<span>Go to Stage 1</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+</section>
+<!-- Interactive Modal Sandbox for Session Drills -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden items-center justify-center p-4" id="practice-modal">
+<div class="w-full max-w-md bg-surface-container-lowest rounded-3xl p-space-lg shadow-2xl flex flex-col gap-space-md animate-gentle-bounce">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">psychology</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-black" id="modal-title">Practicing Weak Spots</h3>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="close-modal">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="p-space-md bg-surface-container-low rounded-2xl flex flex-col gap-2">
+<span class="font-label-sm text-label-sm text-primary font-bold">Session Drill Active</span>
+<p class="font-body-md text-body-md text-on-surface" id="modal-desc">
+          Reviewing phonetic discrimination between standard and open vowels.
+        </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Reward: +15 XP</span>
+<button class="h-12 px-space-lg rounded-2xl bg-secondary-container text-on-secondary font-label-lg text-label-lg font-bold shadow-[0_4px_0_0_#a7391e] active:translate-y-1 active:shadow-none transition-all" id="complete-modal-btn">
+          Mark Complete
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function initPracticeHub() {
+    // LocalStorage State Management for Streak & XP
+    const STORAGE_KEY_XP = 'lingua_xp';
+    const STORAGE_KEY_STREAK = 'lingua_streak';
+
+    let currentXP = parseInt(localStorage.getItem(STORAGE_KEY_XP) || '240', 10);
+    let currentStreak = parseInt(localStorage.getItem(STORAGE_KEY_STREAK) || '5', 10);
+
+    const xpCounterEl = document.getElementById('xp-counter');
+    const streakCounterEl = document.getElementById('streak-counter');
+    const practiceModal = document.getElementById('practice-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const closeModalBtn = document.getElementById('close-modal');
+    const completeModalBtn = document.getElementById('complete-modal-btn');
+
+    function updateStats() {
+      if (xpCounterEl) xpCounterEl.textContent = currentXP;
+      if (streakCounterEl) streakCounterEl.textContent = currentStreak;
+      localStorage.setItem(STORAGE_KEY_XP, currentXP.toString());
+      localStorage.setItem(STORAGE_KEY_STREAK, currentStreak.toString());
+    }
+
+    function openModal(title, description) {
+      if (!practiceModal) return;
+      modalTitle.textContent = title;
+      modalDesc.textContent = description;
+      practiceModal.classList.remove('hidden');
+      practiceModal.classList.add('flex');
+    }
+
+    function closeModal() {
+      if (!practiceModal) return;
+      practiceModal.classList.add('hidden');
+      practiceModal.classList.remove('flex');
+    }
+
+    // Modal Events
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if (completeModalBtn) {
+      completeModalBtn.addEventListener('click', () => {
+        currentXP += 15;
+        updateStats();
+        closeModal();
+      });
+    }
+
+    // Practice Hero Cards click triggers
+    document.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const action = e.currentTarget.getAttribute('data-action');
+        if (action === 'weak') {
+          openModal('Weak Spots Training', '12 targeted challenges queued to clear your historical mistake list.');
+        } else if (action === 'srs') {
+          openModal('Daily Review (SRS)', '8 cards scheduled today for ideal spacing curve retention.');
+        } else if (action === 'free') {
+          const modSection = document.getElementById('modality-section');
+          if (modSection) {
+            modSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    // Skill Modality Cards
+    document.querySelectorAll('.skill-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const skill = card.getAttribute('data-skill');
+        const formatted = skill.charAt(0).toUpperCase() + skill.slice(1);
+        openModal(`${formatted} Drill Sandbox`, `Launching dedicated interactive ${formatted} module for Akan Twi.`);
+      });
+    });
+
+    // Practice All Button
+    const practiceAllBtn = document.getElementById('practice-all-btn');
+    if (practiceAllBtn) {
+      practiceAllBtn.addEventListener('click', () => {
+        openModal('Full Ledger Practice', 'Reviewing all 5 pending missteps in sequence.');
+      });
+    }
+
+    // Individual Review buttons
+    document.querySelectorAll('.review-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const item = e.target.closest('.mistake-item');
+        const label = item ? item.querySelector('.font-label-lg').textContent : 'Item';
+        openModal(`Reviewing: ${label}`, 'Re-testing phoneme synthesis and correct orthographic stroke.');
+      });
+    });
+
+    // Audio Play simulation
+    document.querySelectorAll('.audio-play-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) {
+          icon.textContent = 'graphic_eq';
+          setTimeout(() => {
+            icon.textContent = 'volume_up';
+          }, 800);
+        }
+      });
+    });
+
+    // Filter Chips for Mistakes Ledger
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const mistakeItems = document.querySelectorAll('.mistake-item');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('active', 'bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+          b.classList.add('text-on-surface-variant');
+        });
+        btn.classList.add('active', 'bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        btn.classList.remove('text-on-surface-variant');
+
+        const filter = btn.getAttribute('data-filter');
+        mistakeItems.forEach(item => {
+          if (filter === 'all' || item.getAttribute('data-category') === filter) {
+            item.style.display = 'flex';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    updateStats();
+  })();
+</script></main></div>
+
+</body></html>

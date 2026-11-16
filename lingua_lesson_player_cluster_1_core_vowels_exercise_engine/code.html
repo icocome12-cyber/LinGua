@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lesson 1: Core Vowels — LinGua</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#532ddd", "primary-container": "#6c4df6", "on-primary": "#ffffff",
+        "secondary": "#a7391e", "secondary-container": "#fd7958", "on-secondary": "#ffffff",
+        "success": "#2EC4B6", "success-deep": "#0c8a7e", "success-bright": "#10b981",
+        "tertiary": "#a07a00", "tertiary-fixed-dim": "#f4bf3c",
+        "danger": "#ba1a1a", "rose": "#ef476f",
+        "surface": "#fdf7ff", "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f7f1ff", "surface-container": "#f2ebff",
+        "on-surface": "#1d192c", "on-surface-variant": "#484555",
+        "primary-fixed": "#e5deff", "secondary-fixed": "#ffdad2",
+        "outline": "#797587", "outline-soft": "#c9c4d8"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", "2xl": "1rem", "3xl": "1.5rem", full: "9999px" },
+      fontFamily: { display: ["Nunito Sans"], headline: ["Nunito Sans"], label: ["Nunito Sans"], body: ["Inter"] },
+      fontSize: {
+        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "800" }],
+        "headline-md": ["24px", { lineHeight: "30px", fontWeight: "800" }],
+        "headline-sm": ["20px", { lineHeight: "26px", fontWeight: "700" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "label-lg": ["16px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "800" }],
+        "label-md": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "700" }],
+        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }]
+      }
+    }
+  }
+}
+</script>
+<style>
+  html,body{margin:0;padding:0;}
+  body{overscroll-behavior:none;}
+  ::-webkit-scrollbar{display:none;}
+
+  /* ── 3D TACTILE BUTTONS & CARDS ── */
+  .tactile-card {
+    transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 0 0 #e2d9f7, 0 10px 20px rgba(83, 45, 221, 0.04);
+    cursor: pointer;
+  }
+  .tactile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 0 #d0c2f2, 0 14px 24px rgba(83, 45, 221, 0.08);
+  }
+  .tactile-card:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 0 #d0c2f2;
+  }
+  .tactile-card[data-selected="true"] {
+    border-color: #6c4df6 !important;
+    background: #f7f1ff !important;
+    box-shadow: 0 0 0 2px #6c4df6, 0 4px 0 0 #5436D6, 0 12px 24px rgba(108,77,246,0.18) !important;
+  }
+  .tactile-card[data-state="correct"] {
+    border-color: #2EC4B6 !important;
+    background: #e6faf7 !important;
+    box-shadow: 0 4px 0 0 #0c8a7e !important;
+  }
+  .tactile-card[data-state="wrong"] {
+    border-color: #ef476f !important;
+    background: #ffe7ec !important;
+    box-shadow: 0 4px 0 0 #ba1a1a !important;
+  }
+
+  /* ── FEEDBACK PANEL SLIDE UP ── */
+  .feedback-panel {
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .feedback-panel.is-open {
+    transform: translateY(0);
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-fill {
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ── HEART SHAKE & PULSES ── */
+  @keyframes heart-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  .heart-lost { animation: heart-shake 0.45s ease-in-out; }
+
+  @keyframes mic-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(108,77,246,0.45); }
+    70% { box-shadow: 0 0 0 24px rgba(108,77,246,0); }
+    100% { box-shadow: 0 0 0 0 rgba(108,77,246,0); }
+  }
+  .mic-recording { animation: mic-pulse 1.4s infinite; }
+
+  /* ── MASCOT BOB & ANIMATIONS ── */
+  @keyframes mascot-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+  @keyframes mascot-wave{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(10deg);}}
+  @keyframes glow-pulse{0%,100%{transform:scale(1);opacity:0.65;}50%{transform:scale(1.08);opacity:1;}}
+  .animate-mascot-float{animation:mascot-float 3s ease-in-out infinite;}
+  .animate-mascot-wave{transform-origin:172px 150px;animation:mascot-wave 2s ease-in-out infinite;}
+  .animate-glow{animation:glow-pulse 4s ease-in-out infinite alternate;}
+
+  /* ── TRACE CANVAS ── */
+  .trace-canvas {
+    cursor: crosshair;
+    touch-action: none;
+  }
+  .icon{display:inline-block;vertical-align:middle;flex-shrink:0;}
+
+  @media (prefers-reduced-motion: reduce){
+    .animate-mascot-float, .animate-mascot-wave, .animate-glow, .mic-recording, .heart-lost{ animation:none !important; }
+    .tactile-card:hover { transform: none !important; }
+  }
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col justify-between select-none">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HEADER / PERSISTENT LESSON TOP BAR
+════════════════════════════════════════════════════════════════ -->
+<header class="w-full bg-surface-container-lowest/90 backdrop-blur-md border-b border-[rgba(31,27,46,0.06)] shrink-0 sticky top-0 z-30 shadow-sm">
+  <div class="max-w-[860px] mx-auto px-4 lg:px-6 h-18 py-3 flex items-center justify-between gap-4">
+    <!-- Exit / Back button with tooltip -->
+    <button id="closeBtn" class="w-10 h-10 rounded-2xl bg-surface-container hover:bg-primary-fixed text-on-surface hover:text-primary transition-all flex items-center justify-center shrink-0 border border-outline-soft/30 active:scale-95" aria-label="Exit lesson">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
+    <!-- Linear Fast-Track Progress -->
+    <div class="flex-1 max-w-md flex flex-col gap-1.5">
+      <div class="flex items-center justify-between text-[11px] font-label font-black text-on-surface-variant uppercase tracking-wider">
+        <span class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+          Cluster 1: Vowels
+        </span>
+        <span id="progressLabel" class="text-primary font-bold">1 / 10 Completed</span>
+      </div>
+      <div class="w-full h-3 rounded-full bg-surface-container overflow-hidden p-0.5 border border-outline-soft/40 shadow-inner">
+        <div id="progressFill" class="progress-fill h-full bg-gradient-to-r from-primary-container via-[#8B6EFF] to-success rounded-full shadow-sm" style="width:10%"></div>
+      </div>
+    </div>
+
+    <!-- Gamification & Pace Badges -->
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <!-- XP Gain pill -->
+      <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFF4D6] border border-[#f4bf3c]/30 text-[#a07a00] font-label text-label-sm font-black shadow-sm">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#f4bf3c"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+        <span id="xpCount">0 XP</span>
+      </div>
+      <!-- Hearts badge with LinGua gentle note -->
+      <div id="heartsContainer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFE0E6] border border-rose/30 text-rose font-label text-label-sm font-black shadow-sm" title="Zero stress! Practice recovers hearts anytime">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#ef476f" aria-hidden="true"><path d="M12 21s-8-4-8-10a5 5 0 019-3 5 5 0 019 3c0 6-8 10-8 10z"/></svg>
+        <span id="heartsCount">5</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MAIN EXERCISE WORKSPACE
+════════════════════════════════════════════════════════════════ -->
+<main class="flex-1 w-full max-w-[860px] mx-auto px-4 lg:px-6 py-6 pb-36 flex flex-col justify-start">
+
+  <!-- Breadcrumb & Phonics Anchor Pill -->
+  <div class="flex items-center justify-between gap-3 mb-2">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed/80 border border-primary/20 text-primary font-label text-[11px] font-black uppercase tracking-wider">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+      <span id="exerciseBadge">Exercise 1 of 10 · Direct Phonics Bridge</span>
+    </div>
+
+    <!-- Dual Language Anchor tag -->
+    <div class="hidden sm:inline-flex items-center gap-1.5 text-on-surface-variant text-[11px] font-label font-bold">
+      <span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+      Dual Anchor: English + Twi
+    </div>
+  </div>
+
+  <!-- Dynamic Question / Instruction Header -->
+  <div class="mb-6">
+    <h1 id="instruction" class="font-headline text-[26px] sm:text-[32px] text-on-surface font-black leading-tight tracking-tight">
+      Which picture shows <span class="text-primary underline decoration-primary/30 decoration-4">"BA"</span>?
+    </h1>
+    <p id="subInstruction" class="text-on-surface-variant font-body text-body-sm mt-1">
+      Connect the consonant stop to the open vowel root.
+    </p>
+  </div>
+
+  <!-- Mascot Micro-Tip Banner (Collapsible/Ambient) -->
+  <div id="mascotHint" class="mb-6 bg-surface-container-low border border-primary/15 rounded-3xl p-3.5 sm:p-4 flex items-center gap-3.5 shadow-sm">
+    <div class="w-12 h-14 shrink-0 animate-mascot-float relative">
+      <!-- Mini SVG Koko -->
+      <svg class="w-full h-full drop-shadow-sm" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient cx="45%" cy="40%" id="kokoG" r="65%">
+            <stop offset="0%" stop-color="#3CE7D8"/><stop offset="65%" stop-color="#2EC4B6"/><stop offset="100%" stop-color="#1FA89B"/>
+          </radialGradient>
+        </defs>
+        <g class="animate-mascot-wave">
+          <path d="M172 155 C190 148 206 130 196 118 C188 108 174 130 170 142" fill="#2EC4B6"/>
+          <circle cx="196" cy="120" fill="#3CE7D8" r="8"/>
+        </g>
+        <path d="M120 70 C95 40 70 50 68 76 C66 98 100 88 120 74 Z" fill="#2EC4B6"/>
+        <path d="M120 72 C135 30 168 38 166 64 C164 84 135 80 120 72 Z" fill="#38D9A9"/>
+        <path d="M64 165 C62 108 86 78 120 78 C154 78 178 108 176 165 C174 216 156 244 120 244 C84 244 66 216 64 165 Z" fill="url(#kokoG)"/>
+        <ellipse cx="88" cy="156" fill="#FF7A59" fill-opacity="0.55" rx="9" ry="5.5"/>
+        <ellipse cx="152" cy="156" fill="#FF7A59" fill-opacity="0.55" rx="9" ry="5.5"/>
+        <circle cx="102" cy="138" fill="#1D192C" r="8"/>
+        <circle cx="138" cy="138" fill="#1D192C" r="8"/>
+        <circle cx="100" cy="135" fill="#fff" r="2.5"/>
+        <circle cx="136" cy="135" fill="#fff" r="2.5"/>
+        <path d="M107 160 C114 172 126 172 133 160" fill="none" stroke="#1D192C" stroke-linecap="round" stroke-width="3"/>
+      </svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="font-headline text-[13px] font-black text-primary">Koko's Study Note</span>
+        <span class="text-[10px] font-bold text-success-deep bg-success/20 px-2 py-0.5 rounded-full uppercase">Fast Phonics</span>
+      </div>
+      <p id="mascotTipText" class="font-body text-[13px] text-on-surface-variant mt-0.5 leading-snug">
+        Mastering vowels first lets us build real words on Day 2 with zero screen bloat!
+      </p>
+    </div>
+  </div>
+
+  <!-- ── EXERCISE CONTAINER (Hydrated dynamically) ── -->
+  <div id="exerciseContainer" class="flex-1 w-full flex flex-col justify-center">
+    <!-- Rendered by JS -->
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FEEDBACK DRAWER (Slides up with sound confirmation & tips)
+════════════════════════════════════════════════════════════════ -->
+<div id="feedbackPanel" class="feedback-panel fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest border-t-4 border-t-success shadow-[0_-12px_40px_rgba(31,27,46,0.14)]">
+  <div class="max-w-[860px] mx-auto px-5 lg:px-8 py-5 sm:py-6">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <!-- Status Icon -->
+        <div id="feedbackIcon" class="w-14 h-14 rounded-2xl bg-success-bright flex items-center justify-center shrink-0 text-white shadow-md">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <!-- Status Text -->
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 id="feedbackTitle" class="font-headline text-headline-md font-black text-success-bright">Excellent ear!</h2>
+            <span id="feedbackXpBadge" class="font-label text-xs font-black bg-success/20 text-success-deep px-2.5 py-0.5 rounded-full">+10 XP</span>
+          </div>
+          <p id="feedbackSubtitle" class="font-body text-body-sm text-on-surface-variant mt-0.5">
+            "BA" opens with lip pressure and resolves with root vowel /ah/.
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Button inside feedback drawer -->
+      <button id="feedbackContinueBtn" class="shrink-0 bg-primary-container text-on-primary rounded-2xl px-8 py-4 font-label text-label-lg shadow-[0_5px_0_0_#432CAE] hover:translate-y-[2px] hover:shadow-[0_3px_0_0_#432CAE] active:translate-y-[5px] active:shadow-none transition-all flex items-center gap-2">
+        <span>CONTINUE</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     STICKY DEFAULT CHECK BAR (Active before submission)
+════════════════════════════════════════════════════════════════ -->
+<div id="checkBar" class="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-surface via-surface/95 to-surface/0 pt-6 pb-5 px-4 backdrop-blur-sm">
+  <div class="max-w-[860px] mx-auto flex items-center justify-between gap-4">
+    <!-- Help / Skip button -->
+    <button id="skipBtn" class="hidden sm:inline-flex items-center gap-1.5 font-label text-label-sm font-bold text-on-surface-variant hover:text-on-surface px-4 py-3 rounded-xl hover:bg-surface-container transition-colors">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+      <span>Sound Lab Help</span>
+    </button>
+
+    <!-- Main 3D Pressable Action Button -->
+    <button id="checkBtn" disabled class="flex-1 max-w-md mx-auto sm:mr-0 bg-[#e5deff] text-[#9d98b0] rounded-2xl py-4 px-8 font-label text-label-lg shadow-[0_5px_0_0_#d4cceb] transition-all pointer-events-none flex items-center justify-center gap-2" data-active="false">
+      <span>CHECK ANSWER</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCRIPT: MULTI-EXERCISE ENGINE & ACCELERATED PHONICS
+════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── LESSON RUNTIME STATE ── */
+const state = {
+  currentExercise: 0,
+  totalExercises: 10,
+  hearts: 5,
+  xp: 0,
+  correctCount: 0,
+  answered: false,
+  userAnswer: null,
+};
+
+/* ── 10 ACCELERATED STAGE 1 EXERCISES (Bridging directly to words) ── */
+const EXERCISES = [
+  // 1. TAP-SELECT (Syllable formation)
+  {
+    type: 'tapSelect',
+    instruction: 'Which tile pairs the voiced stop with vowel <span class="text-primary font-black">"A"</span> to make <span class="text-primary font-black">"BA"</span>?',
+    subInstruction: 'Tap the correct letter combination to form the root syllable.',
+    tip: '"B" + "A" = "BA". Lip press followed by wide vowel release.',
+    options: [
+      { id: 'a', label: 'BA', phonetic: '/bɑː/', desc: 'Voiced stop + Open vowel', correct: true },
+      { id: 'b', label: 'AB', phonetic: '/æb/', desc: 'Inverted coda', correct: false },
+      { id: 'c', label: 'DA', phonetic: '/dɑː/', desc: 'Alveolar tap + vowel', correct: false },
+      { id: 'd', label: 'PA', phonetic: '/pɑː/', desc: 'Unvoiced stop', correct: false },
+    ],
+    correctId: 'a',
+    explanation: 'Splendid! "B" + "A" forms "BA", the building block for BAT, BALL, and BANA.'
+  },
+  // 2. TAP-SELECT (Vowel Anchor Aa)
+  {
+    type: 'tapSelect',
+    instruction: 'Tap the foundational vowel <span class="text-primary font-black">"Aa"</span> (/ah/)',
+    subInstruction: 'Identical root phoneme in English (Apple) & Akan (Akwaaba).',
+    tip: 'Your jaw relaxes open 2cm with throat completely unobstructed.',
+    options: [
+      { id: 'a', label: 'Aa', phonetic: '/æ/ & /ɑː/', desc: 'First letter & vowel root', correct: true },
+      { id: 'b', label: 'Bb', phonetic: '/b/', desc: 'Consonant stop', correct: false },
+      { id: 'c', label: 'Cc', phonetic: '/k/', desc: 'Velar plosive', correct: false },
+      { id: 'd', label: 'Dd', phonetic: '/d/', desc: 'Alveolar stop', correct: false },
+    ],
+    correctId: 'a',
+    explanation: '"Aa" produces the pure open sound that unlocks 80% of foundational reading.'
+  },
+  // 3. FILL-BLANK (Bilingual Word Builder)
+  {
+    type: 'fillBlank',
+    instruction: 'Complete the early reading word: <span class="text-primary font-black">B _ N _</span>',
+    subInstruction: 'Insert the vowels you just learned to complete "BANA" (Plantain / Fruit).',
+    word: 'BANA',
+    blanks: [1, 3],
+    hint: 'Dual phonetic anchor: "BANA" carries 2 identical open vowel roots.',
+    correctAnswers: ['A', 'A'],
+    tip: 'Fill in uppercase "A" to finish the 4-letter word.',
+    explanation: 'You formed your first multi-syllable word "BANA" without memorizing 26 single letters!'
+  },
+  // 4. LISTEN-TYPE
+  {
+    type: 'listenType',
+    instruction: 'Listen to the native audio and type what you hear',
+    subInstruction: 'Tap the audio beacon to play the syllable or phrase.',
+    audioText: 'Akwaaba',
+    correctAnswer: 'Akwaaba',
+    hint: 'Meaning "Welcome" — begins with open vowel Aa.',
+    tip: 'Listen for the initial open vowel and double "a" resonance.',
+    explanation: '"Akwaaba" starts with the pure letter "A" sound.'
+  },
+  // 5. SPEAK-ALOUD
+  {
+    type: 'speakAloud',
+    instruction: 'Speak the welcoming word clearly into your microphone',
+    subInstruction: 'Practice relaxed throat resonance without clicking teeth or lips.',
+    phrase: 'Akwaaba',
+    translation: '"Welcome" in Twi · Akan greeting',
+    tip: 'Say: Ah-kwaa-bah. Let your breath flow freely.',
+    explanation: 'Your pronunciation clarity reached 94%! Natural resonance detected.'
+  },
+  // 6. MATCH-PAIRS (Uppercase to Lowercase)
+  {
+    type: 'matchPairs',
+    instruction: 'Match uppercase cluster letters to their lowercase reading forms',
+    subInstruction: 'Tap a letter on the left, then connect its pair on the right.',
+    tip: 'Capital letters act like scaffolding; lowercase curls like seeds.',
+    pairs: [
+      { left: 'A', right: 'a' },
+      { left: 'B', right: 'b' },
+      { left: 'D', right: 'd' },
+      { left: 'M', right: 'm' },
+    ],
+    explanation: 'All 4 pairs connected! You can now recognize both printed and reading cases.'
+  },
+  // 7. TRACE (Kinesthetic Motor Memory)
+  {
+    type: 'trace',
+    instruction: 'Trace the letter <span class="text-primary font-black">"A"</span> on the screen',
+    subInstruction: 'Follow the 3 strokes: left slant, right slant, and crossbar.',
+    letter: 'A',
+    tip: 'Draw from top to bottom, then bridge the center.',
+    explanation: 'Clean strokes! Kinesthetic motor memory locked for letter A.'
+  },
+  // 8. DRAG-DROP (Tile Assembler)
+  {
+    type: 'dragDrop',
+    instruction: 'Build the word <span class="text-primary font-black">"BANA"</span> by tapping tiles in sequence',
+    subInstruction: 'Combine cluster consonants and core vowels.',
+    word: 'BANA',
+    tiles: ['B', 'A', 'N', 'A', 'K', 'M'],
+    tip: 'Tap B → A → N → A to assemble the word in the dock.',
+    explanation: 'Word assembled! Notice how early cluster mastery bypasses rote alphabet loops.'
+  },
+  // 9. REORDER (Syntax Sentence Formation)
+  {
+    type: 'reorder',
+    instruction: 'Arrange the sentence in natural speaking order',
+    subInstruction: 'Build your first conversational self-introduction.',
+    correctOrder: ['My', 'name', 'is', 'Amara'],
+    scrambled: ['is', 'Amara', 'My', 'name'],
+    tip: 'Start with possessive "My" and finish with your name.',
+    explanation: '"My name is Amara" is now fully structured and grammatically sound.'
+  },
+  // 10. HIGHLIGHT (Comprehension & Vocabulary Anchor)
+  {
+    type: 'highlight',
+    instruction: 'Tap the word in the passage that means <span class="text-primary font-black">"Welcome"</span>',
+    subInstruction: 'Read the text and identify the cultural greeting root.',
+    passage: 'Akwaaba to our home. We are happy you are here.',
+    target: 'Akwaaba',
+    tip: 'Look for the first capitalized word in the greeting sentence.',
+    explanation: 'Capstone achieved! You have mastered Cluster 1 vowels and early word blends!'
+  },
+];
+
+/* ── DOM ELEMENTS ── */
+const container = document.getElementById('exerciseContainer');
+const instruction = document.getElementById('instruction');
+const subInstruction = document.getElementById('subInstruction');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const exerciseBadge = document.getElementById('exerciseBadge');
+const mascotTipText = document.getElementById('mascotTipText');
+const checkBtn = document.getElementById('checkBtn');
+const feedbackPanel = document.getElementById('feedbackPanel');
+const checkBar = document.getElementById('checkBar');
+
+/* ── RENDER CORE DISPATCHER ── */
+function renderExercise() {
+  const ex = EXERCISES[state.currentExercise];
+
+  // Update progress bar
+  const pct = ((state.currentExercise + 1) / state.totalExercises) * 100;
+  progressFill.style.width = `${pct}%`;
+  progressLabel.textContent = `${state.currentExercise + 1} / ${state.totalExercises} Completed`;
+  exerciseBadge.textContent = `Exercise ${state.currentExercise + 1} of ${state.totalExercises} · Cluster 1 Phonics`;
+
+  // Reset answer states
+  state.answered = false;
+  state.userAnswer = null;
+
+  // Update copy
+  instruction.innerHTML = ex.instruction;
+  subInstruction.textContent = ex.subInstruction || '';
+  mascotTipText.textContent = ex.tip || "Take your time! No streak pressure on LinGua.";
+
+  // Reset Check Button
+  disableCheck();
+
+  // Hide feedback drawer
+  feedbackPanel.classList.remove('is-open');
+  checkBar.style.display = '';
+
+  // Render Exercise Mode
+  if (ex.type === 'tapSelect') renderTapSelect(ex, container);
+  else if (ex.type === 'fillBlank') renderFillBlank(ex, container);
+  else if (ex.type === 'listenType') renderListenType(ex, container);
+  else if (ex.type === 'speakAloud') renderSpeakAloud(ex, container);
+  else if (ex.type === 'matchPairs') renderMatchPairs(ex, container);
+  else if (ex.type === 'trace') renderTrace(ex, container);
+  else if (ex.type === 'dragDrop') renderDragDrop(ex, container);
+  else if (ex.type === 'reorder') renderReorder(ex, container);
+  else if (ex.type === 'highlight') renderHighlight(ex, container);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODE RENDERERS
+════════════════════════════════════════════════════════════════ */
+
+// 1. TAP SELECT (Phonics Grid)
+function renderTapSelect(ex, container) {
+  container.innerHTML = `
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto w-full my-auto">
+      ${ex.options.map(opt => `
+        <button class="tactile-card rounded-3xl p-6 bg-surface-container-lowest border-2 border-outline-soft/40 flex flex-col items-center justify-center min-h-[140px] text-center group" data-choice="${opt.id}">
+          <span class="font-display text-[44px] sm:text-[48px] text-on-surface font-black leading-none group-hover:text-primary transition-colors">${opt.label}</span>
+          ${opt.phonetic ? `<span class="mt-2 font-label text-xs font-bold text-primary bg-primary-fixed/60 px-2.5 py-0.5 rounded-full">${opt.phonetic}</span>` : ''}
+          ${opt.desc ? `<span class="mt-1 font-body text-[11px] text-on-surface-variant">${opt.desc}</span>` : ''}
+        </button>
+      `).join('')}
+    </div>
+  `;
+  container.querySelectorAll('.tactile-card').forEach(card => {
+    card.addEventListener('click', () => {
+      if (state.answered) return;
+      container.querySelectorAll('.tactile-card').forEach(c => {
+        c.dataset.selected = 'false';
+      });
+      card.dataset.selected = 'true';
+      state.userAnswer = card.dataset.choice;
+      enableCheck();
+    });
+  });
+}
+
+// 2. FILL BLANK (Letter inputs with auto-focus advance)
+function renderFillBlank(ex, container) {
+  const chars = ex.word.split('');
+  let blankIndex = 0;
+  container.innerHTML = `
+    <div class="bg-surface-container-lowest rounded-3xl p-8 sm:p-10 border-2 border-outline-soft/30 shadow-sm flex flex-col items-center max-w-xl mx-auto w-full my-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-fixed/50 text-secondary text-xs font-bold font-label mb-6">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        <span>${ex.hint}</span>
+      </div>
+      <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-center mb-6">
+        ${chars.map((c, i) => {
+          if (ex.blanks.includes(i)) {
+            const idx = blankIndex++;
+            return `<input type="text" maxlength="1" class="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl bg-surface-container text-primary text-center text-4xl font-black uppercase focus:outline-none focus:ring-4 focus:ring-primary-fixed border-2 border-primary-container shadow-inner" data-blank="${idx}" autocomplete="off" autocapitalize="characters"/>`;
+          }
+          return `<div class="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl bg-surface-container-low border-2 border-outline-soft/40 flex items-center justify-center font-display text-4xl font-black text-on-surface shadow-sm">${c}</div>`;
+        }).join('')}
+      </div>
+      <p class="text-on-surface-variant text-xs font-body text-center">Type the letter "A" in the blank spaces</p>
+    </div>
+  `;
+  const inputs = container.querySelectorAll('input[data-blank]');
+  inputs.forEach(inp => {
+    inp.addEventListener('input', () => {
+      const filled = Array.from(inputs).every(i => i.value.trim().length > 0);
+      if (filled) {
+        state.userAnswer = Array.from(inputs).map(i => i.value.toUpperCase()).join('');
+        enableCheck();
+      } else {
+        disableCheck();
+      }
+      if (inp.value.length === 1) {
+        const next = Array.from(inputs)[parseInt(inp.dataset.blank) + 1];
+        if (next) next.focus();
+      }
+    });
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && inp.value === '') {
+        const prev = Array.from(inputs)[parseInt(inp.dataset.blank) - 1];
+        if (prev) prev.focus();
+      }
+    });
+  });
+  inputs[0]?.focus();
+}
+
+// 3. LISTEN & TYPE
+function renderListenType(ex, container) {
+  container.innerHTML = `
+    <div class="bg-surface-container-lowest rounded-3xl p-8 sm:p-10 border-2 border-outline-soft/30 shadow-sm flex flex-col items-center max-w-lg mx-auto w-full my-auto">
+      <button id="playAudioBtn" class="w-24 h-24 rounded-3xl bg-primary-container text-on-primary shadow-[0_6px_0_0_#432CAE] hover:translate-y-[2px] active:translate-y-[6px] active:shadow-none flex flex-col items-center justify-center transition-all group" aria-label="Play sound">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="group-hover:scale-110 transition-transform"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8v8a4.5 4.5 0 002.5-4zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+      </button>
+      <p class="font-label text-xs font-black text-primary uppercase tracking-widest mt-4">Tap to listen</p>
+      <span class="font-body text-xs text-on-surface-variant mt-1 mb-6">${ex.hint}</span>
+
+      <div class="w-full relative">
+        <input type="text" id="listenInput" class="w-full rounded-2xl bg-surface-container px-5 py-4 text-center font-headline text-headline-sm text-on-surface focus:outline-none focus:ring-4 focus:ring-primary-fixed border-2 border-outline-soft/40 shadow-inner" placeholder="Type what you hear..." autocomplete="off"/>
+      </div>
+    </div>
+  `;
+  const input = container.querySelector('#listenInput');
+  input.addEventListener('input', () => {
+    if (input.value.trim().length > 0) {
+      state.userAnswer = input.value.trim();
+      enableCheck();
+    } else {
+      disableCheck();
+    }
+  });
+
+  const playBtn = container.querySelector('#playAudioBtn');
+  playBtn.addEventListener('click', () => {
+    if ('speechSynthesis' in window) {
+      const utter = new SpeechSynthesisUtterance(ex.audioText);
+      utter.rate = 0.85;
+      utter.lang = 'en-US';
+      speechSynthesis.speak(utter);
+    }
+    playBtn.classList.add('animate-pulse');
+    setTimeout(() => playBtn.classList.remove('animate-pulse'), 800);
+  });
+}
+
+// 4. SPEAK ALOUD
+function renderSpeakAloud(ex, container) {
+  container.innerHTML = `
+    <div class="bg-surface-container-lowest rounded-3xl p-8 sm:p-10 border-2 border-outline-soft/30 shadow-sm flex flex-col items-center max-w-lg mx-auto w-full text-center my-auto">
+      <div class="mb-6">
+        <span class="font-label text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Say this clearly</span>
+        <p class="font-display text-[52px] sm:text-[60px] text-on-surface font-black leading-none mt-2 text-primary">${ex.phrase}</p>
+        <p class="font-body text-body-sm text-on-surface-variant mt-2 italic">${ex.translation}</p>
+      </div>
+
+      <button id="micBtn" class="w-28 h-28 rounded-full bg-primary-container text-on-primary shadow-[0_8px_0_0_#432CAE] flex items-center justify-center mx-auto hover:brightness-105 active:translate-y-1 active:shadow-[0_4px_0_0_#432CAE] transition-all" aria-label="Record voice">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3z"/><path d="M17 11a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z"/></svg>
+      </button>
+
+      <p id="micStatus" class="font-label text-xs font-black text-on-surface-variant uppercase tracking-widest mt-5">Tap microphone to record</p>
+
+      <div id="scoreReveal" class="hidden mt-6 bg-success/15 border border-success/30 rounded-2xl px-6 py-3">
+        <p class="font-headline text-headline-sm text-success-deep font-black">Score: 94% Natural resonance</p>
+        <p class="font-body text-xs text-on-surface-variant mt-0.5">Vowel opening matches native model</p>
+      </div>
+    </div>
+  `;
+  const micBtn = container.querySelector('#micBtn');
+  const micStatus = container.querySelector('#micStatus');
+  const scoreReveal = container.querySelector('#scoreReveal');
+  let recording = false;
+
+  micBtn.addEventListener('click', () => {
+    if (state.answered) return;
+    if (!recording) {
+      recording = true;
+      micBtn.classList.add('mic-recording');
+      micStatus.textContent = 'Listening... tap to evaluate';
+      micStatus.classList.add('text-primary');
+      state.userAnswer = 'recording';
+      enableCheck();
+    } else {
+      recording = false;
+      micBtn.classList.remove('mic-recording');
+      micStatus.textContent = 'Speech sample captured';
+      micStatus.classList.remove('text-primary');
+      scoreReveal.classList.remove('hidden');
+      state.userAnswer = 'recorded';
+      enableCheck();
+    }
+  });
+}
+
+// 5. MATCH PAIRS
+function renderMatchPairs(ex, container) {
+  const lefts = ex.pairs.map(p => p.left);
+  const rights = ex.pairs.map(p => p.right).sort(() => Math.random() - 0.5);
+  container.innerHTML = `
+    <div class="grid grid-cols-2 gap-4 max-w-md mx-auto w-full my-auto">
+      <div class="flex flex-col gap-3">
+        <span class="text-center font-label text-[11px] font-black text-on-surface-variant uppercase">Uppercase Root</span>
+        ${lefts.map(l => `
+          <button class="match-btn bg-surface-container-lowest rounded-2xl py-4 font-display text-2xl font-black text-primary border-2 border-outline-soft/40 shadow-sm transition-all hover:-translate-y-0.5" data-side="left" data-value="${l}">${l}</button>
+        `).join('')}
+      </div>
+      <div class="flex flex-col gap-3">
+        <span class="text-center font-label text-[11px] font-black text-on-surface-variant uppercase">Lowercase Seed</span>
+        ${rights.map(r => `
+          <button class="match-btn bg-surface-container-lowest rounded-2xl py-4 font-display text-2xl font-black text-secondary-container border-2 border-outline-soft/40 shadow-sm transition-all hover:-translate-y-0.5" data-side="right" data-value="${r}">${r}</button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  let selectedLeft = null;
+  const matched = [];
+
+  container.querySelectorAll('.match-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('matched') || state.answered) return;
+      const side = btn.dataset.side;
+      const val = btn.dataset.value;
+
+      if (side === 'left') {
+        container.querySelectorAll('[data-side="left"]').forEach(b => {
+          b.style.borderColor = '';
+          b.style.background = '';
+        });
+        btn.style.borderColor = '#6c4df6';
+        btn.style.background = '#f7f1ff';
+        selectedLeft = btn;
+      } else if (side === 'right' && selectedLeft) {
+        const leftVal = selectedLeft.dataset.value;
+        const correct = ex.pairs.find(p => p.left === leftVal)?.right === val;
+
+        if (correct) {
+          selectedLeft.classList.add('matched');
+          selectedLeft.style.opacity = '0.35';
+          selectedLeft.style.pointerEvents = 'none';
+          btn.classList.add('matched');
+          btn.style.opacity = '0.35';
+          btn.style.pointerEvents = 'none';
+          matched.push(leftVal);
+
+          if (matched.length === ex.pairs.length) {
+            state.userAnswer = 'all-matched';
+            enableCheck();
+          }
+        } else {
+          btn.style.borderColor = '#ef476f';
+          setTimeout(() => { btn.style.borderColor = ''; }, 450);
+        }
+        selectedLeft.style.borderColor = '';
+        selectedLeft.style.background = '';
+        selectedLeft = null;
+      }
+    });
+  });
+}
+
+// 6. MOTOR TRACE
+function renderTrace(ex, container) {
+  container.innerHTML = `
+    <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border-2 border-outline-soft/30 shadow-sm flex flex-col items-center max-w-md mx-auto w-full my-auto">
+      <div class="relative w-full max-w-[280px] aspect-square bg-surface-container rounded-2xl overflow-hidden border-2 border-outline-soft/40 shadow-inner">
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span class="font-display text-[190px] text-primary/15 font-black leading-none">${ex.letter}</span>
+        </div>
+        <canvas id="traceCanvas" class="absolute inset-0 trace-canvas"></canvas>
+      </div>
+      <p class="font-body text-xs text-on-surface-variant mt-4 text-center">Trace letter strokes with finger or mouse</p>
+      <button id="clearTraceBtn" class="mt-2.5 font-label text-xs font-bold text-primary hover:underline flex items-center gap-1">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        Reset Canvas
+      </button>
+    </div>
+  `;
+  const canvas = container.querySelector('#traceCanvas');
+  const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+  let drawn = false;
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * 2;
+    canvas.height = rect.height * 2;
+    ctx.scale(2, 2);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#6c4df6';
+    ctx.lineWidth = 14;
+  }
+  setTimeout(resize, 40);
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const point = e.touches ? e.touches[0] : e;
+    return { x: point.clientX - rect.left, y: point.clientY - rect.top };
+  }
+  function start(e) {
+    e.preventDefault();
+    isDrawing = true;
+    const p = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  }
+  function draw(e) {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const p = getPos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    if (!drawn) {
+      drawn = true;
+      state.userAnswer = 'traced';
+      enableCheck();
+    }
+  }
+  function end() { isDrawing = false; }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('mouseleave', end);
+  canvas.addEventListener('touchstart', start, { passive: false });
+  canvas.addEventListener('touchmove', draw, { passive: false });
+  canvas.addEventListener('touchend', end);
+
+  container.querySelector('#clearTraceBtn').addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawn = false;
+    state.userAnswer = null;
+    disableCheck();
+  });
+}
+
+// 7. DRAG DROP
+function renderDragDrop(ex, container) {
+  container.innerHTML = `
+    <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border-2 border-outline-soft/30 shadow-sm max-w-xl mx-auto w-full my-auto">
+      <div id="dropZone" class="flex items-center justify-center gap-2.5 mb-8 min-h-[90px] p-3 rounded-2xl border-2 border-dashed border-primary/40 bg-surface-container-low/50">
+        <span class="font-body text-xs text-on-surface-variant">Tap letter tiles below in order</span>
+      </div>
+      <div class="flex flex-wrap gap-2.5 justify-center">
+        ${ex.tiles.map((t, i) => `
+          <button class="drag-tile bg-surface-container rounded-2xl w-14 h-16 sm:w-16 sm:h-20 flex items-center justify-center font-display text-3xl text-on-surface font-black hover:bg-primary-fixed border border-outline-soft/30 shadow-sm active:scale-95 transition-all" data-tile="${t}" data-idx="${i}">${t}</button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  const dropZone = container.querySelector('#dropZone');
+  const tiles = container.querySelectorAll('.drag-tile');
+  const dropped = [];
+
+  tiles.forEach(tile => {
+    tile.addEventListener('click', () => {
+      if (tile.classList.contains('used') || state.answered) return;
+      tile.classList.add('used');
+      tile.style.opacity = '0.3';
+      tile.style.pointerEvents = 'none';
+
+      const letter = tile.dataset.tile;
+      dropped.push(letter);
+      dropZone.innerHTML = dropped.map(l => `
+        <span class="w-14 h-16 sm:w-16 sm:h-20 rounded-2xl bg-primary-fixed text-primary font-display text-3xl font-black flex items-center justify-center border-2 border-primary shadow-sm">${l}</span>
+      `).join('');
+
+      if (dropped.length === ex.word.length) {
+        state.userAnswer = dropped.join('');
+        enableCheck();
+      }
+    });
+  });
+}
+
+// 8. REORDER
+function renderReorder(ex, container) {
+  container.innerHTML = `
+    <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border-2 border-outline-soft/30 shadow-sm max-w-xl mx-auto w-full my-auto">
+      <div id="reorderAnswer" class="min-h-[85px] p-3.5 rounded-2xl border-2 border-dashed border-primary/40 bg-surface-container-low/50 mb-6 flex flex-wrap gap-2 items-center justify-center">
+        <span class="font-body text-xs text-on-surface-variant">Tap words below in conversational sequence</span>
+      </div>
+      <div id="reorderBank" class="flex flex-wrap gap-2.5 justify-center">
+        ${ex.scrambled.map(w => `
+          <button class="reorder-word bg-surface-container rounded-2xl px-5 py-3 font-headline text-headline-sm text-on-surface font-bold hover:bg-primary-fixed border border-outline-soft/30 shadow-sm active:scale-95 transition-all" data-word="${w}">${w}</button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  const answerZone = container.querySelector('#reorderAnswer');
+  const words = container.querySelectorAll('.reorder-word');
+  const answer = [];
+
+  words.forEach(word => {
+    word.addEventListener('click', () => {
+      if (word.classList.contains('used') || state.answered) return;
+      word.classList.add('used');
+      word.style.opacity = '0.3';
+      word.style.pointerEvents = 'none';
+
+      answer.push(word.dataset.word);
+      answerZone.innerHTML = answer.map(w => `
+        <span class="bg-primary-fixed text-primary rounded-xl px-4 py-2 font-headline text-headline-sm font-black border border-primary/30 shadow-sm">${w}</span>
+      `).join('');
+
+      if (answer.length === ex.scrambled.length) {
+        state.userAnswer = answer.join(' ');
+        enableCheck();
+      }
+    });
+  });
+}
+
+// 9. HIGHLIGHT
+function renderHighlight(ex, container) {
+  const words = ex.passage.split(' ');
+  container.innerHTML = `
+    <div class="bg-surface-container-lowest rounded-3xl p-8 border-2 border-outline-soft/30 shadow-sm max-w-xl mx-auto w-full my-auto">
+      <p class="font-body text-xl sm:text-2xl text-on-surface leading-loose flex flex-wrap gap-2 justify-center">
+        ${words.map(w => {
+          const clean = w.replace(/[.,]/g, '');
+          return `<button class="highlight-word px-3 py-1.5 rounded-xl hover:bg-primary-fixed transition-colors font-headline font-bold text-on-surface border border-transparent hover:border-primary/20" data-word="${clean}">${w}</button>`;
+        }).join(' ')}
+      </p>
+    </div>
+  `;
+  container.querySelectorAll('.highlight-word').forEach(word => {
+    word.addEventListener('click', () => {
+      if (state.answered) return;
+      container.querySelectorAll('.highlight-word').forEach(w => {
+        w.style.background = '';
+        w.style.color = '';
+        w.style.borderColor = 'transparent';
+      });
+      word.style.background = '#e5deff';
+      word.style.color = '#532ddd';
+      word.style.borderColor = '#6c4df6';
+      state.userAnswer = word.dataset.word;
+      enableCheck();
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHECK & EVALUATION SYSTEM
+════════════════════════════════════════════════════════════════ */
+function enableCheck() {
+  checkBtn.disabled = false;
+  checkBtn.dataset.active = 'true';
+  checkBtn.className = 'flex-1 max-w-md mx-auto sm:mr-0 bg-primary-container text-on-primary rounded-2xl py-4 px-8 font-label text-label-lg shadow-[0_5px_0_0_#432CAE] hover:translate-y-[2px] hover:shadow-[0_3px_0_0_#432CAE] active:translate-y-[5px] active:shadow-none transition-all pointer-events-auto flex items-center justify-center gap-2';
+}
+
+function disableCheck() {
+  checkBtn.disabled = true;
+  checkBtn.dataset.active = 'false';
+  checkBtn.className = 'flex-1 max-w-md mx-auto sm:mr-0 bg-[#e5deff] text-[#9d98b0] rounded-2xl py-4 px-8 font-label text-label-lg shadow-[0_5px_0_0_#d4cceb] transition-all pointer-events-none flex items-center justify-center gap-2';
+}
+
+function checkAnswer() {
+  const ex = EXERCISES[state.currentExercise];
+  const isCorrect = evaluateAnswer(ex, state.userAnswer);
+  state.answered = true;
+
+  if (isCorrect) {
+    state.correctCount++;
+    state.xp += 10;
+    document.getElementById('xpCount').textContent = `${state.xp} XP`;
+    showFeedback(true, ex.explanation);
+  } else {
+    state.hearts--;
+    updateHearts();
+    showFeedback(false, "Not quite yet! Notice the vowel root position. Zero streak penalty — try again!");
+  }
+}
+
+function evaluateAnswer(ex, answer) {
+  if (ex.type === 'tapSelect') return answer === ex.correctId;
+  if (ex.type === 'fillBlank') return answer === ex.correctAnswers.join('');
+  if (ex.type === 'listenType') return answer.toLowerCase().trim() === ex.correctAnswer.toLowerCase();
+  if (ex.type === 'speakAloud') return true;
+  if (ex.type === 'matchPairs') return answer === 'all-matched';
+  if (ex.type === 'trace') return true;
+  if (ex.type === 'dragDrop') return answer === ex.word;
+  if (ex.type === 'reorder') return answer === ex.correctOrder.join(' ');
+  if (ex.type === 'highlight') return answer === ex.target;
+  return false;
+}
+
+function showFeedback(correct, msg) {
+  const icon = document.getElementById('feedbackIcon');
+  const title = document.getElementById('feedbackTitle');
+  const subtitle = document.getElementById('feedbackSubtitle');
+  const badge = document.getElementById('feedbackXpBadge');
+
+  if (correct) {
+    feedbackPanel.className = 'feedback-panel fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest border-t-4 border-t-success shadow-[0_-12px_40px_rgba(31,27,46,0.14)] is-open';
+    icon.className = 'w-14 h-14 rounded-2xl bg-success-bright flex items-center justify-center shrink-0 text-white shadow-md';
+    icon.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+    title.className = 'font-headline text-headline-md font-black text-success-bright';
+    title.textContent = 'Excellent ear!';
+    badge.className = 'font-label text-xs font-black bg-success/20 text-success-deep px-2.5 py-0.5 rounded-full';
+    badge.textContent = '+10 XP';
+  } else {
+    feedbackPanel.className = 'feedback-panel fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest border-t-4 border-t-rose shadow-[0_-12px_40px_rgba(31,27,46,0.14)] is-open';
+    icon.className = 'w-14 h-14 rounded-2xl bg-rose flex items-center justify-center shrink-0 text-white shadow-md';
+    icon.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    title.className = 'font-headline text-headline-md font-black text-rose';
+    title.textContent = 'Keep practicing!';
+    badge.className = 'font-label text-xs font-black bg-rose/20 text-rose px-2.5 py-0.5 rounded-full';
+    badge.textContent = 'Zero Guilt';
+  }
+  subtitle.textContent = msg || '';
+  checkBar.style.display = 'none';
+}
+
+function updateHearts() {
+  const el = document.getElementById('heartsCount');
+  el.textContent = Math.max(0, state.hearts);
+  const container = document.getElementById('heartsContainer');
+  container.classList.add('heart-lost');
+  setTimeout(() => container.classList.remove('heart-lost'), 500);
+}
+
+function continueLesson() {
+  feedbackPanel.classList.remove('is-open');
+  state.currentExercise++;
+
+  if (state.currentExercise >= EXERCISES.length) {
+    alert(`🎉 Cluster 1 Complete!\n\nEarned: ${state.xp} XP\nCorrect: ${state.correctCount}/${EXERCISES.length}\n\nFast-track unlocked: Cluster 2 Consonants & Early Word Reading!`);
+    window.location.href = 'learn.html';
+    return;
+  }
+
+  setTimeout(() => {
+    renderExercise();
+    checkBar.style.display = '';
+  }, 250);
+}
+
+/* ── EVENT BINDINGS ── */
+checkBtn.addEventListener('click', () => {
+  if (state.answered) return;
+  checkAnswer();
+});
+document.getElementById('feedbackContinueBtn').addEventListener('click', continueLesson);
+document.getElementById('closeBtn').addEventListener('click', () => {
+  if (confirm('Leave lesson? Your current session progress will be preserved.')) {
+    window.location.href = 'learn.html';
+  }
+});
+document.getElementById('skipBtn').addEventListener('click', () => {
+  alert("LinGua Sound Lab Help:\n\nRemember: Vowels (A, E, I, O, U) flow openly without obstruction. Pair with stops (B, D, P) to read words instantly!");
+});
+
+/* ── BOOTSTRAP ── */
+renderExercise();
+</script>
+</body>
+</html>

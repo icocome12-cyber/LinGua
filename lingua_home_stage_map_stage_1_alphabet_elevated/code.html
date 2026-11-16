@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learn — LinGua</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#532ddd", "primary-container": "#6c4df6", "on-primary": "#ffffff",
+        "secondary": "#a7391e", "secondary-container": "#fd7958", "on-secondary": "#ffffff",
+        "success": "#2EC4B6", "success-deep": "#0c8a7e",
+        "tertiary": "#a07a00", "tertiary-fixed-dim": "#f4bf3c",
+        "danger": "#ba1a1a", "rose": "#ef476f",
+        "surface": "#fdf7ff", "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f7f1ff", "surface-container": "#f2ebff",
+        "surface-container-high": "#ece4ff",
+        "on-surface": "#1d192c", "on-surface-variant": "#484555",
+        "primary-fixed": "#e5deff", "secondary-fixed": "#ffdad2",
+        "outline": "#797587", "outline-soft": "#c9c4d8"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", "2xl": "1rem", "3xl": "1.5rem", full: "9999px" },
+      fontFamily: {
+        display: ["Nunito Sans"], headline: ["Nunito Sans"],
+        label: ["Nunito Sans"], body: ["Inter"]
+      },
+      fontSize: {
+        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "800" }],
+        "headline-md": ["24px", { lineHeight: "30px", fontWeight: "800" }],
+        "headline-sm": ["20px", { lineHeight: "26px", fontWeight: "700" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "label-lg": ["16px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "800" }],
+        "label-md": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "700" }],
+        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }]
+      }
+    }
+  }
+}
+</script>
+<style>
+  html,body{margin:0;padding:0;}
+  body{overscroll-behavior:none;}
+  ::-webkit-scrollbar{display:none;}
+  /* ── MASCOT ── */
+  @keyframes mascot-bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+  @keyframes mascot-blink{0%,94%,98%,100%{transform:scaleY(1);}96%{transform:scaleY(0.1);}}
+  @keyframes mascot-wave{0%,100%{transform:rotate(-5deg);}50%{transform:rotate(12deg);}}
+  .animate-mascot-bob{animation:mascot-bob 3s ease-in-out infinite;}
+  .animate-mascot-blink{transform-origin:120px 137px;animation:mascot-blink 4.5s infinite;}
+  .animate-mascot-wave{transform-origin:172px 150px;animation:mascot-wave 2.2s ease-in-out infinite;}
+  /* ── ACTIVE NODE PULSE ── */
+  @keyframes pulse-ring{
+    0%{box-shadow:0 0 0 0 rgba(108,77,246,0.45), 0 8px 0 0 #432CAE;}
+    70%{box-shadow:0 0 0 18px rgba(108,77,246,0), 0 8px 0 0 #432CAE;}
+    100%{box-shadow:0 0 0 0 rgba(108,77,246,0), 0 8px 0 0 #432CAE;}
+  }
+  .animate-pulse-ring{animation:pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;}
+  /* ── STAR FLOAT ── */
+  @keyframes star-float{
+    0%,100%{transform:translateY(0) rotate(0deg);opacity:0.85;}
+    50%{transform:translateY(-8px) rotate(18deg);opacity:1;}
+  }
+  .star-float{animation:star-float 2.5s ease-in-out infinite;}
+  /* ── Sinuous Path Styling ── */
+  .stage-node{
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  }
+  .stage-node:hover:not(:disabled){
+    transform: scale(1.08) translateY(-3px);
+  }
+  .stage-node:active:not(:disabled){
+    transform: scale(0.96) translateY(4px);
+    box-shadow: 0 2px 0 0 #432CAE !important;
+  }
+  .stage-node:disabled{
+    cursor: not-allowed;
+  }
+  .stage-node:disabled:hover{
+    transform: scale(1.02);
+  }
+  /* ── BOTTOM NAV ACTIVE ── */
+  .nav-tab-active{
+    color: #6c4df6;
+  }
+  .nav-tab-active::after{
+    content:'';
+    display:block;
+    width:6px;
+    height:6px;
+    background:#6c4df6;
+    border-radius:50%;
+    margin: 4px auto 0;
+  }
+  @supports (padding-bottom: env(safe-area-inset-bottom)){
+    .safe-bottom{padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .animate-mascot-bob, .animate-mascot-blink, .animate-mascot-wave,
+    .animate-pulse-ring, .star-float{ animation:none !important; }
+  }
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DESKTOP SIDEBAR (>1024px)
+════════════════════════════════════════════════════════════════ -->
+<aside class="hidden lg:flex fixed top-0 left-0 h-screen w-[270px] bg-surface-container-lowest border-r border-[rgba(31,27,46,0.06)] flex-col z-40 shadow-[2px_0_16px_rgba(31,27,46,0.02)]">
+  <!-- Logo -->
+  <div class="px-6 py-5 border-b border-[rgba(31,27,46,0.06)] flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2 group">
+      <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center shadow-md">
+        <svg class="h-5 w-5" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 27c-4 0-6-3-6-6 0-1 0-2 1-3 1 4 4 4 5 4s3-2 3-4c0 2 1 3 3 3-1 5-4 6-6 6Z" fill="#fff"/>
+          <path d="M14 14c0-2 2-3 3-2-1 1-2 2-2 4-1 0-1-1-1-2Z" fill="#FFC845"/>
+          <path d="M20 14c2 0 3-2 2-3-1 1-2 2-4 2 0 1 1 1 2 1Z" fill="#FFC845"/>
+        </svg>
+      </div>
+      <span class="font-headline text-[22px] tracking-tight">
+        <span class="text-on-surface font-extrabold">Lin</span><span class="text-primary-container font-black">Gua</span>
+      </span>
+    </a>
+    <span class="text-[10px] font-black font-label px-2 py-0.5 rounded-full bg-success/20 text-success-deep uppercase tracking-wider">Free</span>
+  </div>
+
+  <!-- Nav -->
+  <nav class="flex-1 px-3.5 py-5 flex flex-col gap-1.5">
+    <a href="#" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-primary-fixed text-primary font-label text-label-md font-extrabold shadow-sm transition-all">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+      <span>Learn</span>
+      <span class="ml-auto w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+    </a>
+    <a href="#" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-label text-label-md font-bold">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <span>Practice</span>
+    </a>
+    <a href="#" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-label text-label-md font-bold">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+      <span>Sounds &amp; Letters</span>
+    </a>
+    <a href="#" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-label text-label-md font-bold">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      <span>Profile</span>
+    </a>
+    <a href="#" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-label text-label-md font-bold">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <!-- Sprout Companion Mini Status -->
+  <div class="px-4 py-3 mx-3 mb-2 rounded-2xl bg-surface-container-low border border-primary-fixed/40 flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center text-success-deep font-bold text-xs shrink-0">🌱</div>
+    <div class="flex-1 min-w-0">
+      <p class="text-[11px] font-label font-bold text-on-surface truncate">Sprout is happy!</p>
+      <p class="text-[10px] text-on-surface-variant truncate">Zero streak guilt</p>
+    </div>
+  </div>
+
+  <!-- Language + User -->
+  <div class="p-3 border-t border-[rgba(31,27,46,0.06)] flex flex-col gap-2 bg-surface-container-lowest">
+    <button class="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-surface-container-low hover:bg-surface-container transition-colors text-left group">
+      <span class="text-xl group-hover:scale-110 transition-transform" data-lang-flag>🇬🇧</span>
+      <div class="flex-1 min-w-0">
+        <p class="font-label text-[10px] text-on-surface-variant uppercase tracking-wider font-extrabold">Learning Language</p>
+        <p class="font-label text-label-sm text-on-surface font-extrabold truncate" data-lang-name>English</p>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <button class="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-surface-container transition-colors text-left">
+      <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-primary to-primary-container text-on-primary grid place-items-center font-headline text-sm font-black shadow-sm">A</div>
+      <div class="flex-1 min-w-0">
+        <p class="font-label text-label-sm text-on-surface font-extrabold leading-tight">Amara</p>
+        <p class="font-label text-[11px] text-on-surface-variant leading-tight mt-0.5">Stage 1 · Seedling Explorer</p>
+      </div>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════════ -->
+<main class="lg:ml-[270px] min-h-screen pb-28 lg:pb-12 bg-surface">
+  
+  <!-- ── TOP APP BAR ── -->
+  <header class="sticky top-0 z-30 bg-surface/85 backdrop-blur-xl border-b border-[rgba(31,27,46,0.06)] shadow-sm">
+    <div class="max-w-[840px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Mobile Language Pill / Desktop Breadcrumb -->
+      <div class="flex items-center gap-3">
+        <button class="lg:hidden flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-surface-container-low border border-primary-fixed/50 hover:bg-surface-container transition-colors">
+          <span class="text-base" data-lang-flag>🇬🇧</span>
+          <span class="font-label text-label-sm text-on-surface font-extrabold" data-lang-name>English</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="hidden lg:flex items-center gap-2">
+          <span class="font-label text-xs uppercase tracking-widest text-primary font-black px-2.5 py-0.5 rounded-full bg-primary-fixed">Active Path</span>
+          <h1 class="font-headline text-headline-sm text-on-surface font-extrabold">Stage 1: Alphabet</h1>
+        </div>
+      </div>
+
+      <!-- Stats Pill Dock -->
+      <div class="flex items-center gap-2 sm:gap-2.5">
+        <!-- Streak / Day count -->
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-secondary-fixed/70 border border-secondary-container/20 shadow-sm" title="Day 5 of gentle learning">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fd7958" aria-hidden="true"><path d="M12 2c-2 3-5 3-5 6 0 2 2 3 2 5 0 2-1 3-1 5 0 2 2 4 4 4s4-2 4-4c0-2-1-3-1-5 0-2 2-3 2-5 0-3-3-3-5-6z"/></svg>
+          <span class="font-label text-label-sm text-secondary font-black">Day 5</span>
+        </div>
+        <!-- XP Earned -->
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFF4D6] border border-[#f4bf3c]/30 shadow-sm" title="240 Experience Points">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#f4bf3c" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+          <span class="font-label text-label-sm text-[#a07a00] font-black">240 XP</span>
+        </div>
+        <!-- Energy / Patience -->
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFE0E6] border border-[#ef476f]/20 shadow-sm" title="4 of 5 daily focus hearts">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ef476f" aria-hidden="true"><path d="M12 21s-8-4-8-10a5 5 0 019-3 5 5 0 019 3c0 6-8 10-8 10z"/></svg>
+          <span class="font-label text-label-sm text-rose font-black">4/5</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── CONTENT ── -->
+  <div class="max-w-[760px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    
+    <!-- ── KOKO GREETING BANNER ── -->
+    <div class="flex items-center gap-3.5 sm:gap-4 mb-6 bg-surface-container-lowest p-3.5 sm:p-4 rounded-3xl border border-primary-fixed/30 shadow-[0_8px_20px_rgba(83,45,221,0.04)]">
+      <div class="shrink-0 animate-mascot-bob">
+        <svg class="w-14 h-16 sm:w-16 sm:h-20 drop-shadow-md" viewBox="0 0 240 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Koko greeting you">
+          <defs>
+            <radialGradient cx="45%" cy="40%" id="g1" r="65%">
+              <stop offset="0%" stop-color="#3CE7D8"/><stop offset="65%" stop-color="#2EC4B6"/><stop offset="100%" stop-color="#1FA89B"/>
+            </radialGradient>
+          </defs>
+          <path d="M120 70 C95 40 70 50 68 76 C66 98 100 88 120 74 Z" fill="#2EC4B6"/>
+          <path d="M120 72 C135 30 168 38 166 64 C164 84 135 80 120 72 Z" fill="#38D9A9"/>
+          <path d="M64 165 C62 108 86 78 120 78 C154 78 178 108 176 165 C174 216 156 244 120 244 C84 244 66 216 64 165 Z" fill="url(#g1)"/>
+          <g class="animate-mascot-wave">
+            <path d="M172 155 C190 148 206 130 196 118 C188 108 174 130 170 142" fill="#2EC4B6"/>
+            <circle cx="196" cy="120" fill="#3CE7D8" r="8"/>
+          </g>
+          <ellipse cx="88" cy="156" fill="#FF7A59" fill-opacity="0.45" rx="9" ry="5.5"/>
+          <ellipse cx="152" cy="156" fill="#FF7A59" fill-opacity="0.45" rx="9" ry="5.5"/>
+          <g class="animate-mascot-blink">
+            <ellipse cx="98" cy="136" fill="#fff" rx="13" ry="17"/>
+            <ellipse cx="102" cy="138" fill="#1D192C" rx="8" ry="11"/>
+            <ellipse cx="142" cy="136" fill="#fff" rx="13" ry="17"/>
+            <ellipse cx="138" cy="138" fill="#1D192C" rx="8" ry="11"/>
+          </g>
+          <path d="M107 160 C114 172 126 172 133 160" fill="none" stroke="#1D192C" stroke-linecap="round" stroke-width="3.5"/>
+        </svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-0.5">
+          <span class="font-headline font-black text-on-surface text-base sm:text-lg">Welcome back, Amara!</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-primary-fixed text-primary font-bold hidden sm:inline-block">Koko Guides</span>
+        </div>
+        <p class="font-body text-body-sm text-on-surface-variant leading-relaxed">
+          Ready to master <strong class="text-primary font-bold">Stage 1: Alphabet</strong>? Tap Node 1 to explore the vowels with audio guidance.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── DAILY GOAL & QUEST GRID ── -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8">
+      
+      <!-- Daily Goal Card (7 cols) -->
+      <div class="md:col-span-7 bg-gradient-to-br from-primary-container via-[#7353f8] to-[#8B6EFF] rounded-3xl p-5 shadow-[0_10px_25px_rgba(108,77,246,0.22)] text-on-primary relative overflow-hidden flex items-center justify-between">
+        <div class="absolute -top-10 -right-10 w-44 h-44 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+        <div class="relative flex items-center gap-4">
+          <!-- Circular Progress ring -->
+          <div class="relative shrink-0 w-16 h-16">
+            <svg class="w-full h-full -rotate-90" viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,0.22)" stroke-width="6" fill="none"/>
+              <circle cx="32" cy="32" r="28" stroke="#FFC845" stroke-width="6" fill="none"
+                      stroke-dasharray="176" stroke-dashoffset="70" stroke-linecap="round"/>
+            </svg>
+            <div class="absolute inset-0 grid place-items-center">
+              <span class="font-headline text-[13px] font-black text-on-primary">30/50</span>
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/15 text-[10px] uppercase tracking-widest font-black text-on-primary">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+              Daily Goal
+            </div>
+            <p class="font-headline text-headline-sm font-extrabold mt-1">Keep it up!</p>
+            <p class="font-body text-xs text-on-primary/90 mt-0.5">20 XP left to complete today's target</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Quest (5 cols) -->
+      <div class="md:col-span-5 bg-surface-container-lowest rounded-3xl p-5 shadow-[0_4px_16px_rgba(31,27,46,0.04)] border border-outline-soft/40 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-xl bg-[#FFF4D6] grid place-items-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#a07a00" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+              </div>
+              <div>
+                <p class="font-label text-label-sm text-on-surface font-extrabold">Complete 3 lessons</p>
+                <p class="font-body text-[11px] text-on-surface-variant">1 done · +30 XP bonus</p>
+              </div>
+            </div>
+            <span class="font-label text-xs font-black text-primary px-2 py-0.5 rounded-full bg-primary-fixed">1/3</span>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="w-full h-2.5 rounded-full bg-surface-container overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-primary to-primary-container rounded-full transition-all duration-500" style="width:33.3%"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── STAGE PATH SECTION ── -->
+    <div class="relative bg-surface-container-lowest rounded-3xl p-6 sm:p-10 border border-outline-soft/30 shadow-[0_12px_32px_rgba(31,27,46,0.04)]">
+      
+      <!-- Stage header bar inside map -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-8 mb-4 border-b border-surface-container">
+        <div>
+          <span class="font-label text-[11px] text-primary font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-primary-fixed">
+            Stage 1 of 6 · Foundations
+          </span>
+          <h2 class="font-headline text-headline-md text-on-surface font-extrabold mt-2">Alphabet &amp; Sound Blends</h2>
+        </div>
+        <div class="flex items-center gap-2 text-xs font-label text-on-surface-variant">
+          <span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-ping"></span>
+          <span>1 Active Lesson ready</span>
+        </div>
+      </div>
+
+      <!-- Sinuous Learning Path Container -->
+      <div class="relative max-w-[460px] mx-auto py-4">
+        
+        <!-- Curved Connecting SVG Path in background -->
+        <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 460 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Animated / styled path connecting the centers of the 6 nodes -->
+          <path d="M 160 70 
+                   C 160 140, 300 130, 300 190 
+                   C 300 250, 160 250, 160 320 
+                   C 160 390, 300 390, 300 460 
+                   C 300 530, 160 530, 160 600 
+                   C 160 670, 300 670, 300 710" 
+                stroke="#d4cceb" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 14"/>
+          <!-- Active mastered segment -->
+          <path d="M 160 70 C 160 110, 200 120, 220 130" 
+                stroke="#6c4df6" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 14" opacity="0.6"/>
+        </svg>
+
+        <div class="flex flex-col items-center gap-12 relative z-10">
+
+          <!-- ===== STAGE 1 (ACTIVE NODE) ===== -->
+          <div class="relative flex flex-col items-center" style="transform: translateX(-70px);">
+            <!-- Label Tag -->
+            <div class="mb-2 px-3 py-1 rounded-xl bg-primary-fixed text-primary font-label text-xs font-black tracking-wide shadow-sm flex items-center gap-1.5">
+              <span>Stage 1 · Alphabet</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            </div>
+            
+            <!-- Big Tactile Node -->
+            <button class="stage-node relative w-24 h-24 rounded-full bg-primary-container text-on-primary shadow-[0_8px_0_0_#432CAE] animate-pulse-ring grid place-items-center group" 
+                    aria-label="Start Stage 1: Alphabet">
+              <span class="font-headline text-[28px] font-black leading-none drop-shadow-sm">Aa</span>
+              
+              <!-- Floating stars celebration -->
+              <span class="absolute -top-2 -right-1 star-float">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#f4bf3c" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+              </span>
+              <span class="absolute -bottom-1 -left-2 star-float" style="animation-delay:0.6s">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#f4bf3c" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+              </span>
+            </button>
+
+            <!-- START CTA Pill -->
+            <span class="mt-3.5 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary-container text-on-primary font-label text-xs font-black shadow-[0_4px_0_0_#432CAE] tracking-wider uppercase">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <span>START LESSON</span>
+            </span>
+          </div>
+
+          <!-- ===== STAGE 2 (LOCKED) ===== -->
+          <div class="relative flex flex-col items-center" style="transform: translateX(70px);">
+            <span class="font-label text-xs text-on-surface-variant/80 font-extrabold uppercase tracking-wider mb-2">Stage 2 · Sounds</span>
+            <button class="stage-node relative w-20 h-20 rounded-full bg-surface-container text-on-surface-variant/40 shadow-[0_6px_0_0_#d4cceb] grid place-items-center group" disabled aria-label="Stage 2 locked">
+              <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+              </div>
+            </button>
+            <span class="mt-2 text-[11px] font-label text-outline font-bold">Unlocks at 50 XP</span>
+          </div>
+
+          <!-- ===== STAGE 3 (LOCKED) ===== -->
+          <div class="relative flex flex-col items-center" style="transform: translateX(-70px);">
+            <span class="font-label text-xs text-on-surface-variant/80 font-extrabold uppercase tracking-wider mb-2">Stage 3 · Numbers</span>
+            <button class="stage-node relative w-20 h-20 rounded-full bg-surface-container text-on-surface-variant/40 shadow-[0_6px_0_0_#d4cceb] grid place-items-center" disabled aria-label="Stage 3 locked">
+              <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+              </div>
+            </button>
+            <span class="mt-2 text-[11px] font-label text-outline font-bold">1 → 100 counting</span>
+          </div>
+
+          <!-- ===== STAGE 4 (LOCKED) ===== -->
+          <div class="relative flex flex-col items-center" style="transform: translateX(70px);">
+            <span class="font-label text-xs text-on-surface-variant/80 font-extrabold uppercase tracking-wider mb-2">Stage 4 · Build Words</span>
+            <button class="stage-node relative w-20 h-20 rounded-full bg-surface-container text-on-surface-variant/40 shadow-[0_6px_0_0_#d4cceb] grid place-items-center" disabled aria-label="Stage 4 locked">
+              <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+              </div>
+            </button>
+            <span class="mt-2 text-[11px] font-label text-outline font-bold">Syllables &amp; Digraphs</span>
+          </div>
+
+          <!-- ===== STAGE 5 (LOCKED) ===== -->
+          <div class="relative flex flex-col items-center" style="transform: translateX(-70px);">
+            <span class="font-label text-xs text-on-surface-variant/80 font-extrabold uppercase tracking-wider mb-2">Stage 5 · Introduce</span>
+            <button class="stage-node relative w-20 h-20 rounded-full bg-surface-container text-on-surface-variant/40 shadow-[0_6px_0_0_#d4cceb] grid place-items-center" disabled aria-label="Stage 5 locked">
+              <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+              </div>
+            </button>
+            <span class="mt-2 text-[11px] font-label text-outline font-bold">Greetings &amp; Name</span>
+          </div>
+
+          <!-- ===== STAGE 6 (LOCKED CAPSTONE) ===== -->
+          <div class="relative flex flex-col items-center" style="transform: translateX(70px);">
+            <span class="font-label text-xs text-on-surface-variant/80 font-extrabold uppercase tracking-wider mb-2">Stage 6 · Reading</span>
+            <button class="stage-node relative w-20 h-20 rounded-full bg-surface-container text-on-surface-variant/40 shadow-[0_6px_0_0_#d4cceb] grid place-items-center" disabled aria-label="Stage 6 locked">
+              <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+            </button>
+            <span class="mt-2 text-[11px] font-label text-outline font-bold">Capstone Stories</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer Reassurance Note -->
+      <div class="mt-14 pt-6 border-t border-surface-container text-center">
+        <p class="font-body text-body-sm text-on-surface-variant">
+          Complete <strong class="text-on-surface font-extrabold">Stage 1</strong> to unlock what's next. No streak guilt, learn whenever you are ready.
+        </p>
+        <p class="mt-2 font-body text-body-sm text-on-surface-variant">
+          Can't wait? <a href="#" class="font-extrabold text-primary hover:underline inline-flex items-center gap-1">Try practice sound lab <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MOBILE BOTTOM NAV
+════════════════════════════════════════════════════════════════ -->
+<nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-[rgba(31,27,46,0.08)] safe-bottom shadow-[0_-4px_20px_rgba(31,27,46,0.04)]">
+  <div class="grid grid-cols-5 h-16">
+    <a href="#" class="nav-tab-active flex flex-col items-center justify-center gap-1 font-label text-[11px] font-extrabold">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+      <span>Learn</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center gap-1 text-on-surface-variant font-label text-[11px] font-bold hover:text-on-surface transition-colors">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <span>Practice</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center gap-1 text-on-surface-variant font-label text-[11px] font-bold hover:text-on-surface transition-colors">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+      <span>Letters</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center gap-1 text-on-surface-variant font-label text-[11px] font-bold hover:text-on-surface transition-colors">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      <span>Profile</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center gap-1 text-on-surface-variant font-label text-[11px] font-bold hover:text-on-surface transition-colors">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 012.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <span>Settings</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ── Read user data from localStorage (from onboarding) ──
+    const lang = localStorage.getItem('lingua_lang') || 'english';
+    const langNames = { english: 'English', twi: 'Twi', german: 'German', dutch: 'Dutch', spanish: 'Spanish' };
+    const langName = langNames[lang] || 'English';
+    document.querySelectorAll('[data-lang-name]').forEach(el => el.textContent = langName);
+    document.querySelectorAll('[data-lang-flag]').forEach(el => {
+      const flags = { english: '🇬🇧', twi: '🇬🇭', german: '🇩🇪', dutch: '🇳🇱', spanish: '🇪🇸' };
+      el.textContent = flags[lang] || '🇬🇧';
+    });
+
+    // ── Active stage node click → go to Stage Overview ──
+    document.querySelector('.stage-node:not([disabled])')?.addEventListener('click', () => {
+      // window.location.href = '/stage/alphabet';
+      alert("Opening Stage 1: Alphabet →\n\nNext screen: Stage Overview showing all 26 letter sub-lessons.");
+    });
+
+    // ── Locked node tap feedback (gentle shake with prompt) ──
+    document.querySelectorAll('.stage-node[disabled]').forEach(node => {
+      node.addEventListener('click', () => {
+        node.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-4px)' },
+          { transform: 'translateX(4px)' },
+          { transform: 'translateX(-4px)' },
+          { transform: 'translateX(4px)' },
+          { transform: 'translateX(0)' }
+        ], { duration: 320, easing: 'ease-in-out' });
+      });
+    });
+  });
+</script>
+</body>
+</html>

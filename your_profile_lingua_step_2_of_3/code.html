@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Your profile — LinGua</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#532ddd",
+        "primary-container": "#6c4df6",
+        "on-primary": "#ffffff",
+        "secondary": "#a7391e",
+        "secondary-container": "#fd7958",
+        "on-secondary": "#ffffff",
+        "success": "#2EC4B6",
+        "success-deep": "#0c8a7e",
+        "surface": "#fdf7ff",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f7f1ff",
+        "surface-container": "#f2ebff",
+        "on-surface": "#1d192c",
+        "on-surface-variant": "#484555",
+        "primary-fixed": "#e5deff",
+        "secondary-fixed": "#ffdad2",
+        "outline": "#797587"
+      },
+      borderRadius: {
+        DEFAULT: "0.25rem",
+        lg: "0.5rem",
+        xl: "0.75rem",
+        "2xl": "1rem",
+        "3xl": "1.5rem",
+        full: "9999px"
+      },
+      fontFamily: {
+        display: ["Nunito Sans"],
+        headline: ["Nunito Sans"],
+        label: ["Nunito Sans"],
+        body: ["Inter"]
+      },
+      fontSize: {
+        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "800" }],
+        "headline-md": ["24px", { lineHeight: "30px", fontWeight: "800" }],
+        "headline-sm": ["20px", { lineHeight: "26px", fontWeight: "700" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "label-lg": ["16px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "800" }],
+        "label-md": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "700" }],
+        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }]
+      }
+    }
+  }
+}
+</script>
+<style>
+  html,body{margin:0;padding:0;}
+  body{overscroll-behavior:none;}
+  ::-webkit-scrollbar{display:none;}
+
+  /* ── MASCOT ANIMATIONS ── */
+  @keyframes mascot-float{0%,100%{transform:translateY(3px) scale(0.99,1.01);}50%{transform:translateY(-8px) scale(1.01,0.99);}}
+  @keyframes mascot-wave{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(14deg);}}
+  @keyframes mascot-blink{0%,94%,98%,100%{transform:scaleY(1);}96%{transform:scaleY(0.1);}}
+  @keyframes mascot-leaf-sway{0%,100%{transform:rotate(-3deg);}50%{transform:rotate(5deg);}}
+  @keyframes glow-pulse{0%,100%{transform:scale(1);opacity:0.65;}50%{transform:scale(1.08);opacity:0.95;}}
+
+  .animate-mascot-float{animation:mascot-float 3.5s ease-in-out infinite;}
+  .animate-mascot-wave{transform-origin:172px 150px;animation:mascot-wave 2.2s ease-in-out infinite;}
+  .animate-mascot-blink{transform-origin:120px 137px;animation:mascot-blink 4.5s infinite;}
+  .animate-mascot-leaves{transform-origin:120px 74px;animation:mascot-leaf-sway 3s ease-in-out infinite;}
+  .animate-glow{animation:glow-pulse 6s ease-in-out infinite alternate;}
+
+  /* ── INTERACTIVE SELECTABLE TILES ── */
+  .select-card {
+    transition: all 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .select-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px -6px rgba(108, 77, 246, 0.12), 0 4px 10px rgba(0,0,0,0.03);
+  }
+  .select-card[data-selected="true"] {
+    border-color: #6c4df6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 1.5px #6c4df6, 0 16px 32px -8px rgba(108, 77, 246, 0.2);
+    transform: translateY(-3px);
+  }
+
+  /* Selection radio/check pill */
+  .select-check {
+    transition: all 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+    border: 2px solid #d4cde3;
+    border-radius: 9999px;
+    background-color: #f7f1ff;
+  }
+  .select-card[data-selected="true"] .select-check {
+    background-color: #6c4df6;
+    border-color: #6c4df6;
+    box-shadow: 0 2px 6px rgba(108, 77, 246, 0.35);
+  }
+  .select-check svg {
+    opacity: 0;
+    transform: scale(0.4) rotate(-15deg);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .select-card[data-selected="true"] .select-check svg {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  /* Badge indicator for active cards */
+  .selection-ring {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .select-card[data-selected="true"] .selection-ring {
+    opacity: 1;
+  }
+
+  /* ── 3D TACTILE CONTINUE BUTTON ── */
+  .btn-continue {
+    transition: all 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+    background-color: #e5deff;
+    color: #9d98b0;
+    box-shadow: 0 4px 0 0 #d4cceb;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  .btn-continue.is-active {
+    background-color: #6c4df6;
+    color: #ffffff;
+    box-shadow: 0 5px 0 0 #5436D6;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .btn-continue.is-active:hover {
+    filter: brightness(1.04);
+    transform: translateY(1px);
+    box-shadow: 0 4px 0 0 #5436D6;
+  }
+  .btn-continue.is-active:active {
+    transform: translateY(5px);
+    box-shadow: none;
+  }
+
+  /* Speech bubble pointer */
+  .speech-tail::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 24px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #ffffff;
+  }
+  @media (max-width: 767px) {
+    .speech-tail::before {
+      left: 50%;
+      top: -8px;
+      margin-left: -8px;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid #ffffff;
+      border-top: none;
+    }
+  }
+
+  .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-mascot-float, .animate-mascot-wave, .animate-mascot-blink, .animate-mascot-leaves, .animate-glow {
+      animation: none !important;
+      transform: none !important;
+    }
+    .select-card:hover { transform: none !important; }
+  }
+</style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary-fixed selection:text-primary">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HEADER (Step 2 of 3)
+════════════════════════════════════════════════════════════════ -->
+<header class="w-full max-w-[1020px] mx-auto px-5 lg:px-8 py-5 flex items-center justify-between shrink-0">
+  <!-- Back button -->
+  <button type="button" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary-fixed text-on-surface transition-all active:scale-95 shadow-sm" aria-label="Go back">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  </button>
+
+  <!-- Progress Stepper -->
+  <div class="flex items-center gap-3 bg-surface-container-lowest px-4 py-1.5 rounded-full shadow-[0_2px_8px_rgba(108,77,246,0.06)] border border-[rgba(31,27,46,0.04)]" aria-label="Step 2 of 3">
+    <div class="flex items-center gap-1.5">
+      <span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+      <span class="w-6 h-2.5 rounded-full bg-primary-container transition-all"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-primary-fixed"></span>
+    </div>
+    <span class="font-label text-[11px] font-black tracking-wider text-primary uppercase">Step 2 of 3</span>
+  </div>
+
+  <!-- Brandmark -->
+  <div class="flex items-center gap-2">
+    <div class="w-7 h-7 rounded-xl bg-primary flex items-center justify-center text-white shadow-sm">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-2 3-5 3-5 6 0 2 2 3 2 5 0 2-1 3-1 5 0 2 2 4 4 4s4-2 4-4c0-2-1-3-1-5 0-2 2-3 2-5 0-3-3-3-5-6z"/></svg>
+    </div>
+    <span class="font-headline font-black text-lg tracking-tight text-on-surface hidden sm:inline">Lin<span class="text-primary-container">Gua</span></span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════════ -->
+<main class="flex-1 w-full max-w-[1020px] mx-auto px-5 lg:px-8 flex flex-col pb-36">
+
+  <!-- ── HERO / MASCOT SPEECH BANNER ── -->
+  <section class="flex flex-col md:flex-row items-center gap-6 lg:gap-8 mt-3 md:mt-5 bg-gradient-to-r from-surface-container-low via-surface-container to-primary-fixed/30 border border-white/60 p-6 md:p-7 rounded-3xl shadow-[0_4px_20px_rgba(108,77,246,0.05)] relative overflow-hidden">
+    
+    <!-- Ambient backlight -->
+    <div class="w-48 h-48 rounded-full bg-gradient-to-tr from-primary/20 via-tertiary-fixed-dim/20 to-success/25 blur-3xl absolute -left-10 -top-10 -z-10 animate-glow pointer-events-none"></div>
+
+    <!-- Mascot Koko -->
+    <div class="relative shrink-0 flex items-center justify-center">
+      <div class="relative z-10 animate-mascot-float">
+        <svg class="w-28 h-36 md:w-32 md:h-40 drop-shadow-lg" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Koko waving">
+          <defs>
+            <radialGradient cx="45%" cy="40%" id="bodyGrad" r="65%">
+              <stop offset="0%" stop-color="#3CE7D8"/><stop offset="65%" stop-color="#2EC4B6"/><stop offset="100%" stop-color="#1FA89B"/>
+            </radialGradient>
+          </defs>
+          <g class="animate-mascot-leaves">
+            <path d="M120 70 C95 40 70 50 68 76 C66 98 100 88 120 74 Z" fill="#2EC4B6"/>
+            <path d="M120 70 C105 52 82 58 78 72" stroke="#3CE7D8" stroke-linecap="round" stroke-width="2.5"/>
+            <path d="M120 72 C135 30 168 38 166 64 C164 84 135 80 120 72 Z" fill="#38D9A9"/>
+            <path d="M120 72 C134 46 154 50 152 64" stroke="#80F5EA" stroke-linecap="round" stroke-width="2.5"/>
+            <circle cx="120" cy="74" fill="#1FA89B" r="5"/>
+          </g>
+          <rect fill="#2EC4B6" height="20" rx="10" width="34" x="76" y="240"/>
+          <rect fill="#FFFFFF" height="8" rx="4" width="38" x="74" y="254"/>
+          <rect fill="#2EC4B6" height="20" rx="10" width="34" x="130" y="240"/>
+          <rect fill="#FFFFFF" height="8" rx="4" width="38" x="128" y="254"/>
+          <path d="M64 165 C62 108 86 78 120 78 C154 78 178 108 176 165 C174 216 156 244 120 244 C84 244 66 216 64 165 Z" fill="url(#bodyGrad)"/>
+          <path d="M68 155 C52 165 48 185 58 192 C66 198 74 180 72 170" fill="#2EC4B6"/>
+          <g class="animate-mascot-wave">
+            <path d="M172 155 C190 148 206 130 196 118 C188 108 174 130 170 142" fill="#2EC4B6"/>
+            <circle cx="196" cy="120" fill="#3CE7D8" r="8"/>
+          </g>
+          <ellipse cx="88" cy="156" fill="#FF7A59" fill-opacity="0.45" rx="9" ry="5.5"/>
+          <ellipse cx="152" cy="156" fill="#FF7A59" fill-opacity="0.45" rx="9" ry="5.5"/>
+          <g class="animate-mascot-blink">
+            <ellipse cx="98" cy="136" fill="#fff" rx="13" ry="17"/>
+            <ellipse cx="102" cy="138" fill="#1D192C" rx="8" ry="11"/>
+            <circle cx="100" cy="133" fill="#fff" r="3.5"/>
+            <ellipse cx="142" cy="136" fill="#fff" rx="13" ry="17"/>
+            <ellipse cx="138" cy="138" fill="#1D192C" rx="8" ry="11"/>
+            <circle cx="136" cy="133" fill="#fff" r="3.5"/>
+          </g>
+          <path d="M107 160 C114 172 126 172 133 160" fill="none" stroke="#1D192C" stroke-linecap="round" stroke-width="3.5"/>
+          <path d="M114 167 C117 171 123 171 126 167" fill="#FF7A59"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Speech bubble & headline -->
+    <div class="relative speech-tail bg-surface-container-lowest p-5 sm:p-6 rounded-2xl shadow-[0_6px_20px_rgba(108,77,246,0.06)] border border-white flex-1 text-center md:text-left">
+      <div class="flex items-center justify-center md:justify-start gap-2 mb-1.5">
+        <span class="font-label text-[11px] font-extrabold uppercase tracking-widest text-primary-container bg-primary-fixed px-2.5 py-0.5 rounded-full">
+          ✦ Koko Guides
+        </span>
+        <span class="text-on-surface-variant/70 text-xs font-medium">Personalized Journey</span>
+      </div>
+      <h1 class="font-headline text-[26px] sm:text-headline-lg text-on-surface font-black leading-tight tracking-tight">
+        Tell us about your learning style.
+      </h1>
+      <p class="mt-2 font-body text-body-md text-on-surface-variant leading-relaxed" id="kokoQuote">
+        "Pick who is learning and how much time feels comfortable. You can always change this later — zero pressure, zero streak guilt!"
+      </p>
+    </div>
+  </section>
+
+  <!-- ── SECTION 1: WHO IS LEARNING? ── -->
+  <section class="mt-9">
+    <div class="flex items-center justify-between mb-3.5">
+      <div>
+        <h2 class="font-headline text-headline-sm text-on-surface font-extrabold flex items-center gap-2">
+          <span>Who's learning?</span>
+          <span class="text-xs font-normal text-on-surface-variant">(Select one)</span>
+        </h2>
+        <p class="font-body text-xs sm:text-body-sm text-on-surface-variant">We customize vocabulary tone, fonts, and examples for each age bracket.</p>
+      </div>
+      <span class="text-xs font-bold text-primary-container bg-primary-fixed px-2.5 py-1 rounded-full hidden sm:inline-block">Age Profile</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 lg:gap-4" id="ageGroup">
+      
+      <!-- Kid -->
+      <button type="button" class="select-card text-left bg-surface-container-lowest rounded-2xl p-4 sm:p-5 flex items-center gap-4 shadow-[0_4px_14px_rgba(31,27,46,0.03)] border border-[rgba(31,27,46,0.05)]" data-value="kid" data-selected="false" aria-pressed="false">
+        <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#FFF4D6] flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover:scale-105">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a07a00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <h3 class="font-headline text-headline-sm sm:text-headline-md text-on-surface font-black leading-snug">Kid</h3>
+            <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-[#FFF0C2] text-[#8a6800]">Playful</span>
+          </div>
+          <p class="font-body text-xs sm:text-[13px] text-on-surface-variant mt-0.5">Ages 6–12 · Visual & Phonics</p>
+        </div>
+        <span class="select-check w-6 h-6 flex items-center justify-center shrink-0">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </span>
+      </button>
+
+      <!-- Teen -->
+      <button type="button" class="select-card text-left bg-surface-container-lowest rounded-2xl p-4 sm:p-5 flex items-center gap-4 shadow-[0_4px_14px_rgba(31,27,46,0.03)] border border-[rgba(31,27,46,0.05)]" data-value="teen" data-selected="false" aria-pressed="false">
+        <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-primary-fixed flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover:scale-105">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#532ddd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 7h16v13a1 1 0 01-1 1H5a1 1 0 01-1-1V7z"/><path d="M8 7V5a4 4 0 018 0v2"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <h3 class="font-headline text-headline-sm sm:text-headline-md text-on-surface font-black leading-snug">Teen</h3>
+            <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-primary-fixed text-primary">School</span>
+          </div>
+          <p class="font-body text-xs sm:text-[13px] text-on-surface-variant mt-0.5">Ages 13–19 · Rapid Foundations</p>
+        </div>
+        <span class="select-check w-6 h-6 flex items-center justify-center shrink-0">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </span>
+      </button>
+
+      <!-- Adult -->
+      <button type="button" class="select-card text-left bg-surface-container-lowest rounded-2xl p-4 sm:p-5 flex items-center gap-4 shadow-[0_4px_14px_rgba(31,27,46,0.03)] border border-[rgba(31,27,46,0.05)]" data-value="adult" data-selected="false" aria-pressed="false">
+        <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#D4F3EE] flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover:scale-105">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0c8a7e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <h3 class="font-headline text-headline-sm sm:text-headline-md text-on-surface font-black leading-snug">Adult</h3>
+            <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-[#D4F3EE] text-[#0c8a7e]">Dignified</span>
+          </div>
+          <p class="font-body text-xs sm:text-[13px] text-on-surface-variant mt-0.5">Age 20+ · Heritage & Fluency</p>
+        </div>
+        <span class="select-check w-6 h-6 flex items-center justify-center shrink-0">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ── SECTION 2: DAILY GOAL ── -->
+  <section class="mt-9">
+    <div class="flex items-center justify-between mb-3.5">
+      <div>
+        <h2 class="font-headline text-headline-sm text-on-surface font-extrabold flex items-center gap-2">
+          <span>What's your daily goal?</span>
+          <span class="text-xs font-normal text-on-surface-variant">(Select one)</span>
+        </h2>
+        <p class="font-body text-xs sm:text-body-sm text-on-surface-variant">LinGua never penalizes missed days or locks lessons behind broken streaks.</p>
+      </div>
+      <span class="text-xs font-bold text-secondary bg-secondary-fixed px-2.5 py-1 rounded-full hidden sm:inline-block">Pacing</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 lg:gap-4" id="dailyGoal">
+      
+      <!-- Casual (5 min) -->
+      <button type="button" class="select-card text-left bg-surface-container-lowest rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-[0_4px_14px_rgba(31,27,46,0.03)] border border-[rgba(31,27,46,0.05)]" data-value="casual" data-selected="false" aria-pressed="false">
+        <div class="flex items-start justify-between w-full">
+          <div class="w-12 h-12 rounded-2xl bg-[#FFF4D6] flex items-center justify-center shrink-0 text-[#a07a00]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 8h1a4 4 0 010 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><path d="M6 2v2M10 2v2M14 2v2"/>
+            </svg>
+          </div>
+          <span class="select-check w-6 h-6 flex items-center justify-center shrink-0">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+        </div>
+        <div class="mt-4">
+          <div class="flex items-center gap-2">
+            <h3 class="font-headline text-headline-sm text-on-surface font-extrabold">Casual</h3>
+          </div>
+          <p class="font-headline font-black text-primary text-sm mt-0.5">5 min / day <span class="text-xs text-on-surface-variant font-medium">· 1 lesson</span></p>
+          <p class="font-body text-xs text-on-surface-variant mt-2 leading-relaxed">"Just dipping your toes in without any rush."</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-[rgba(31,27,46,0.05)] flex items-center gap-1.5 text-[11px] font-bold text-on-surface-variant">
+          <span class="w-2 h-2 rounded-full bg-[#FFC845]"></span>
+          <span>Gentle light pace</span>
+        </div>
+      </button>
+
+      <!-- Regular (10 min) - Popular Highlight -->
+      <button type="button" class="select-card text-left bg-surface-container-lowest rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-[0_4px_14px_rgba(31,27,46,0.03)] border border-[rgba(31,27,46,0.05)] relative" data-value="regular" data-selected="false" aria-pressed="false">
+        <span class="absolute -top-3 right-4 bg-secondary-container text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
+          ★ Most Popular
+        </span>
+        <div class="flex items-start justify-between w-full">
+          <div class="w-12 h-12 rounded-2xl bg-primary-fixed flex items-center justify-center shrink-0 text-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <span class="select-check w-6 h-6 flex items-center justify-center shrink-0">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+        </div>
+        <div class="mt-4">
+          <div class="flex items-center gap-2">
+            <h3 class="font-headline text-headline-sm text-on-surface font-extrabold">Regular</h3>
+          </div>
+          <p class="font-headline font-black text-primary text-sm mt-0.5">10 min / day <span class="text-xs text-on-surface-variant font-medium">· 2 lessons</span></p>
+          <p class="font-body text-xs text-on-surface-variant mt-2 leading-relaxed">"Steady retention and organic phonetic growth."</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-[rgba(31,27,46,0.05)] flex items-center gap-1.5 text-[11px] font-bold text-primary">
+          <span class="w-2 h-2 rounded-full bg-primary"></span>
+          <span>Optimal golden ratio</span>
+        </div>
+      </button>
+
+      <!-- Serious (20 min) -->
+      <button type="button" class="select-card text-left bg-surface-container-lowest rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-[0_4px_14px_rgba(31,27,46,0.03)] border border-[rgba(31,27,46,0.05)]" data-value="serious" data-selected="false" aria-pressed="false">
+        <div class="flex items-start justify-between w-full">
+          <div class="w-12 h-12 rounded-2xl bg-secondary-fixed flex items-center justify-center shrink-0 text-secondary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4.5 16.5c-1.5-1.5-2-4 0-6L12 3l7.5 7.5c2 2 1.5 4.5 0 6L12 21l-7.5-4.5z"/><path d="M9 12l3 3 6-6"/>
+            </svg>
+          </div>
+          <span class="select-check w-6 h-6 flex items-center justify-center shrink-0">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+        </div>
+        <div class="mt-4">
+          <div class="flex items-center gap-2">
+            <h3 class="font-headline text-headline-sm text-on-surface font-extrabold">Serious</h3>
+          </div>
+          <p class="font-headline font-black text-secondary text-sm mt-0.5">20 min / day <span class="text-xs text-on-surface-variant font-medium">· 4 lessons</span></p>
+          <p class="font-body text-xs text-on-surface-variant mt-2 leading-relaxed">"Fast-track immersive reading and speaking."</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-[rgba(31,27,46,0.05)] flex items-center gap-1.5 text-[11px] font-bold text-secondary">
+          <span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+          <span>Intensive immersion</span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ── TRUST & PEDAGOGY FOOTNOTE ── -->
+  <section class="mt-8 p-4 sm:p-5 rounded-2xl bg-surface-container-low/70 border border-primary-fixed/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-success/20 text-success-deep flex items-center justify-center shrink-0 font-bold">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div>
+        <h4 class="font-headline text-sm font-extrabold text-on-surface">The LinGua Calmer Promise</h4>
+        <p class="font-body text-xs text-on-surface-variant mt-0.5">Free forever · No ads · No streak shame · Change settings anytime</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 font-label text-xs font-bold text-primary">
+      <span class="inline-flex items-center gap-1">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        Ready for Step 3
+      </span>
+    </div>
+  </section>
+
+  <!-- Error feedback message -->
+  <div id="errorMsg" class="mt-4 p-3 rounded-xl bg-red-50 border border-red-200 text-center text-sm font-bold hidden text-[#ba1a1a]">
+    Please select an age group and a daily goal to continue.
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     STICKY BOTTOM BAR (Action Dock)
+════════════════════════════════════════════════════════════════ -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-xl border-t border-[rgba(31,27,46,0.08)] p-4 sm:p-5 z-50">
+  <div class="max-w-[1020px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6">
+    <div class="hidden sm:flex flex-col text-left">
+      <span class="font-headline text-sm font-extrabold text-on-surface" id="statusSelectionText">Select your age and daily pace</span>
+      <span class="font-body text-xs text-on-surface-variant">Step 2 of 3 · Final setup step is next</span>
+    </div>
+    <button id="continueBtn" class="btn-continue w-full sm:w-auto sm:min-w-[340px] inline-flex items-center justify-center gap-2 rounded-2xl py-4 px-8 font-label text-label-lg">
+      <span id="btnText">Continue to Step 3</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14M13 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CLIENT SCRIPT (Exact functionality preserved + enriched UI)
+════════════════════════════════════════════════════════════════ -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Dynamic Koko quotes based on choice
+    const quotes = {
+      kid: "Awesome! We have colorful letters, visual counting, and sound games ready!",
+      teen: "Great! Fast, modern lessons that teach authentic pronunciation and real slang roots.",
+      adult: "Welcome! Dignified, thoughtful foundations tailored for real-world confidence."
+    };
+
+    function setupGroup(groupId, onChange) {
+      const group = document.getElementById(groupId);
+      const cards = group.querySelectorAll('.select-card');
+      let selectedValue = null;
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          // Deselect all
+          cards.forEach(c => {
+            c.dataset.selected = "false";
+            c.setAttribute('aria-pressed', 'false');
+          });
+          // Select clicked
+          card.dataset.selected = "true";
+          card.setAttribute('aria-pressed', 'true');
+          selectedValue = card.dataset.value;
+          if (onChange) onChange(selectedValue);
+          checkFormState();
+        });
+      });
+
+      return {
+        getSelected: () => selectedValue,
+        setSelected: (val) => {
+          cards.forEach(c => {
+            if (c.dataset.value === val) {
+              c.click();
+            }
+          });
+        }
+      };
+    }
+
+    const kokoQuote = document.getElementById('kokoQuote');
+    const statusText = document.getElementById('statusSelectionText');
+    const btnText = document.getElementById('btnText');
+
+    const ageGroup = setupGroup('ageGroup', (val) => {
+      if (quotes[val]) {
+        kokoQuote.textContent = `"${quotes[val]}"`;
+      }
+      updateStatusLabel();
+    });
+
+    const dailyGoal = setupGroup('dailyGoal', () => {
+      updateStatusLabel();
+    });
+
+    const continueBtn = document.getElementById('continueBtn');
+    const errorMsg = document.getElementById('errorMsg');
+
+    function updateStatusLabel() {
+      const age = ageGroup.getSelected();
+      const goal = dailyGoal.getSelected();
+      if (age && goal) {
+        statusText.textContent = `Ready! ${age.toUpperCase()} · ${goal.toUpperCase()} pace`;
+        btnText.textContent = `Continue to Step 3 (${goal.toUpperCase()})`;
+      } else if (age) {
+        statusText.textContent = `Profile: ${age.toUpperCase()} · Now pick daily pace`;
+        btnText.textContent = `Pick a Daily Pace`;
+      } else if (goal) {
+        statusText.textContent = `Pace: ${goal.toUpperCase()} · Now pick who's learning`;
+        btnText.textContent = `Pick Age Group`;
+      }
+    }
+
+    function checkFormState() {
+      const hasAge = ageGroup.getSelected() !== null;
+      const hasGoal = dailyGoal.getSelected() !== null;
+
+      if (hasAge && hasGoal) {
+        continueBtn.classList.add('is-active');
+        errorMsg.classList.add('hidden');
+      } else {
+        continueBtn.classList.remove('is-active');
+      }
+    }
+
+    // Default pre-selection for frictionless onboarding (can be changed by user)
+    // ageGroup.setSelected('adult');
+    // dailyGoal.setSelected('regular');
+
+    continueBtn.addEventListener('click', () => {
+      if (!continueBtn.classList.contains('is-active')) {
+        errorMsg.classList.remove('hidden');
+        continueBtn.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-6px)' },
+          { transform: 'translateX(6px)' },
+          { transform: 'translateX(-6px)' },
+          { transform: 'translateX(6px)' },
+          { transform: 'translateX(0)' }
+        ], { duration: 400, easing: 'ease-in-out' });
+        return;
+      }
+
+      const profile = {
+        language: localStorage.getItem('lingua_lang') || 'english',
+        ageGroup: ageGroup.getSelected(),
+        dailyGoal: dailyGoal.getSelected()
+      };
+
+      console.log("Profile complete:", profile);
+      alert(`Perfect! You're ready.\nAge: ${profile.ageGroup}\nGoal: ${profile.dailyGoal}\n\nNext screen: The Welcome Screen.`);
+    });
+  });
+</script>
+
+</body>
+</html>

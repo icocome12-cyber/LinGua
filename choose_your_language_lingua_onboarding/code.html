@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Choose your language — LinGua</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#6C4DF6",
+        "primary-dark": "#5436D6",
+        "primary-hover": "#5C3CE8",
+        "secondary": "#FF7A59",
+        "secondary-dark": "#E55C3A",
+        "tertiary": "#FFC845",
+        "success": "#2EC4B6",
+        "success-deep": "#0C8A7E",
+        "surface": "#FDFCFB",
+        "surface-card": "#FFFFFF",
+        "surface-muted": "#F4F1FF",
+        "on-surface": "#1F1B2E",
+        "on-surface-variant": "#6B6680",
+        "on-surface-soft": "#9D98B0",
+        "outline-soft": "#ECE8F8"
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.25rem',
+        '4xl': '1.75rem',
+        'full': '9999px'
+      },
+      fontFamily: {
+        headline: ["Nunito Sans", "sans-serif"],
+        display: ["Nunito Sans", "sans-serif"],
+        body: ["Inter", "sans-serif"]
+      },
+      boxShadow: {
+        'card-soft': '0 8px 24px rgba(108, 77, 246, 0.06)',
+        'card-hover': '0 16px 36px rgba(108, 77, 246, 0.12)',
+        'card-selected': '0 14px 32px rgba(108, 77, 246, 0.16)'
+      }
+    }
+  }
+}
+</script>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #FDFCFB;
+    color: #1F1B2E;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Mascot Animations */
+  @keyframes mascot-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+  }
+  @keyframes mascot-leaves {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(4deg); }
+  }
+  @keyframes mascot-blink {
+    0%, 92%, 96%, 100% { transform: scaleY(1); }
+    94% { transform: scaleY(0.1); }
+  }
+  @keyframes mascot-wave {
+    0%, 100% { transform: rotate(-4deg); }
+    50% { transform: rotate(14deg); }
+  }
+  @keyframes speech-pop {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .animate-koko-float { animation: mascot-float 4s ease-in-out infinite; }
+  .animate-koko-leaves { transform-origin: 120px 74px; animation: mascot-leaves 3s ease-in-out infinite; }
+  .animate-koko-blink { transform-origin: 120px 137px; animation: mascot-blink 4.5s infinite; }
+  .animate-koko-wave { transform-origin: 172px 150px; animation: mascot-wave 2.2s ease-in-out infinite; }
+  .animate-bubble-pop { animation: speech-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+  /* Interactive Language Cards */
+  .lang-option {
+    transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    border: 2px solid #ECE8F8;
+    background: #FFFFFF;
+  }
+  .lang-option:hover {
+    transform: translateY(-4px);
+    border-color: #D6CBFD;
+    box-shadow: 0 14px 30px rgba(108, 77, 246, 0.10);
+  }
+  .lang-option[data-selected="true"] {
+    border-color: #6C4DF6;
+    background: #FAF8FF;
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 2px #6C4DF6, 0 16px 32px rgba(108, 77, 246, 0.14);
+  }
+
+  /* Custom 3D tactile button */
+  .btn-tactile {
+    position: relative;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .btn-tactile:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 0 transparent !important;
+  }
+
+  /* Checkbox / Radio Circle */
+  .selection-ring {
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .lang-option[data-selected="true"] .selection-ring {
+    background-color: #6C4DF6;
+    border-color: #6C4DF6;
+  }
+  .selection-check {
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  .lang-option[data-selected="true"] .selection-check {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* Continue button reactive state */
+  #continueBtn.is-disabled {
+    background: #E8E3FA;
+    color: #9D98B0;
+    box-shadow: 0 4px 0 0 #D3C9F0;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  #continueBtn.is-enabled {
+    background: #6C4DF6;
+    color: #FFFFFF;
+    box-shadow: 0 5px 0 0 #5436D6;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  #continueBtn.is-enabled:hover {
+    background: #5C3CE8;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 0 0 #5436D6;
+  }
+  #continueBtn.is-enabled:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 0 #5436D6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-koko-float, .animate-koko-leaves, .animate-koko-blink, .animate-koko-wave {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+</style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-surface antialiased selection:bg-primary/10 selection:text-primary">
+
+  <!-- Ambient Decorative Background Glows -->
+  <div class="pointer-events-none fixed inset-0 overflow-hidden -z-10">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/6 blur-[90px]"></div>
+    <div class="absolute top-1/4 -right-32 w-96 h-96 rounded-full bg-secondary/8 blur-[100px]"></div>
+    <div class="absolute -bottom-24 left-1/3 w-80 h-80 rounded-full bg-success/8 blur-[90px]"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       STICKY NAVBAR
+  ════════════════════════════════════════════════════════════════ -->
+  <header class="w-full bg-white/85 backdrop-blur-md border-b border-[rgba(31,27,46,0.06)] sticky top-0 z-40">
+    <div class="max-w-[1120px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Back to Home / Landing -->
+      <a href="#" class="inline-flex items-center gap-2 group text-on-surface-variant hover:text-on-surface transition-colors py-1.5 px-2 -ml-2 rounded-xl hover:bg-surface-muted" aria-label="Back to home">
+        <span class="w-8 h-8 rounded-full bg-surface-muted group-hover:bg-primary-dark/10 flex items-center justify-center text-on-surface">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </span>
+        <span class="font-headline font-bold text-sm hidden sm:inline">Back</span>
+      </a>
+
+      <!-- Progress Stepper (Step 1 of 3) -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5">
+          <div class="w-6 h-2 rounded-full bg-primary transition-all"></div>
+          <div class="w-2 h-2 rounded-full bg-outline-soft"></div>
+          <div class="w-2 h-2 rounded-full bg-outline-soft"></div>
+        </div>
+        <span class="font-headline font-extrabold text-xs uppercase tracking-wider text-primary bg-surface-muted px-2.5 py-1 rounded-full">
+          Step 1 of 3
+        </span>
+      </div>
+
+      <!-- Brand Micro-mark -->
+      <div class="flex items-center gap-2">
+        <svg class="h-6 w-6" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect width="40" height="40" rx="10" fill="#6C4DF6"/>
+          <path d="M20 27c-4 0-6-3-6-6 0-1 0-2 1-3 1 4 4 4 5 4s3-2 3-4c0 2 1 3 3 3-1 5-4 6-6 6Z" fill="#fff"/>
+          <path d="M14 14c0-2 2-3 3-2-1 1-2 2-2 4-1 0-1-1-1-2Z" fill="#FFC845"/>
+          <path d="M20 14c2 0 3-2 2-3-1 1-2 2-4 2 0 1 1 1 2 1Z" fill="#FFC845"/>
+        </svg>
+        <span class="font-headline font-black text-base tracking-tight hidden md:inline">
+          <span class="text-on-surface">Lin</span><span class="text-primary">Gua</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       MAIN CONTENT CONTAINER
+  ════════════════════════════════════════════════════════════════ -->
+  <main class="flex-1 w-full max-w-[1120px] mx-auto px-5 sm:px-8 pt-8 pb-36">
+
+    <!-- Interactive Mascot Dialogue Hero -->
+    <div class="flex flex-col md:flex-row items-center gap-6 md:gap-10 pb-4">
+      
+      <!-- Koko Mascot SVG -->
+      <div class="relative shrink-0 flex items-center justify-center">
+        <div class="w-36 h-36 md:w-40 md:h-40 rounded-full bg-gradient-to-tr from-primary/15 via-tertiary/20 to-success/20 blur-xl absolute -z-10"></div>
+        <div class="relative z-10 animate-koko-float">
+          <svg class="w-32 h-36 md:w-36 md:h-44 drop-shadow-md" viewBox="0 0 240 280" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Koko the sprout waving friendly">
+            <defs>
+              <radialGradient cx="45%" cy="40%" id="sproutGrad" r="65%">
+                <stop offset="0%" stop-color="#3CE7D8"/>
+                <stop offset="65%" stop-color="#2EC4B6"/>
+                <stop offset="100%" stop-color="#1FA89B"/>
+              </radialGradient>
+              <radialGradient cx="50%" cy="40%" id="bellyGleam" r="50%">
+                <stop offset="0%" stop-color="#80F5EA" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#3CE7D8" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Leaves on top -->
+            <g class="animate-koko-leaves">
+              <path d="M120 70 C95 40 70 50 68 76 C66 98 100 88 120 74 Z" fill="#2EC4B6"/>
+              <path d="M120 70 C105 52 82 58 78 72" stroke="#3CE7D8" stroke-linecap="round" stroke-width="2.5"/>
+              <path d="M120 72 C135 30 168 38 166 64 C164 84 135 80 120 72 Z" fill="#38D9A9"/>
+              <path d="M120 72 C134 46 154 50 152 64" stroke="#80F5EA" stroke-linecap="round" stroke-width="2.5"/>
+              <circle cx="120" cy="74" fill="#1FA89B" r="5"/>
+            </g>
+
+            <!-- Feet with white soles -->
+            <rect fill="#2EC4B6" height="20" rx="10" width="34" x="76" y="240"/>
+            <rect fill="#FFFFFF" height="8" rx="4" width="38" x="74" y="254"/>
+            <rect fill="#2EC4B6" height="20" rx="10" width="34" x="130" y="240"/>
+            <rect fill="#FFFFFF" height="8" rx="4" width="38" x="128" y="254"/>
+
+            <!-- Main Body -->
+            <path d="M64 165 C62 108 86 78 120 78 C154 78 178 108 176 165 C174 216 156 244 120 244 C84 244 66 216 64 165 Z" fill="url(#sproutGrad)"/>
+            <ellipse cx="120" cy="180" fill="url(#bellyGleam)" rx="36" ry="42"/>
+
+            <!-- Left Hand resting -->
+            <path d="M68 155 C52 165 48 185 58 192 C66 198 74 180 72 170" fill="#2EC4B6"/>
+
+            <!-- Right Waving Hand -->
+            <g class="animate-koko-wave">
+              <path d="M172 155 C190 148 206 130 196 118 C188 108 174 130 170 142" fill="#2EC4B6"/>
+              <circle cx="196" cy="120" fill="#3CE7D8" r="8"/>
+            </g>
+
+            <!-- Rosy Coral Cheeks -->
+            <ellipse cx="88" cy="156" fill="#FF7A59" fill-opacity="0.45" rx="9" ry="5.5"/>
+            <ellipse cx="152" cy="156" fill="#FF7A59" fill-opacity="0.45" rx="9" ry="5.5"/>
+
+            <!-- Blinking Big Cute Eyes -->
+            <g class="animate-koko-blink">
+              <ellipse cx="98" cy="136" fill="#FFFFFF" rx="13" ry="17"/>
+              <ellipse cx="102" cy="138" fill="#1F1B2E" rx="8" ry="11"/>
+              <circle cx="100" cy="133" fill="#FFFFFF" r="3.5"/>
+              <circle cx="105" cy="142" fill="#FFFFFF" r="1.5"/>
+              <ellipse cx="142" cy="136" fill="#FFFFFF" rx="13" ry="17"/>
+              <ellipse cx="138" cy="138" fill="#1F1B2E" rx="8" ry="11"/>
+              <circle cx="136" cy="133" fill="#FFFFFF" r="3.5"/>
+              <circle cx="141" cy="142" fill="#FFFFFF" r="1.5"/>
+            </g>
+
+            <!-- Warm Smile -->
+            <path d="M107 160 C114 172 126 172 133 160" fill="none" stroke="#1F1B2E" stroke-linecap="round" stroke-width="3.5"/>
+            <path d="M114 167 C117 171 123 171 126 167" fill="#FF7A59"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Speech Bubble / Header Text -->
+      <div class="flex-1 text-center md:text-left">
+        <!-- Floating Speech Tag -->
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-headline text-xs font-black tracking-wide mb-2.5">
+          <span>✨</span>
+          <span id="kokoTipText">Koko says: "Let's pick your first sprout!"</span>
+        </div>
+
+        <h1 class="font-headline text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight text-on-surface">
+          Which language do you want to learn?
+        </h1>
+        <p class="font-body text-base text-on-surface-variant max-w-xl mt-2.5 leading-relaxed">
+          Start from <span class="font-bold text-on-surface">ABCD</span> with gentle step-by-step guidance. You can add more languages anytime — your progress is always free and saved.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         LANGUAGE CARDS GRID (5 Authentic Curricula)
+    ════════════════════════════════════════════════════════════════ -->
+    <div class="mt-8">
+      <div class="flex items-center justify-between mb-4">
+        <span class="font-headline font-extrabold text-xs uppercase tracking-wider text-on-surface-variant">Available Beginner Curricula</span>
+        <span class="font-body text-xs text-on-surface-soft">Tap any card to select</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="languageList" role="radiogroup" aria-label="Language options">
+
+        <!-- 1. ENGLISH -->
+        <div class="lang-option rounded-3xl p-5 cursor-pointer shadow-card-soft" data-lang="english" data-title="English" data-greeting="Hello!" data-selected="false" role="radio" aria-checked="false" tabindex="0">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-surface-muted flex items-center justify-center shrink-0 border border-primary/15 text-primary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6C4DF6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="font-headline text-xl font-extrabold text-on-surface leading-snug">English</h2>
+                  <span class="px-2 py-0.5 rounded-full bg-surface-muted text-primary text-[10px] font-headline font-bold uppercase tracking-wider">EN</span>
+                </div>
+                <p class="font-body text-xs text-on-surface-variant mt-0.5">26 Letters · Phonics Foundations</p>
+              </div>
+            </div>
+
+            <!-- Radio Indicator Checkmark -->
+            <div class="selection-ring w-6 h-6 rounded-full border-2 border-[#D8D2EB] flex items-center justify-center shrink-0 bg-white">
+              <svg class="selection-check text-white" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Feature Description Badges -->
+          <div class="mt-4 pt-3.5 border-t border-[rgba(31,27,46,0.06)] flex items-center justify-between">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="w-8 h-8 rounded-xl bg-surface-muted text-primary font-headline font-extrabold text-xs grid place-items-center">A</span>
+              <span class="w-8 h-8 rounded-xl bg-surface-muted text-primary font-headline font-extrabold text-xs grid place-items-center">B</span>
+              <span class="w-8 h-8 rounded-xl bg-surface-muted text-primary font-headline font-extrabold text-xs grid place-items-center">C</span>
+              <span class="w-8 h-8 rounded-xl bg-surface-muted text-primary font-headline font-extrabold text-xs grid place-items-center">1</span>
+              <span class="h-8 px-2.5 rounded-xl bg-surface-muted text-primary font-headline font-extrabold text-xs grid place-items-center">Hi</span>
+            </div>
+            <span class="font-headline text-xs font-bold text-primary group-hover:underline flex items-center gap-1">
+              Select
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- 2. TWI -->
+        <div class="lang-option rounded-3xl p-5 cursor-pointer shadow-card-soft" data-lang="twi" data-title="Twi" data-greeting="Akwaaba!" data-selected="false" role="radio" aria-checked="false" tabindex="0">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#FFF0EC] flex items-center justify-center shrink-0 border border-secondary/20 text-secondary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF7A59" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21V9l9-7 9 7v12"/><path d="M9 21V12h6v9"/>
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="font-headline text-xl font-extrabold text-on-surface leading-snug">Twi</h2>
+                  <span class="px-2 py-0.5 rounded-full bg-[#FFF0EC] text-secondary text-[10px] font-headline font-bold uppercase tracking-wider">TW</span>
+                </div>
+                <p class="font-body text-xs text-on-surface-variant mt-0.5">18 Letters + Akan Digraphs (Ɛ, Ɔ)</p>
+              </div>
+            </div>
+
+            <!-- Radio Indicator Checkmark -->
+            <div class="selection-ring w-6 h-6 rounded-full border-2 border-[#D8D2EB] flex items-center justify-center shrink-0 bg-white">
+              <svg class="selection-check text-white" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Feature Description Badges -->
+          <div class="mt-4 pt-3.5 border-t border-[rgba(31,27,46,0.06)] flex items-center justify-between">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="w-8 h-8 rounded-xl bg-[#FFF0EC] text-secondary font-headline font-extrabold text-xs grid place-items-center">Ɛ</span>
+              <span class="w-8 h-8 rounded-xl bg-[#FFF0EC] text-secondary font-headline font-extrabold text-xs grid place-items-center">Ɔ</span>
+              <span class="w-8 h-8 rounded-xl bg-[#FFF0EC] text-secondary font-headline font-extrabold text-xs grid place-items-center">KY</span>
+              <span class="h-8 px-2.5 rounded-xl bg-[#FFF0EC] text-secondary font-headline font-extrabold text-xs grid place-items-center">Akwaaba</span>
+            </div>
+            <span class="font-headline text-xs font-bold text-secondary flex items-center gap-1">
+              Select
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- 3. GERMAN -->
+        <div class="lang-option rounded-3xl p-5 cursor-pointer shadow-card-soft" data-lang="german" data-title="German" data-greeting="Hallo!" data-selected="false" role="radio" aria-checked="false" tabindex="0">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#FFF9E6] flex items-center justify-center shrink-0 border border-tertiary/25 text-[#9A7200]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9A7200" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h20M2 12h20M2 21h20"/>
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="font-headline text-xl font-extrabold text-on-surface leading-snug">German</h2>
+                  <span class="px-2 py-0.5 rounded-full bg-[#FFF9E6] text-[#9A7200] text-[10px] font-headline font-bold uppercase tracking-wider">DE</span>
+                </div>
+                <p class="font-body text-xs text-on-surface-variant mt-0.5">26 Letters + Umlauts (Ä, Ö, Ü, ß)</p>
+              </div>
+            </div>
+
+            <!-- Radio Indicator Checkmark -->
+            <div class="selection-ring w-6 h-6 rounded-full border-2 border-[#D8D2EB] flex items-center justify-center shrink-0 bg-white">
+              <svg class="selection-check text-white" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Feature Description Badges -->
+          <div class="mt-4 pt-3.5 border-t border-[rgba(31,27,46,0.06)] flex items-center justify-between">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="w-8 h-8 rounded-xl bg-[#FFF9E6] text-[#9A7200] font-headline font-extrabold text-xs grid place-items-center">A</span>
+              <span class="w-8 h-8 rounded-xl bg-[#FFF9E6] text-[#9A7200] font-headline font-extrabold text-xs grid place-items-center">B</span>
+              <span class="w-8 h-8 rounded-xl bg-[#FFF9E6] text-[#9A7200] font-headline font-extrabold text-xs grid place-items-center">Ä</span>
+              <span class="h-8 px-2.5 rounded-xl bg-[#FFF9E6] text-[#9A7200] font-headline font-extrabold text-xs grid place-items-center">Hallo</span>
+            </div>
+            <span class="font-headline text-xs font-bold text-[#9A7200] flex items-center gap-1">
+              Select
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- 4. DUTCH -->
+        <div class="lang-option rounded-3xl p-5 cursor-pointer shadow-card-soft" data-lang="dutch" data-title="Dutch" data-greeting="Hallo!" data-selected="false" role="radio" aria-checked="false" tabindex="0">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#EEF2FF] flex items-center justify-center shrink-0 border border-primary/20 text-primary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6C4DF6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="font-headline text-xl font-extrabold text-on-surface leading-snug">Dutch</h2>
+                  <span class="px-2 py-0.5 rounded-full bg-[#EEF2FF] text-primary text-[10px] font-headline font-bold uppercase tracking-wider">NL</span>
+                </div>
+                <p class="font-body text-xs text-on-surface-variant mt-0.5">26 Letters + Distinct IJ Digraph</p>
+              </div>
+            </div>
+
+            <!-- Radio Indicator Checkmark -->
+            <div class="selection-ring w-6 h-6 rounded-full border-2 border-[#D8D2EB] flex items-center justify-center shrink-0 bg-white">
+              <svg class="selection-check text-white" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Feature Description Badges -->
+          <div class="mt-4 pt-3.5 border-t border-[rgba(31,27,46,0.06)] flex items-center justify-between">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="w-8 h-8 rounded-xl bg-[#EEF2FF] text-primary font-headline font-extrabold text-xs grid place-items-center">A</span>
+              <span class="w-8 h-8 rounded-xl bg-[#EEF2FF] text-primary font-headline font-extrabold text-xs grid place-items-center">B</span>
+              <span class="w-8 h-8 rounded-xl bg-[#EEF2FF] text-primary font-headline font-extrabold text-xs grid place-items-center">IJ</span>
+              <span class="h-8 px-2.5 rounded-xl bg-[#EEF2FF] text-primary font-headline font-extrabold text-xs grid place-items-center">Hallo</span>
+            </div>
+            <span class="font-headline text-xs font-bold text-primary flex items-center gap-1">
+              Select
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- 5. SPANISH -->
+        <div class="lang-option rounded-3xl p-5 cursor-pointer shadow-card-soft md:col-span-2 lg:col-span-1" data-lang="spanish" data-title="Spanish" data-greeting="¡Hola!" data-selected="false" role="radio" aria-checked="false" tabindex="0">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#E6F9F7] flex items-center justify-center shrink-0 border border-success/30 text-success-deep">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0C8A7E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="font-headline text-xl font-extrabold text-on-surface leading-snug">Spanish</h2>
+                  <span class="px-2 py-0.5 rounded-full bg-[#E6F9F7] text-success-deep text-[10px] font-headline font-bold uppercase tracking-wider">ES</span>
+                </div>
+                <p class="font-body text-xs text-on-surface-variant mt-0.5">27 Letters + Distinctive Ñ & Accents</p>
+              </div>
+            </div>
+
+            <!-- Radio Indicator Checkmark -->
+            <div class="selection-ring w-6 h-6 rounded-full border-2 border-[#D8D2EB] flex items-center justify-center shrink-0 bg-white">
+              <svg class="selection-check text-white" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Feature Description Badges -->
+          <div class="mt-4 pt-3.5 border-t border-[rgba(31,27,46,0.06)] flex items-center justify-between">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="w-8 h-8 rounded-xl bg-[#E6F9F7] text-success-deep font-headline font-extrabold text-xs grid place-items-center">A</span>
+              <span class="w-8 h-8 rounded-xl bg-[#E6F9F7] text-success-deep font-headline font-extrabold text-xs grid place-items-center">B</span>
+              <span class="w-8 h-8 rounded-xl bg-[#E6F9F7] text-success-deep font-headline font-extrabold text-xs grid place-items-center">Ñ</span>
+              <span class="h-8 px-2.5 rounded-xl bg-[#E6F9F7] text-success-deep font-headline font-extrabold text-xs grid place-items-center">Hola</span>
+            </div>
+            <span class="font-headline text-xs font-bold text-success-deep flex items-center gap-1">
+              Select
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Reassurance / Trust Badge Bar -->
+    <div class="mt-12 p-4 rounded-2xl bg-surface-muted/70 border border-primary/10 flex flex-wrap items-center justify-center gap-6 text-xs text-on-surface-variant font-medium">
+      <div class="flex items-center gap-2">
+        <span class="w-4 h-4 rounded-full bg-success/20 text-success-deep flex items-center justify-center">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        <span>Always 100% Free</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-4 h-4 rounded-full bg-success/20 text-success-deep flex items-center justify-center">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        <span>No Ads & No Paywalls</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-4 h-4 rounded-full bg-success/20 text-success-deep flex items-center justify-center">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        <span>Kid-Safe & Adult-Friendly</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       STICKY BOTTOM ACTION BAR (Tactile 3D pressable Button)
+  ════════════════════════════════════════════════════════════════ -->
+  <footer class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-[rgba(31,27,46,0.08)] py-4 px-5 sm:px-8 z-50">
+    <div class="max-w-[1120px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      
+      <!-- Selection Summary State -->
+      <div class="text-center sm:text-left flex items-center gap-3">
+        <div id="statusDot" class="w-3 h-3 rounded-full bg-[#D8D2EB] transition-colors"></div>
+        <div>
+          <p id="selectionSummary" class="font-headline font-bold text-sm text-on-surface">
+            Please choose a language to begin
+          </p>
+          <p id="selectionSubtitle" class="font-body text-xs text-on-surface-soft">
+            You'll start at Step 1: Alphabet & letter sounds
+          </p>
+        </div>
+      </div>
+
+      <!-- Tactile Continue CTA Button -->
+      <button id="continueBtn" class="btn-tactile is-disabled w-full sm:w-auto px-8 py-4 rounded-2xl font-headline font-extrabold text-base tracking-wide flex items-center justify-center gap-2" aria-disabled="true">
+        <span id="btnText">Select a Language</span>
+        <svg class="transition-transform group-hover:translate-x-1" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       INTERACTION SCRIPT
+  ════════════════════════════════════════════════════════════════ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.lang-option');
+      const continueBtn = document.getElementById('continueBtn');
+      const btnText = document.getElementById('btnText');
+      const statusDot = document.getElementById('statusDot');
+      const selectionSummary = document.getElementById('selectionSummary');
+      const selectionSubtitle = document.getElementById('selectionSubtitle');
+      const kokoTipText = document.getElementById('kokoTipText');
+
+      let currentSelection = null;
+
+      function selectLanguage(card) {
+        // Deselect previous
+        cards.forEach(c => {
+          c.dataset.selected = 'false';
+          c.setAttribute('aria-checked', 'false');
+        });
+
+        // Select new
+        card.dataset.selected = 'true';
+        card.setAttribute('aria-checked', 'true');
+        currentSelection = {
+          id: card.dataset.lang,
+          title: card.dataset.title,
+          greeting: card.dataset.greeting
+        };
+
+        // Update button states & tactile 3D style
+        continueBtn.classList.remove('is-disabled');
+        continueBtn.classList.add('is-enabled');
+        continueBtn.removeAttribute('aria-disabled');
+        btnText.textContent = `Continue with ${currentSelection.title}`;
+
+        // Update bottom summary bar
+        statusDot.className = 'w-3 h-3 rounded-full bg-success transition-colors animate-pulse';
+        selectionSummary.innerHTML = `Selected: <span class="text-primary font-black">${currentSelection.title}</span>`;
+        selectionSubtitle.textContent = `Starting greeting: "${currentSelection.greeting}" · Ready for Step 2`;
+
+        // Update Koko tip with friendly contextual dialogue
+        kokoTipText.textContent = `Koko says: "${currentSelection.greeting}! Awesome choice to start ${currentSelection.title}."`;
+      }
+
+      // Click & Keyboard handlers
+      cards.forEach(card => {
+        card.addEventListener('click', () => selectLanguage(card));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectLanguage(card);
+          }
+        });
+      });
+
+      // Continue action with feedback
+      continueBtn.addEventListener('click', () => {
+        if (!currentSelection) return;
+        
+        // Micro-interaction bounce
+        continueBtn.animate([
+          { transform: 'scale(1)' },
+          { transform: 'scale(0.97)' },
+          { transform: 'scale(1)' }
+        ], { duration: 200 });
+
+        alert(`Next Step: Setting up your daily learning goal for ${currentSelection.title}!`);
+      });
+    });
+  </script>
+
+</body>
+</html>

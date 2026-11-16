@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stage 1: Alphabet & Core Phonics — LinGua</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#532ddd",
+        "primary-container": "#6c4df6",
+        "on-primary": "#ffffff",
+        "secondary": "#a7391e",
+        "secondary-container": "#fd7958",
+        "on-secondary": "#ffffff",
+        "success": "#2EC4B6",
+        "success-deep": "#0c8a7e",
+        "tertiary": "#a07a00",
+        "tertiary-fixed-dim": "#f4bf3c",
+        "surface": "#fdf7ff",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f7f1ff",
+        "surface-container": "#f2ebff",
+        "surface-container-high": "#ece4ff",
+        "on-surface": "#1d192c",
+        "on-surface-variant": "#484555",
+        "primary-fixed": "#e5deff",
+        "secondary-fixed": "#ffdad2",
+        "outline": "#797587",
+        "outline-soft": "#c9c4d8"
+      },
+      borderRadius: {
+        DEFAULT: "0.25rem",
+        lg: "0.5rem",
+        xl: "0.75rem",
+        "2xl": "1rem",
+        "3xl": "1.5rem",
+        full: "9999px"
+      },
+      fontFamily: {
+        display: ["Nunito Sans", "sans-serif"],
+        headline: ["Nunito Sans", "sans-serif"],
+        label: ["Nunito Sans", "sans-serif"],
+        body: ["Inter", "sans-serif"]
+      }
+    }
+  }
+}
+</script>
+<style>
+  html,body{margin:0;padding:0;background-color:#fdf7ff;}
+  body{overscroll-behavior:none;}
+  ::-webkit-scrollbar{display:none;}
+
+  @keyframes mascot-bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+  @keyframes mascot-blink{0%,94%,98%,100%{transform:scaleY(1);}96%{transform:scaleY(0.1);}}
+  @keyframes mascot-wave{0%,100%{transform:rotate(-5deg);}50%{transform:rotate(12deg);}}
+  @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(108,77,246,0.35);}70%{box-shadow:0 0 0 14px rgba(108,77,246,0);}100%{box-shadow:0 0 0 0 rgba(108,77,246,0);}}
+
+  .animate-mascot-bob{animation:mascot-bob 3.2s ease-in-out infinite;}
+  .animate-mascot-blink{transform-origin:120px 137px;animation:mascot-blink 4.5s infinite;}
+  .animate-mascot-wave{transform-origin:172px 150px;animation:mascot-wave 2.2s ease-in-out infinite;}
+  .animate-pulse-ring{animation:pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;}
+
+  .cluster-card {
+    transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .cluster-card:hover:not(.is-locked) {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(83, 45, 221, 0.09);
+  }
+  .cluster-card:active:not(.is-locked) {
+    transform: translateY(0);
+  }
+  .cluster-card.is-locked {
+    opacity: 0.62;
+    cursor: not-allowed;
+  }
+
+  .letter-pill {
+    transition: all 0.18s ease;
+  }
+  .letter-pill:hover {
+    transform: scale(1.08);
+  }
+
+  .btn-3d {
+    transition: all 0.15s ease;
+  }
+  .btn-3d:hover {
+    filter: brightness(1.04);
+    transform: translateY(1px);
+    box-shadow: 0 4px 0 0 #432CAE;
+  }
+  .btn-3d:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 0 #432CAE;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .animate-mascot-bob, .animate-mascot-blink, .animate-mascot-wave, .animate-pulse-ring{ animation:none !important; }
+    .cluster-card:hover { transform: none !important; }
+  }
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PERSISTENT APP BAR / HEADER
+════════════════════════════════════════════════════════════════ -->
+<header class="w-full bg-surface-container-lowest/90 backdrop-blur-md border-b border-[rgba(31,27,46,0.06)] sticky top-0 z-40">
+  <div class="max-w-[1140px] mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
+    <!-- Brand + Back to Stage Map -->
+    <div class="flex items-center gap-3">
+      <a href="#" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary-fixed transition-colors text-on-surface" title="Back to Learning Map" aria-label="Back to Learning Map">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </a>
+      <div class="flex items-center gap-2">
+        <svg class="h-7 w-7" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect width="40" height="40" rx="12" fill="#532ddd"/>
+          <path d="M20 27c-4 0-6-3-6-6 0-1 0-2 1-3 1 4 4 4 5 4s3-2 3-4c0 2 1 3 3 3-1 5-4 6-6 6Z" fill="#fff"/>
+          <path d="M14 14c0-2 2-3 3-2-1 1-2 2-2 4-1 0-1-1-1-2Z" fill="#FFC845"/>
+          <path d="M20 14c2 0 3-2 2-3-1 1-2 2-4 2 0 1 1 1 2 1Z" fill="#FFC845"/>
+        </svg>
+        <span class="font-headline text-[20px] tracking-tight">
+          <span class="text-on-surface">Lin</span><span class="text-primary-container font-black">Gua</span>
+        </span>
+      </div>
+      <div class="hidden sm:flex items-center gap-2 pl-3 border-l border-outline-soft/40 text-xs font-label text-on-surface-variant font-bold">
+        <span>Stage 1</span>
+        <span class="text-outline-soft">•</span>
+        <span class="text-primary font-black">Alphabet Fast-Track</span>
+      </div>
+    </div>
+
+    <!-- Learner Stats Dock -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary-fixed/70 text-secondary" title="Pacing streak">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#fd7958"><path d="M12 2c-2 3-5 3-5 6 0 2 2 3 2 5 0 2-1 3-1 5 0 2 2 4 4 4s4-2 4-4c0-2-1-3-1-5 0-2 2-3 2-5 0-3-3-3-5-6z"/></svg>
+        <span class="font-label text-label-sm font-black">Day 5</span>
+      </div>
+      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FFF4D6] text-[#a07a00]" title="Total XP">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#f4bf3c"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+        <span class="font-label text-label-sm font-black">240 XP</span>
+      </div>
+      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FFE0E6] text-rose-600" title="Daily focus energy">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#ef476f"><path d="M12 21s-8-4-8-10a5 5 0 019-3 5 5 0 019 3c0 6-8 10-8 10z"/></svg>
+        <span class="font-label text-label-sm font-black text-[#d63353]">4/5</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════════ -->
+<main class="flex-1 max-w-[1140px] w-full mx-auto px-4 lg:px-8 py-6 pb-28">
+
+  <!-- ── HERO BANNER: STAGE 1 ACCELERATOR ── -->
+  <section class="relative bg-gradient-to-br from-primary-container via-[#5b3adb] to-[#7f5af0] rounded-3xl p-6 sm:p-8 text-on-primary shadow-[0_12px_32px_rgba(108,77,246,0.22)] overflow-hidden mb-6">
+    <!-- Ambient backdrops -->
+    <div class="pointer-events-none absolute -top-12 -right-12 w-64 h-64 rounded-full bg-white/10 blur-2xl"></div>
+    <div class="pointer-events-none absolute -bottom-16 left-1/3 w-60 h-60 rounded-full bg-secondary-container/20 blur-2xl"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="max-w-xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-[11px] font-label font-black tracking-wider uppercase mb-3">
+          <span class="w-2 h-2 rounded-full bg-[#3CE7D8] animate-pulse"></span>
+          Direct Bridge: Alphabet to Reading
+        </div>
+        <h1 class="font-display text-2xl sm:text-3xl lg:text-[34px] font-black leading-tight tracking-tight">
+          Stage 1: Alphabet & Core Phonics
+        </h1>
+        <p class="mt-2 font-body text-body-sm sm:text-body-md text-on-primary/90 leading-relaxed">
+          We don't trap you in 26 separate screens. Master high-frequency letters in <strong>4 smart clusters</strong>, blend sounds immediately, and advance directly to early words.
+        </p>
+
+        <!-- Quick pill highlights -->
+        <div class="mt-4 flex flex-wrap items-center gap-2 font-label text-xs">
+          <span class="px-2.5 py-1 rounded-lg bg-surface-container-lowest/15 backdrop-blur text-white flex items-center gap-1.5 font-bold">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+            No screen bloat
+          </span>
+          <span class="px-2.5 py-1 rounded-lg bg-surface-container-lowest/15 backdrop-blur text-white flex items-center gap-1.5 font-bold">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Dual sound anchors (EN + Twi)
+          </span>
+          <span class="px-2.5 py-1 rounded-lg bg-surface-container-lowest/15 backdrop-blur text-white flex items-center gap-1.5 font-bold">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Fast-tracks to Stage 2
+          </span>
+        </div>
+      </div>
+
+      <!-- Compact Mastery Ring & Sprout mascot teaser -->
+      <div class="flex items-center gap-4 bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 self-start md:self-auto shrink-0">
+        <div class="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0">
+          <svg class="w-full h-full -rotate-90" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="33" stroke="rgba(255,255,255,0.22)" stroke-width="7" fill="none"/>
+            <circle cx="40" cy="40" r="33" stroke="#FFC845" stroke-width="7" fill="none"
+                    stroke-dasharray="207" stroke-dashoffset="138" stroke-linecap="round"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="font-headline text-[15px] sm:text-base font-black leading-none text-white">8/26</span>
+            <span class="text-[9px] font-label font-bold text-white/80 uppercase mt-0.5">Letters</span>
+          </div>
+        </div>
+
+        <div class="text-left">
+          <p class="font-label text-[11px] uppercase tracking-wider font-extrabold text-[#FFC845]">Stage Pace</p>
+          <p class="font-headline text-headline-sm font-extrabold leading-snug">Cluster 1 Active</p>
+          <p class="font-body text-xs text-white/80">31% Stage 1 complete</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2-COLUMN LAYOUT: MAIN CLUSTERS + INTERACTIVE DIRECTORY ── -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT / MAIN: 4 ACCELERATED LEARNING CLUSTERS (8 cols) -->
+    <div class="lg:col-span-8 flex flex-col gap-4">
+
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-headline text-headline-sm text-on-surface font-extrabold">The 4 Accelerated Clusters</h2>
+          <p class="font-body text-body-xs text-on-surface-variant text-xs mt-0.5">Learn letters in reading-ready groups instead of grinding one letter per page.</p>
+        </div>
+        <span class="hidden sm:inline-flex text-[11px] font-label font-bold text-primary bg-primary-fixed px-2.5 py-1 rounded-full">
+          Target: Complete in 4 sessions
+        </span>
+      </div>
+
+      <!-- ── CLUSTER 1: THE CORE VOWELS (ACTIVE) ── -->
+      <article class="cluster-card bg-surface-container-lowest rounded-3xl p-5 sm:p-6 shadow-[0_4px_18px_rgba(31,27,46,0.05)] border-2 border-primary-container relative overflow-hidden" data-cluster="1">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-primary-fixed text-primary flex items-center justify-center font-headline text-lg font-black shadow-sm">
+              01
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-label font-extrabold px-2 py-0.5 rounded-full bg-primary-container text-white uppercase tracking-wider">Active Lesson</span>
+                <span class="text-[11px] font-label font-bold text-[#a07a00] flex items-center gap-1">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#f4bf3c"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+                  50 XP
+                </span>
+              </div>
+              <h3 class="font-headline text-lg sm:text-headline-sm text-on-surface font-extrabold mt-0.5">Core Vowels: A, E, I, O, U</h3>
+            </div>
+          </div>
+          <span class="w-7 h-7 rounded-full bg-primary-fixed text-primary grid place-items-center font-bold text-xs" title="In progress">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+
+        <p class="font-body text-xs sm:text-body-sm text-on-surface-variant mt-3 leading-relaxed">
+          Open vocal cords, relaxed throat, and pure root resonance. Vowels carry 80% of spoken English and Akan syllable structure.
+        </p>
+
+        <!-- Interactive Letter Pills inside cluster -->
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <div class="letter-pill px-3 py-2 rounded-xl bg-primary-fixed text-primary font-headline font-black text-sm flex items-center gap-1.5 shadow-sm">
+            <span>Aa</span>
+            <span class="text-[10px] font-body opacity-80">/æ/</span>
+          </div>
+          <div class="letter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface font-headline font-black text-sm flex items-center gap-1.5">
+            <span>Ee</span>
+            <span class="text-[10px] font-body text-on-surface-variant">/ɛ/</span>
+          </div>
+          <div class="letter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface font-headline font-black text-sm flex items-center gap-1.5">
+            <span>Ii</span>
+            <span class="text-[10px] font-body text-on-surface-variant">/i/</span>
+          </div>
+          <div class="letter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface font-headline font-black text-sm flex items-center gap-1.5">
+            <span>Oo</span>
+            <span class="text-[10px] font-body text-on-surface-variant">/ɔ/</span>
+          </div>
+          <div class="letter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface font-headline font-black text-sm flex items-center gap-1.5">
+            <span>Uu</span>
+            <span class="text-[10px] font-body text-on-surface-variant">/u/</span>
+          </div>
+
+          <span class="ml-auto text-xs font-label font-bold text-success-deep bg-[#D4F3EE] px-2.5 py-1 rounded-full">
+            3 of 5 Mastered
+          </span>
+        </div>
+
+        <!-- Action Row -->
+        <div class="mt-5 pt-4 border-t border-outline-soft/30 flex items-center justify-between">
+          <div class="text-xs text-on-surface-variant">
+            Next exercise: <strong class="text-on-surface">Letter Aa — Mouth Shape & Akwaaba Root</strong>
+          </div>
+          <a href="#" class="btn-3d inline-flex items-center gap-2 bg-primary-container text-on-primary px-5 py-2.5 rounded-xl font-label text-xs sm:text-label-sm font-extrabold shadow-[0_4px_0_0_#432CAE]">
+            <span>Resume Lesson</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- ── CLUSTER 2: HIGH-FREQUENCY STOPS (READY) ── -->
+      <article class="cluster-card bg-surface-container-lowest rounded-3xl p-5 sm:p-6 shadow-[0_4px_18px_rgba(31,27,46,0.04)] border border-outline-soft/30 relative" data-cluster="2">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-secondary-fixed text-secondary flex items-center justify-center font-headline text-lg font-black">
+              02
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-label font-extrabold px-2 py-0.5 rounded-full bg-secondary-container text-white uppercase tracking-wider">Ready to Start</span>
+                <span class="text-[11px] font-label font-bold text-on-surface-variant">B, D, M, N, P, T</span>
+              </div>
+              <h3 class="font-headline text-lg sm:text-headline-sm text-on-surface font-extrabold mt-0.5">High-Frequency Consonants</h3>
+            </div>
+          </div>
+          <span class="text-xs font-label font-bold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-full">
+            0/6 Mastered
+          </span>
+        </div>
+
+        <p class="font-body text-xs sm:text-body-sm text-on-surface-variant mt-3 leading-relaxed">
+          Lip and tongue stops that immediately combine with vowels to unlock words like <em>BAT, MAN, TAP, DAD</em>.
+        </p>
+
+        <!-- Letter Pills -->
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <span class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface font-headline font-bold text-xs">Bb</span>
+          <span class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface font-headline font-bold text-xs">Dd</span>
+          <span class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface font-headline font-bold text-xs">Mm</span>
+          <span class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface font-headline font-bold text-xs">Nn</span>
+          <span class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface font-headline font-bold text-xs">Pp</span>
+          <span class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface font-headline font-bold text-xs">Tt</span>
+          <span class="text-[11px] font-body text-on-surface-variant italic ml-2">Unlocks 40+ first words</span>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-outline-soft/30 flex items-center justify-between">
+          <span class="text-xs text-on-surface-variant">Prerequisite: Complete Cluster 1</span>
+          <button class="inline-flex items-center gap-1.5 text-xs font-label font-bold text-primary hover:text-primary-container">
+            <span>Preview Sounds</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- ── CLUSTER 3: CONTINUANTS & FRICATIVES (LOCKED) ── -->
+      <article class="cluster-card is-locked bg-surface-container-lowest rounded-3xl p-5 sm:p-6 shadow-[0_4px_18px_rgba(31,27,46,0.03)] border border-outline-soft/20 relative" data-cluster="3">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-surface-container text-on-surface-variant/50 flex items-center justify-center font-headline text-lg font-black">
+              03
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-label font-extrabold px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant uppercase tracking-wider">Locked</span>
+                <span class="text-[11px] font-label text-on-surface-variant">C, F, G, H, S, L, R</span>
+              </div>
+              <h3 class="font-headline text-lg text-on-surface-variant font-extrabold mt-0.5">Airflow & Friction Sounds</h3>
+            </div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <p class="font-body text-xs text-on-surface-variant mt-2">
+          Smooth airflow sounds that give rhythm and musicality to speech: /s/, /f/, /l/, /r/.
+        </p>
+      </article>
+
+      <!-- ── CLUSTER 4: SPECIAL ROOTS & DIGRAPHS (LOCKED) ── -->
+      <article class="cluster-card is-locked bg-surface-container-lowest rounded-3xl p-5 sm:p-6 shadow-[0_4px_18px_rgba(31,27,46,0.03)] border border-outline-soft/20 relative" data-cluster="4">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-surface-container text-on-surface-variant/50 flex items-center justify-center font-headline text-lg font-black">
+              04
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-label font-extrabold px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant uppercase tracking-wider">Locked</span>
+                <span class="text-[11px] font-label text-on-surface-variant">J, K, Q, V, W, X, Y, Z + KY/GY</span>
+              </div>
+              <h3 class="font-headline text-lg text-on-surface-variant font-extrabold mt-0.5">Complex Glyphs & Capstone Badge</h3>
+            </div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <p class="font-body text-xs text-on-surface-variant mt-2">
+          Final letter sounds plus Twi digraph pairings. Completes Stage 1 and immediately unlocks Stage 2: Sound Blends.
+        </p>
+      </article>
+
+    </div>
+
+    <!-- RIGHT / SIDEBAR: ALL 26 LETTERS INTERACTIVE DIRECTORY & COMPANION (4 cols) -->
+    <div class="lg:col-span-4 flex flex-col gap-5">
+
+      <!-- KOKO THE SPROUT COMPANION ADVICE -->
+      <div class="bg-gradient-to-br from-surface-container-low to-primary-fixed/30 rounded-3xl p-5 border border-primary-fixed shadow-sm relative overflow-hidden">
+        <div class="flex items-start gap-3.5">
+          <div class="shrink-0 animate-mascot-bob">
+            <svg class="w-14 h-16 drop-shadow-md" viewBox="0 0 240 280" fill="none">
+              <defs>
+                <radialGradient cx="45%" cy="40%" id="kokoSprout" r="65%">
+                  <stop offset="0%" stop-color="#3CE7D8"/><stop offset="65%" stop-color="#2EC4B6"/><stop offset="100%" stop-color="#1FA89B"/>
+                </radialGradient>
+              </defs>
+              <g class="animate-mascot-wave">
+                <path d="M120 70 C95 40 70 50 68 76 C66 98 100 88 120 74 Z" fill="#2EC4B6"/>
+                <path d="M120 72 C135 30 168 38 166 64 C164 84 135 80 120 72 Z" fill="#38D9A9"/>
+              </g>
+              <rect fill="#2EC4B6" height="16" rx="8" width="28" x="80" y="242"/>
+              <rect fill="#2EC4B6" height="16" rx="8" width="28" x="132" y="242"/>
+              <path d="M64 165 C62 108 86 78 120 78 C154 78 178 108 176 165 C174 216 156 244 120 244 C84 244 66 216 64 165 Z" fill="url(#kokoSprout)"/>
+              <ellipse cx="88" cy="156" fill="#FF7A59" fill-opacity="0.5" rx="8" ry="5"/>
+              <ellipse cx="152" cy="156" fill="#FF7A59" fill-opacity="0.5" rx="8" ry="5"/>
+              <g class="animate-mascot-blink">
+                <ellipse cx="98" cy="136" fill="#fff" rx="11" ry="14"/>
+                <ellipse cx="101" cy="138" fill="#1D192C" rx="6" ry="9"/>
+                <ellipse cx="142" cy="136" fill="#fff" rx="11" ry="14"/>
+                <ellipse cx="139" cy="138" fill="#1D192C" rx="6" ry="9"/>
+              </g>
+              <path d="M107 160 C114 170 126 170 133 160" stroke="#1D192C" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-headline text-xs font-black text-on-surface">Koko's Study Note</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+            </div>
+            <p class="font-body text-xs text-on-surface-variant mt-1 leading-snug">
+              "Mastering vowels first lets us build real words on day 2. Zero rote ABC-song loops!"
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALL 26 LETTERS DIRECTORY (TAP TO LISTEN / EXPLORE) -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-[0_4px_16px_rgba(31,27,46,0.04)] border border-outline-soft/30">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-headline text-label-lg text-on-surface font-extrabold">26 Letters Directory</h3>
+          <span class="text-[11px] font-label font-bold text-on-surface-variant">Tap for audio</span>
+        </div>
+
+        <p class="font-body text-xs text-on-surface-variant mb-3">
+          Green = Mastered • Purple = Current • Gray = Upcoming
+        </p>
+
+        <!-- 26 Glyphs Grid -->
+        <div class="grid grid-cols-6 sm:grid-cols-7 lg:grid-cols-6 gap-1.5" id="letterGrid">
+          <!-- A -->
+          <button class="h-10 rounded-xl bg-success/20 text-success-deep font-headline font-black text-sm flex items-center justify-center hover:scale-105 transition-transform" title="A - Mastered">A</button>
+          <!-- B -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface font-headline font-bold text-sm flex items-center justify-center hover:scale-105 transition-transform" title="B - Ready">B</button>
+          <!-- C -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="C - Upcoming">C</button>
+          <!-- D -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface font-headline font-bold text-sm flex items-center justify-center hover:scale-105 transition-transform" title="D - Ready">D</button>
+          <!-- E -->
+          <button class="h-10 rounded-xl bg-success/20 text-success-deep font-headline font-black text-sm flex items-center justify-center hover:scale-105 transition-transform" title="E - Mastered">E</button>
+          <!-- F -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="F">F</button>
+          <!-- G -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="G">G</button>
+          <!-- H -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="H">H</button>
+          <!-- I -->
+          <button class="h-10 rounded-xl bg-primary-fixed text-primary border-2 border-primary-container font-headline font-black text-sm flex items-center justify-center animate-pulse-ring" title="I - Today's target">I</button>
+          <!-- J -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="J">J</button>
+          <!-- K -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="K">K</button>
+          <!-- L -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="L">L</button>
+          <!-- M -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface font-headline font-bold text-sm flex items-center justify-center hover:scale-105 transition-transform" title="M - Ready">M</button>
+          <!-- N -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface font-headline font-bold text-sm flex items-center justify-center hover:scale-105 transition-transform" title="N - Ready">N</button>
+          <!-- O -->
+          <button class="h-10 rounded-xl bg-success/20 text-success-deep font-headline font-black text-sm flex items-center justify-center hover:scale-105 transition-transform" title="O - Mastered">O</button>
+          <!-- P -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="P">P</button>
+          <!-- Q -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="Q">Q</button>
+          <!-- R -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="R">R</button>
+          <!-- S -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="S">S</button>
+          <!-- T -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface font-headline font-bold text-sm flex items-center justify-center hover:scale-105 transition-transform" title="T - Ready">T</button>
+          <!-- U -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface font-headline font-bold text-sm flex items-center justify-center hover:scale-105 transition-transform" title="U">U</button>
+          <!-- V -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="V">V</button>
+          <!-- W -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="W">W</button>
+          <!-- X -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="X">X</button>
+          <!-- Y -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="Y">Y</button>
+          <!-- Z -->
+          <button class="h-10 rounded-xl bg-surface-container-low text-on-surface-variant/60 font-headline font-bold text-sm flex items-center justify-center" title="Z">Z</button>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-outline-soft/30 flex items-center justify-between text-xs font-label">
+          <span class="text-on-surface-variant font-medium">Stage 1 Completion:</span>
+          <span class="font-extrabold text-primary">Stage 2 awaits (Words)</span>
+        </div>
+      </div>
+
+      <!-- FAST JUMP TO SOUND LAB / REVIEW -->
+      <div class="bg-gradient-to-br from-primary-fixed to-[#D4F3EE] rounded-3xl p-5 shadow-[0_4px_16px_rgba(31,27,46,0.05)] border border-primary/15 flex flex-col justify-between">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/80 backdrop-blur flex items-center justify-center text-primary shrink-0 shadow-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+          </div>
+          <div>
+            <span class="text-[10px] font-label font-black uppercase tracking-wider text-primary">Phonetics Lab</span>
+            <h4 class="font-headline text-label-lg text-on-surface font-extrabold mt-0.5">Quick Sound Check</h4>
+            <p class="font-body text-xs text-on-surface-variant mt-1">Listen to contrast audio between English and Twi vowels.</p>
+          </div>
+        </div>
+
+        <button class="mt-4 w-full py-2.5 rounded-xl bg-white text-primary font-label text-xs font-extrabold shadow-sm hover:bg-white/90 transition-colors flex items-center justify-center gap-1.5" id="openSoundLabBtn">
+          <span>Open 2-Min Sound Lab</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     STICKY BOTTOM ACTION DOCK (ALWAYS ACCESSIBLE ACTION)
+════════════════════════════════════════════════════════════════ -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-md border-t border-[rgba(31,27,46,0.08)] py-3.5 px-4 z-40">
+  <div class="max-w-[1140px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 text-xs font-label">
+      <span class="w-2.5 h-2.5 rounded-full bg-success"></span>
+      <span class="text-on-surface font-bold">Current Target:</span>
+      <span class="text-on-surface-variant">Cluster 1 (Vowels A, E, I, O, U)</span>
+      <span class="hidden md:inline text-outline-soft">•</span>
+      <span class="hidden md:inline text-success-deep font-bold">Unlocks Stage 2 in 3 lessons</span>
+    </div>
+
+    <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+      <a href="#" class="btn-3d w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary-container text-on-primary rounded-2xl px-7 py-3.5 font-label text-label-md font-extrabold shadow-[0_4px_0_0_#432CAE]">
+        <span>Continue: Lesson 1 (Letter Aa)</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Letter Grid Audio Preview Simulation
+    const letterButtons = document.querySelectorAll('#letterGrid button');
+    letterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const letter = btn.textContent.trim();
+        // Visual feedback
+        btn.animate([
+          { transform: 'scale(1)' },
+          { transform: 'scale(1.18)' },
+          { transform: 'scale(1)' }
+        ], { duration: 250, easing: 'ease-out' });
+        
+        console.log(`Playing audio anchor for letter: ${letter}`);
+      });
+    });
+
+    // Sound Lab trigger
+    const soundLabBtn = document.getElementById('openSoundLabBtn');
+    if (soundLabBtn) {
+      soundLabBtn.addEventListener('click', () => {
+        alert("Opening Sound Lab: Direct phonemic comparison for Vowels /a/, /ɛ/, /i/, /ɔ/, /u/.\n\nPreparing dual English & Twi audio models.");
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

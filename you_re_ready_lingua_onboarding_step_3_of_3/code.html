@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>You're ready — LinGua</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#532ddd",
+        "primary-container": "#6c4df6",
+        "on-primary": "#ffffff",
+        "secondary": "#a7391e",
+        "secondary-container": "#fd7958",
+        "on-secondary": "#ffffff",
+        "success": "#2EC4B6",
+        "success-deep": "#0c8a7e",
+        "tertiary": "#a07a00",
+        "tertiary-fixed-dim": "#f4bf3c",
+        "surface": "#fdf7ff",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f7f1ff",
+        "surface-container": "#f2ebff",
+        "on-surface": "#1d192c",
+        "on-surface-variant": "#484555",
+        "primary-fixed": "#e5deff",
+        "secondary-fixed": "#ffdad2",
+        "outline": "#797587"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", "2xl": "1rem", "3xl": "1.5rem", full: "9999px" },
+      fontFamily: {
+        display: ["Nunito Sans", "sans-serif"],
+        headline: ["Nunito Sans", "sans-serif"],
+        label: ["Nunito Sans", "sans-serif"],
+        body: ["Inter", "sans-serif"]
+      },
+      fontSize: {
+        "display": ["48px", { lineHeight: "54px", letterSpacing: "-0.02em", fontWeight: "900" }],
+        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "800" }],
+        "headline-md": ["24px", { lineHeight: "30px", fontWeight: "800" }],
+        "headline-sm": ["20px", { lineHeight: "26px", fontWeight: "700" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "label-lg": ["16px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "800" }],
+        "label-md": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "700" }],
+        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }]
+      }
+    }
+  }
+}
+</script>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { overscroll-behavior: none; overflow-x: hidden; }
+  ::-webkit-scrollbar { display: none; }
+
+  /* ── MASCOT ANIMATIONS ── */
+  @keyframes mascot-bounce {
+    0%, 100% { transform: translateY(0) scale(1, 1); }
+    40% { transform: translateY(-16px) scale(0.98, 1.02); }
+    55% { transform: translateY(-12px) scale(1.01, 0.99); }
+  }
+  @keyframes mascot-wave-left {
+    0%, 100% { transform: rotate(-8deg); }
+    50% { transform: rotate(18deg); }
+  }
+  @keyframes mascot-wave-right {
+    0%, 100% { transform: rotate(-6deg); }
+    50% { transform: rotate(16deg); }
+  }
+  @keyframes mascot-blink {
+    0%, 94%, 98%, 100% { transform: scaleY(1); }
+    96% { transform: scaleY(0.1); }
+  }
+  @keyframes mascot-leaf-sway {
+    0%, 100% { transform: rotate(-4deg); }
+    50% { transform: rotate(6deg); }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.65; }
+    50% { transform: scale(1.15); opacity: 0.95; }
+  }
+
+  .animate-mascot-bounce { animation: mascot-bounce 2.6s ease-in-out infinite; }
+  .animate-mascot-wave-left { transform-origin: 68px 155px; animation: mascot-wave-left 1.5s ease-in-out infinite; }
+  .animate-mascot-wave-right { transform-origin: 172px 155px; animation: mascot-wave-right 1.7s ease-in-out infinite 0.2s; }
+  .animate-mascot-blink { transform-origin: 120px 137px; animation: mascot-blink 4.5s infinite; }
+  .animate-mascot-leaves { transform-origin: 120px 74px; animation: mascot-leaf-sway 2.4s ease-in-out infinite; }
+  .animate-glow { animation: glow-pulse 5s ease-in-out infinite alternate; }
+
+  /* ── CONFETTI ANIMATION ── */
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+  }
+  .confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 14px;
+    border-radius: 2px;
+    animation: confetti-fall linear infinite;
+    pointer-events: none;
+    z-index: 40;
+  }
+
+  /* ── STAGE PATH CARDS ── */
+  .stage-card {
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .stage-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(83, 45, 221, 0.12);
+  }
+
+  /* ── TACTILE 3D BUTTONS ── */
+  .btn-primary {
+    transition: all 0.15s ease;
+  }
+  .btn-primary:hover {
+    filter: brightness(1.05);
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 0 #5436D6;
+  }
+  .btn-primary:active {
+    transform: translateY(5px);
+    box-shadow: none;
+  }
+
+  .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-mascot-bounce, .animate-mascot-wave-left, .animate-mascot-wave-right,
+    .animate-mascot-blink, .animate-mascot-leaves, .animate-glow, .confetti {
+      animation: none !important;
+      transform: none !important;
+    }
+    .confetti { display: none; }
+    .stage-card:hover { transform: none !important; }
+  }
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col relative">
+
+<!-- ── CONFETTI LAYER ── -->
+<div id="confettiLayer" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HEADER (Step 3 of 3 — all complete)
+════════════════════════════════════════════════════════════════ -->
+<header class="w-full max-w-[1100px] mx-auto px-5 lg:px-8 py-5 flex items-center justify-between shrink-0 relative z-20">
+  <button type="button" onclick="history.back()" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary-fixed transition-colors text-on-surface" aria-label="Go back">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  </button>
+
+  <!-- Step 3 of 3 Completed Progress Indicator -->
+  <div class="flex items-center gap-2 bg-surface-container-lowest/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-primary/10 shadow-xs" aria-label="Step 3 of 3 complete">
+    <span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+    <span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+    <span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+    <span class="text-xs font-bold text-primary ml-1 tracking-wide font-headline">STEP 3 OF 3</span>
+  </div>
+
+  <!-- Brand logo mark in header matching previous screens -->
+  <div class="flex items-center gap-1.5">
+    <svg class="h-6 w-6" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <rect width="40" height="40" rx="12" fill="#532ddd"/>
+      <path d="M20 27c-4 0-6-3-6-6 0-1 0-2 1-3 1 4 4 4 5 4s3-2 3-4c0 2 1 3 3 3-1 5-4 6-6 6Z" fill="#fff"/>
+      <path d="M14 14c0-2 2-3 3-2-1 1-2 2-2 4-1 0-1-1-1-2Z" fill="#FFC845"/>
+      <path d="M20 14c2 0 3-2 2-3-1 1-2 2-4 2 0 1 1 1 2 1Z" fill="#FFC845"/>
+    </svg>
+    <span class="font-headline font-extrabold text-[17px] text-on-surface">Lin<span class="text-primary-container">Gua</span></span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════════ -->
+<main class="flex-1 w-full max-w-[1040px] mx-auto px-5 lg:px-8 flex flex-col items-center pb-44 relative z-10">
+
+  <!-- ── CELEBRATION HERO SECTION ── -->
+  <section class="flex flex-col items-center text-center mt-2 md:mt-4 max-w-2xl">
+    
+    <!-- Mascot celebrating with glow -->
+    <div class="relative shrink-0 mb-3">
+      <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-gradient-to-tr from-primary/20 via-tertiary-fixed-dim/25 to-success/20 blur-3xl absolute inset-0 -z-10 animate-glow"></div>
+      <div class="relative z-10 animate-mascot-bounce">
+        <svg class="w-48 h-56 sm:w-56 sm:h-64 drop-shadow-2xl" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Koko celebrating">
+          <defs>
+            <radialGradient cx="45%" cy="40%" id="bodyGrad" r="65%">
+              <stop offset="0%" stop-color="#3CE7D8"/><stop offset="65%" stop-color="#2EC4B6"/><stop offset="100%" stop-color="#1FA89B"/>
+            </radialGradient>
+            <radialGradient cx="50%" cy="40%" id="bellyGrad" r="50%">
+              <stop offset="0%" stop-color="#80F5EA" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#3CE7D8" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <g class="animate-mascot-leaves">
+            <path d="M120 70 C95 40 70 50 68 76 C66 98 100 88 120 74 Z" fill="#2EC4B6"/>
+            <path d="M120 70 C105 52 82 58 78 72" stroke="#3CE7D8" stroke-linecap="round" stroke-width="2.5"/>
+            <path d="M120 72 C135 30 168 38 166 64 C164 84 135 80 120 72 Z" fill="#38D9A9"/>
+            <path d="M120 72 C134 46 154 50 152 64" stroke="#80F5EA" stroke-linecap="round" stroke-width="2.5"/>
+            <circle cx="120" cy="74" fill="#1FA89B" r="5"/>
+          </g>
+          <!-- Feet -->
+          <rect fill="#2EC4B6" height="20" rx="10" width="34" x="76" y="240"/>
+          <rect fill="#FFFFFF" height="8" rx="4" width="38" x="74" y="254"/>
+          <rect fill="#2EC4B6" height="20" rx="10" width="34" x="130" y="240"/>
+          <rect fill="#FFFFFF" height="8" rx="4" width="38" x="128" y="254"/>
+
+          <!-- Body -->
+          <path d="M64 165 C62 108 86 78 120 78 C154 78 178 108 176 165 C174 216 156 244 120 244 C84 244 66 216 64 165 Z" fill="url(#bodyGrad)"/>
+          <ellipse cx="120" cy="180" fill="url(#bellyGrad)" rx="36" ry="42"/>
+          
+          <!-- Left arm raised (celebration waving) -->
+          <g class="animate-mascot-wave-left">
+            <path d="M68 155 C50 140 40 110 50 100 C58 92 72 110 76 140" fill="#2EC4B6"/>
+            <circle cx="50" cy="100" fill="#3CE7D8" r="8"/>
+          </g>
+          
+          <!-- Right arm raised (celebration waving) -->
+          <g class="animate-mascot-wave-right">
+            <path d="M172 155 C190 148 206 130 196 118 C188 108 174 130 170 142" fill="#2EC4B6"/>
+            <circle cx="196" cy="120" fill="#3CE7D8" r="8"/>
+          </g>
+          
+          <!-- Cheeks -->
+          <ellipse cx="88" cy="156" fill="#FF7A59" fill-opacity="0.55" rx="10" ry="6"/>
+          <ellipse cx="152" cy="156" fill="#FF7A59" fill-opacity="0.55" rx="10" ry="6"/>
+          
+          <!-- Eyes: Happy Squint celebration eyes with blink -->
+          <g class="animate-mascot-blink">
+            <path d="M86 136 Q 98 123 110 136" stroke="#1D192C" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <path d="M130 136 Q 142 123 154 136" stroke="#1D192C" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          </g>
+          
+          <!-- Big happy open smile -->
+          <path d="M98 159 Q 120 188 142 159 Z" fill="#1D192C"/>
+          <path d="M106 168 Q 120 180 134 168 Z" fill="#FF7A59"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-fixed border border-primary/20 shadow-xs mb-3">
+      <svg class="icon text-primary" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/>
+      </svg>
+      <span class="font-label text-label-sm text-primary tracking-wide font-black">All set! Onboarding Complete</span>
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="font-display text-[42px] sm:text-[54px] lg:text-[60px] leading-[1.05] text-primary font-black tracking-tight">
+      You're ready!
+    </h1>
+
+    <!-- Dynamic Subheadline -->
+    <p class="mt-3 font-body text-body-lg sm:text-[20px] text-on-surface-variant max-w-lg leading-relaxed">
+      Your <span id="langName" class="font-extrabold text-on-surface bg-primary-fixed/60 px-2 py-0.5 rounded-lg border border-primary/20">English</span> journey starts now. Let's begin with <span id="langAbcs" class="font-extrabold text-on-surface">A, B, C</span>.
+    </p>
+
+    <!-- Personalized summary pills from Steps 1 & 2 -->
+    <div class="mt-4 flex items-center justify-center gap-2 flex-wrap">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest text-xs font-bold text-on-surface border border-outline/15 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-success"></span>
+        <span id="summaryAge">Adult Profile</span>
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest text-xs font-bold text-on-surface border border-outline/15 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+        <span id="summaryGoal">10 min/day · Regular</span>
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest text-xs font-bold text-primary border border-outline/15 shadow-xs">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Zero Streak Pressure</span>
+      </span>
+    </div>
+
+  </section>
+
+  <!-- ── 6-STAGE PATH ROADMAP ── -->
+  <section class="w-full mt-10">
+    <div class="flex items-center justify-between mb-4 px-1 max-w-[960px] mx-auto">
+      <div>
+        <p class="font-label text-label-sm text-primary uppercase tracking-widest font-black">
+          Your 6-stage path
+        </p>
+        <p class="font-body text-body-sm text-on-surface-variant">Step 1 unlocks immediately. Zero jumps, no confusion.</p>
+      </div>
+      <span class="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-success-deep bg-success/15 px-2.5 py-1 rounded-full">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+        Correct Learning Order
+      </span>
+    </div>
+
+    <!-- 6 Stage Cards Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-3.5 max-w-[960px] mx-auto">
+      
+      <!-- Stage 1 (Active / Starting point) -->
+      <div class="stage-card bg-surface-container-lowest rounded-2xl p-4 shadow-[0_4px_16px_rgba(83,45,221,0.12)] border-2 border-primary relative overflow-hidden flex flex-col items-start justify-between min-h-[148px]">
+        <div class="absolute -right-6 -top-6 w-16 h-16 bg-primary/10 rounded-full blur-md"></div>
+        <div class="w-full flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-primary text-white grid place-items-center font-black text-xs shadow-xs">01</span>
+          <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded-md bg-primary-fixed text-primary">Start Here</span>
+        </div>
+        <div class="mt-3">
+          <h2 class="font-headline text-headline-sm text-on-surface font-extrabold leading-snug">Alphabet</h2>
+          <p class="font-body text-[12px] text-primary font-bold mt-0.5" id="stage1Sub">A → Z, one by one</p>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-primary-container/20 mt-3 overflow-hidden">
+          <div class="w-1/3 h-full bg-primary rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="stage-card bg-surface-container-lowest rounded-2xl p-4 shadow-[0_4px_14px_rgba(31,27,46,0.05)] border border-outline/10 flex flex-col items-start justify-between min-h-[148px]">
+        <div class="w-full flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-primary-fixed text-primary grid place-items-center font-black text-xs">02</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2" class="opacity-70"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="mt-3">
+          <h2 class="font-headline text-headline-sm text-on-surface font-extrabold leading-snug">Sounds</h2>
+          <p class="font-body text-[12px] text-on-surface-variant mt-0.5">Vowels &amp; phonics</p>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden mt-3">
+          <div class="w-0 h-full bg-primary"></div>
+        </div>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="stage-card bg-surface-container-lowest rounded-2xl p-4 shadow-[0_4px_14px_rgba(31,27,46,0.05)] border border-outline/10 flex flex-col items-start justify-between min-h-[148px]">
+        <div class="w-full flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-primary-fixed text-primary grid place-items-center font-black text-xs">03</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2" class="opacity-70"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="mt-3">
+          <h2 class="font-headline text-headline-sm text-on-surface font-extrabold leading-snug">Numbers</h2>
+          <p class="font-body text-[12px] text-on-surface-variant mt-0.5">1 → 100 with visuals</p>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden mt-3">
+          <div class="w-0 h-full bg-primary"></div>
+        </div>
+      </div>
+
+      <!-- Stage 4 -->
+      <div class="stage-card bg-surface-container-lowest rounded-2xl p-4 shadow-[0_4px_14px_rgba(31,27,46,0.05)] border border-outline/10 flex flex-col items-start justify-between min-h-[148px]">
+        <div class="w-full flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-secondary-fixed text-secondary grid place-items-center font-black text-xs">04</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2" class="opacity-70"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="mt-3">
+          <h2 class="font-headline text-headline-sm text-on-surface font-extrabold leading-snug">Words</h2>
+          <p class="font-body text-[12px] text-on-surface-variant mt-0.5">B + A = BA &amp; roots</p>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden mt-3">
+          <div class="w-0 h-full bg-secondary-container"></div>
+        </div>
+      </div>
+
+      <!-- Stage 5 -->
+      <div class="stage-card bg-surface-container-lowest rounded-2xl p-4 shadow-[0_4px_14px_rgba(31,27,46,0.05)] border border-outline/10 flex flex-col items-start justify-between min-h-[148px]">
+        <div class="w-full flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-secondary-fixed text-secondary grid place-items-center font-black text-xs">05</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2" class="opacity-70"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="mt-3">
+          <h2 class="font-headline text-headline-sm text-on-surface font-extrabold leading-snug">Introduce</h2>
+          <p class="font-body text-[12px] text-on-surface-variant mt-0.5">Name &amp; greetings</p>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden mt-3">
+          <div class="w-0 h-full bg-secondary-container"></div>
+        </div>
+      </div>
+
+      <!-- Stage 6 -->
+      <div class="stage-card bg-surface-container-lowest rounded-2xl p-4 shadow-[0_4px_14px_rgba(31,27,46,0.05)] border border-outline/10 flex flex-col items-start justify-between min-h-[148px]">
+        <div class="w-full flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-success/20 text-success-deep grid place-items-center font-black text-xs">06</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#797587" stroke-width="2" class="opacity-70"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="mt-3">
+          <h2 class="font-headline text-headline-sm text-on-surface font-extrabold leading-snug">Reading</h2>
+          <p class="font-body text-[12px] text-on-surface-variant mt-0.5">Short stories &amp; texts</p>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden mt-3">
+          <div class="w-0 h-full bg-success"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── TRUST PERKS ROW ── -->
+  <div class="mt-8 flex items-center gap-4 sm:gap-8 text-on-surface-variant font-label text-label-sm flex-wrap justify-center bg-surface-container-lowest px-6 py-3 rounded-2xl border border-outline/10 shadow-xs">
+    <div class="flex items-center gap-2">
+      <span class="w-5 h-5 rounded-full bg-success/15 text-success-deep flex items-center justify-center">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+      </span>
+      <span class="font-bold text-on-surface">100% Free forever</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="w-5 h-5 rounded-full bg-success/15 text-success-deep flex items-center justify-center">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+      </span>
+      <span class="font-bold text-on-surface">No ads or paywalls</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="w-5 h-5 rounded-full bg-success/15 text-success-deep flex items-center justify-center">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+      </span>
+      <span class="font-bold text-on-surface">Web &amp; Mobile sync</span>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     STICKY BOTTOM BAR (Elevated Tactile Dock)
+════════════════════════════════════════════════════════════════ -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-xl border-t border-[rgba(31,27,46,0.08)] py-4 px-4 z-50">
+  <div class="max-w-[700px] mx-auto flex flex-col items-center gap-2.5">
+    <button id="startBtn" type="button" class="btn-primary w-full inline-flex items-center justify-center gap-2.5 bg-primary-container text-on-primary rounded-2xl py-4 font-headline text-label-lg shadow-[0_5px_0_0_#5436D6] hover:brightness-105 active:translate-y-[3px] active:shadow-none transition-all cursor-pointer">
+      <span class="tracking-wide">Start Learning Stage 1</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14M13 5l7 7-7 7"/>
+      </svg>
+    </button>
+    <a href="/learn" class="font-label text-label-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1">
+      <span>I'll explore the app first</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ── Read language and profile from localStorage ──
+    const langKey = localStorage.getItem('lingua_lang') || 'english';
+    const langMap = {
+      english: { name: 'English', abcs: 'A, B, C', stage1: 'A → Z, one by one' },
+      twi: { name: 'Twi', abcs: 'A, B, D (Ɛ & Ɔ)', stage1: 'A → Z + Akan Digraphs' },
+      german: { name: 'German', abcs: 'A, B, C (Ä, Ö, Ü)', stage1: 'A → Z + Umlauts' },
+      dutch: { name: 'Dutch', abcs: 'A, B, C (IJ)', stage1: 'A → Z + IJ digraph' },
+      spanish: { name: 'Spanish', abcs: 'A, B, C (Ñ)', stage1: 'A → Z + Distinctive Ñ' }
+    };
+    const lang = langMap[langKey] || langMap.english;
+    
+    // Update copy dynamically
+    const langNameEl = document.getElementById('langName');
+    const langAbcsEl = document.getElementById('langAbcs');
+    const stage1SubEl = document.getElementById('stage1Sub');
+
+    if (langNameEl) langNameEl.textContent = lang.name;
+    if (langAbcsEl) langAbcsEl.textContent = lang.abcs;
+    if (stage1SubEl) stage1SubEl.textContent = lang.stage1;
+
+    // Read age & goal if previously saved
+    const savedAge = localStorage.getItem('lingua_age');
+    const savedGoal = localStorage.getItem('lingua_goal');
+    if (savedAge && document.getElementById('summaryAge')) {
+      const ageLabels = { kid: 'Kid Profile (6–12)', teen: 'Teen Profile (13–19)', adult: 'Adult Profile (20+)' };
+      document.getElementById('summaryAge').textContent = ageLabels[savedAge] || `${savedAge} Profile`;
+    }
+    if (savedGoal && document.getElementById('summaryGoal')) {
+      const goalLabels = { casual: '5 min/day · Casual', regular: '10 min/day · Regular', serious: '20 min/day · Serious' };
+      document.getElementById('summaryGoal').textContent = goalLabels[savedGoal] || `${savedGoal} Goal`;
+    }
+
+    // ── Confetti Generator ──
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion) {
+      const colors = ['#6c4df6', '#fd7958', '#f4bf3c', '#2EC4B6', '#3CE7D8', '#a7391e'];
+      const layer = document.getElementById('confettiLayer');
+      const count = 55;
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (2.8 + Math.random() * 3.5) + 's';
+        piece.style.animationDelay = (Math.random() * 2.2) + 's';
+        piece.style.width = (7 + Math.random() * 7) + 'px';
+        piece.style.height = (10 + Math.random() * 8) + 'px';
+        piece.style.opacity = 0.8 + Math.random() * 0.2;
+        if (Math.random() > 0.45) piece.style.borderRadius = '50%';
+        layer.appendChild(piece);
+      }
+      // Gentle fade out after 7.5 seconds
+      setTimeout(() => {
+        layer.style.transition = 'opacity 1.2s ease';
+        layer.style.opacity = '0';
+        setTimeout(() => layer.remove(), 1200);
+      }, 7500);
+    }
+
+    // ── Start Button → Home Stage Map ──
+    document.getElementById('startBtn').addEventListener('click', () => {
+      localStorage.setItem('lingua_onboarded', 'true');
+      alert("Welcome to LinGua! 🎉\n\nYour profile has been created for " + lang.name + ".\nNext screen: The Home Stage Map — Stage 1: Alphabet.");
+    });
+  });
+</script>
+</body>
+</html>
